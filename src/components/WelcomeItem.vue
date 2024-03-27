@@ -7,6 +7,9 @@
       <h3>
         <slot name="heading"></slot>
       </h3>
+      <h2>
+        <slot name="heading2"></slot>
+      </h2>
       <slot></slot>
     </div>
   </div>
