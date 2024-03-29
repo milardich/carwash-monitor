@@ -1,18 +1,42 @@
 <script setup lang="ts">
+
+import { ref } from 'vue';
+
 const props = defineProps<{
     state: string
 }>()
 
-var cssClass: String = "bg-yellow-warning";
+const backgroundColorCssClass = ref<string>("bg-yellow-warning");
+const unitStateLabel = ref<string>(props.state);
 
 switch (props.state) {
-    case "AVAILABLE": cssClass = "bg-green-light";
+    case "AVAILABLE":
+        backgroundColorCssClass.value = "bg-green-light";
         break
-    case "IN USE": cssClass = "bg-red-light";
+    case "IN USE":
+        backgroundColorCssClass.value = "bg-red-light";
         break
-    case "INACTIVE": cssClass = "bg-yellow-warning"
+    case "INACTIVE":
+        backgroundColorCssClass.value = "bg-yellow-warning"
         break
 }
+
+// for testing purposes
+function toInUse() {
+    backgroundColorCssClass.value = "bg-red-light";
+    unitStateLabel.value = "IN USE";
+}
+
+function toAvailable() {
+    backgroundColorCssClass.value = "bg-green-light";
+    unitStateLabel.value = "AVAILABLE";
+}
+
+function toInactive() {
+    backgroundColorCssClass.value = "bg-yellow-warning";
+    unitStateLabel.value = "INACTIVE";
+}
+///
 </script>
 
 <template>
@@ -36,8 +60,15 @@ switch (props.state) {
             </div>
         </div>
 
-        <div class="border-1 border-black rounded-lg text-center p-1" :class="cssClass">
-            {{ state }}
+        <div class="border-1 border-black rounded-lg text-center p-1" :class="backgroundColorCssClass">
+            {{ unitStateLabel }}
         </div>
+
+        <!-- for testing purposes -->
+        <!--
+        <button @click="toAvailable">toAvailable</button>
+        <button @click="toInactive">toInactive</button>
+        <button @click="toInUse">toInUse</button>
+        -->
     </div>
 </template>
