@@ -4,11 +4,11 @@ import SideMenu from './components/SideMenu.vue'
 </script>
 
 <template>
-  <div class="p-4 sm:ml-64">
+  <div class="sm:ml-64 h-screen p-5">
     <div>
       <SideMenu />
     </div>
-    <div>
+    <div class="h-full">
       <RouterView />
     </div>
   </div>
