@@ -47,7 +47,7 @@ a,
   --violet-light: #7978E9;
   --blue-light: #7DA0FA;
   --red-light: #F3797E;
-  --white-dark: #eaecf3;
+  --white-dark: #e8e9f0;
   --white-light: #FFFFFF;
   --gray-light: #757C8B;
   --gray-dark: #232323;
@@ -75,12 +75,32 @@ body {
   background-color: var(--violet-dark);
 }
 
+.bg-violet-light {
+  background-color: var(--violet-light);
+}
+
 .bg-white-dark {
   background-color: var(--white-dark);
 }
 
 .bg-white-light {
   background-color: var(--white-light);
+}
+
+.bg-blue-light {
+  background-color: var(--blue-light);
+}
+
+.bg-red-light {
+  background-color: var(--red-light);
+}
+
+.bg-yellow-warning {
+  background-color: var(--yellow-warning);
+}
+
+.bg-green-light {
+  background-color: var(--green-light);
 }
 
 .side-menu {
@@ -105,4 +125,9 @@ body {
 .side-menu-item-selected {
   background-color: var(--violet-dark);
   color: var(--white-light);
+}
+
+.card-button-icon-small {
+  width: 15px;
+  height: 15px;
 }
