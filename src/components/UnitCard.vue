@@ -41,7 +41,7 @@ function toInactive() {
 
 <template>
     <div
-        class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-lg p-4 content-between bg-violet-ultralight">
+        class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-lg p-4 content-between bg-white-light">
         <div class="flex">
             <div class="text-3xl">#1</div>
             <div class="ml-auto justify-end">

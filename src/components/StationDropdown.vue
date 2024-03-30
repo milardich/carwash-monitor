@@ -1,6 +1,6 @@
 <template>
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
-        class="px-5 py-2.5 text-center inline-flex bg-violet-light text-white-light rounded-lg text-xl" type="button">
+        class="px-5 py-2.5 text-center inline-flex bg-violet-dark text-white-light rounded-lg text-xl" type="button">
 
         Station 1
 
@@ -40,9 +40,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-    props: {
-        stationDropdownOpen: Boolean
-    },
+
     data() {
         return {
             stationDropdownOpen: false

@@ -45,6 +45,7 @@ a,
 :root {
   --violet-dark: #4B49AC;
   --violet-light: #7978E9;
+  --violet-light2: #dcd7fd;
   --violet-ultralight: #edebfd;
   --white-medium: #f8f6ff;
   --blue-light: #fafbff;
@@ -70,7 +71,7 @@ a,
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--violet-light);
+  background: var(--violet-dark);
   border-radius: 10px;
 }
 
@@ -80,7 +81,7 @@ a,
 }
 
 body {
-  background-color: var(--violet-ultralight); 
+  background-color: var(--violet-light2); 
 }
 
 .text-gray-dark {
