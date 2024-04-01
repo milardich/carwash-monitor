@@ -164,3 +164,8 @@ body {
   width: 15px;
   height: 15px;
 }
+
+.station-dropdown {
+  background-color: var(--violet-light);
+  color: var(--white-light);
+}

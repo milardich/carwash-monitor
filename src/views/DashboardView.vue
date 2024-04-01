@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import StationDropdown from '@/components/StationDropdown.vue';
 import UnitCard from '@/components/UnitCard.vue';
-import ResourcecChartCard from '@/components/ResourceChartCard.vue'
+import ResourceChartCard from '@/components/ResourceChartCard.vue'
 </script>
+
 
 
 <template>
     <div class="h-full">
         <div>
-            <StationDropdown />
+            <StationDropdown :stations="stations" />
         </div>
 
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
@@ -17,10 +18,10 @@ import ResourcecChartCard from '@/components/ResourceChartCard.vue'
 
                 <div>
                     <!-- TODO: fetch card data from backend -->
-                    <ResourcecChartCard />
-                    <ResourcecChartCard />
-                    <ResourcecChartCard />
-                    <ResourcecChartCard />
+                    <ResourceChartCard />
+                    <ResourceChartCard />
+                    <ResourceChartCard />
+                    <ResourceChartCard />
                 </div>
             </div>
 
@@ -44,3 +45,23 @@ import ResourcecChartCard from '@/components/ResourceChartCard.vue'
 
 
 </template>
+
+<script lang="ts">
+import { getAllStations, getStation, type Station } from "@/api/station.api";
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    data() {
+        return {
+            stations: [] as Station[],
+        }
+    },
+    async created() {
+        const [error, stations] = await getAllStations();
+        if (error) console.error(error);
+        else this.stations = stations as Station[];
+        console.log(this.stations);
+    },
+    methods: {},
+});
+</script>

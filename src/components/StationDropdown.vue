@@ -1,8 +1,40 @@
+<script setup lang="ts">
+import { defineProps, ref, watch } from 'vue';
+import { type Station, getStation } from '@/api/station.api';
+
+const props = defineProps<{
+    stations: Station[]
+}>();
+
+const selectedStation = ref<Station | null>(null);
+const stationDropdownOpen = ref(false);
+
+// Toggle station dropdown
+const toggleStationDropdown = () => {
+    stationDropdownOpen.value = !stationDropdownOpen.value;
+}
+
+// Function to change selected station
+async function changeSelectedStation(stationId: number) {
+    selectedStation.value = await getStation(stationId);
+}
+
+// Watch for changes in props.stations and update selectedStation accordingly
+watch(() => props.stations, (newStations) => {
+    if (newStations.length > 0) {
+        selectedStation.value = newStations[0];
+    }
+
+});
+
+</script>
+
 <template>
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
         class="px-5 py-2.5 text-center inline-flex bg-violet-dark text-white-light rounded-lg text-xl" type="button">
 
-        Station 1
+        <span v-if="selectedStation"> {{ selectedStation.stationName }} </span>
+        <span v-else> - </span>
 
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 10 6">
@@ -13,44 +45,14 @@
 
     <!-- Dropdown menu -->
     <div id="dropdown" :class="{ 'hidden': !stationDropdownOpen }"
-        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute">
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-            <li>
-                <a href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Station 1</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Station 2</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Station 3</a>
-            </li>
-            <li>
-                <a href="#"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Station 4</a>
-            </li>
+        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
+        <ul class="py-2 text-sm station-dropdown rounded-lg" aria-labelledby="dropdownDefaultButton">
+            <a href="#" class="list-link">
+                <li v-for="station in props.stations" class="block px-4 py-2"
+                    @click="changeSelectedStation(station.stationId); toggleStationDropdown()">
+                    {{ station.stationName }}
+                </li>
+            </a>
         </ul>
     </div>
 </template>
-
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-
-    data() {
-        return {
-            stationDropdownOpen: false
-        }
-    },
-    methods: {
-        toggleStationDropdown() {
-            this.stationDropdownOpen = !this.stationDropdownOpen
-        }
-    }
-})
-
-</script>
