@@ -43,6 +43,8 @@ import { stationStore } from '@/stores/stationStore'
                     <UnitCard state="INACTIVE" />
                     <UnitCard state="INACTIVE" />
                     <UnitCard state="AVAILABLE" />
+
+                    {{ console.log(stationStore.selectedStation?.units) }}
                 </div>
             </div>
 

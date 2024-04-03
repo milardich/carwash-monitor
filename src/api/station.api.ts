@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { type Unit } from '@/api/unit.api'
 
 export interface Station {
     stationId: number;
@@ -7,6 +8,7 @@ export interface Station {
     streetName: string;
     streetNumber: string;
     country: string;
+    units: Unit[];
 }
 
 const axiosClient = axios.create({

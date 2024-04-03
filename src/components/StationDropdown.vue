@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineProps, ref, watch } from 'vue';
-import { type Station, getStation } from '@/api/station.api';
+import { ref, watch } from 'vue';
+import { getStation } from '@/api/station.api';
 import { stationStore } from '@/stores/stationStore';
 
 const stationDropdownOpen = ref(false);
