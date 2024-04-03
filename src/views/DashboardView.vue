@@ -2,6 +2,7 @@
 import StationDropdown from '@/components/StationDropdown.vue';
 import UnitCard from '@/components/UnitCard.vue';
 import ResourceChartCard from '@/components/ResourceChartCard.vue'
+import { stationStore } from '@/stores/stationStore'
 </script>
 
 
@@ -9,7 +10,12 @@ import ResourceChartCard from '@/components/ResourceChartCard.vue'
 <template>
     <div class="h-full">
         <div>
-            <StationDropdown :stations="stations" />
+            <span v-if="stationStore.stations.length > 0">
+                <StationDropdown />
+            </span>
+            <span v-else>
+                Loading stations...
+            </span>
         </div>
 
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
@@ -47,20 +53,15 @@ import ResourceChartCard from '@/components/ResourceChartCard.vue'
 </template>
 
 <script lang="ts">
-import { getAllStations, getStation, type Station } from "@/api/station.api";
-import { defineComponent } from 'vue';
+import { defineComponent } from 'vue'
+import { type Station, getAllStations } from '@/api/station.api'
 
 export default defineComponent({
-    data() {
-        return {
-            stations: [] as Station[],
-        }
-    },
     async created() {
         const [error, stations] = await getAllStations();
         if (error) console.error(error);
-        else this.stations = stations as Station[];
-        console.log(this.stations);
+        else stationStore.stations = stations as Station[];
+        console.log(stationStore.stations);
     },
     methods: {},
 });

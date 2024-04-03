@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { defineProps, ref, watch } from 'vue';
 import { type Station, getStation } from '@/api/station.api';
+import { stationStore } from '@/stores/stationStore';
 
-const props = defineProps<{
-    stations: Station[]
-}>();
-
-const selectedStation = ref<Station | null>(null);
 const stationDropdownOpen = ref(false);
 
 // Toggle station dropdown
@@ -16,15 +12,14 @@ const toggleStationDropdown = () => {
 
 // Function to change selected station
 async function changeSelectedStation(stationId: number) {
-    selectedStation.value = await getStation(stationId);
+    stationStore.selectedStation = await getStation(stationId);
 }
 
 // Watch for changes in props.stations and update selectedStation accordingly
-watch(() => props.stations, (newStations) => {
+watch(() => stationStore.stations, (newStations) => {
     if (newStations.length > 0) {
-        selectedStation.value = newStations[0];
+        stationStore.selectedStation = newStations[0];
     }
-
 });
 
 </script>
@@ -33,8 +28,8 @@ watch(() => props.stations, (newStations) => {
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
         class="px-5 py-2.5 text-center inline-flex bg-violet-dark text-white-light rounded-lg text-xl" type="button">
 
-        <span v-if="selectedStation"> {{ selectedStation.stationName }} </span>
-        <span v-else> - </span>
+        <span v-if="stationStore.selectedStation != null"> {{ stationStore.selectedStation.stationName }} </span>
+        <span v-else> {{ stationStore.stations[0].stationName }} </span>
 
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 10 6">
@@ -48,7 +43,7 @@ watch(() => props.stations, (newStations) => {
         class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
         <ul class="py-2 text-sm station-dropdown rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
-                <li v-for="station in props.stations" class="block px-4 py-2"
+                <li v-for="station in stationStore.stations" class="block px-4 py-2"
                     @click="changeSelectedStation(station.stationId); toggleStationDropdown()">
                     {{ station.stationName }}
                 </li>
