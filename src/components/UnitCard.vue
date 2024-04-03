@@ -1,20 +1,23 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
+import { stationStore } from '@/stores/stationStore';
+import type { Unit } from '@/api/unit.api';
 
 const props = defineProps<{
-    state: string
+    unit: Unit
 }>()
 
 const backgroundColorCssClass = ref<string>("bg-yellow-warning");
-const unitStateLabel = ref<string>(props.state);
+const unitStateLabel = ref<string>(props.unit.status);
 
-switch (props.state) {
+switch (props.unit.status) {
     case "AVAILABLE":
         backgroundColorCssClass.value = "bg-green-light";
         break
-    case "IN USE":
+    case "IN_USE":
         backgroundColorCssClass.value = "bg-red-light";
+        unitStateLabel.value = "IN USE";
         break
     case "INACTIVE":
         backgroundColorCssClass.value = "bg-yellow-warning"
@@ -43,7 +46,7 @@ function toInactive() {
     <div
         class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-lg p-4 content-between bg-white-light">
         <div class="flex">
-            <div class="text-3xl">#1</div>
+            <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
                 <button>
                     <img src="@/assets/settings-svgrepo-com.svg" alt="" srcset="" class="card-button-icon-small">
@@ -54,9 +57,9 @@ function toInactive() {
         <div class="mt-2">
             <div class="grid grid-cols-2 text-sm">
                 <div>Washes today:</div>
-                <div class="font-bold">12</div>
+                <div class="font-bold"> </div>
                 <div>Coin tray:</div>
-                <div class="font-bold">69%</div>
+                <div class="font-bold"> {{ unit.coinTrayAmount }}% </div>
             </div>
         </div>
 
@@ -65,10 +68,10 @@ function toInactive() {
         </div>
 
         <!-- for testing purposes -->
-        <!--
-        <button @click="toAvailable">toAvailable</button>
+
+        <!-- <button @click="toAvailable">toAvailable</button>
         <button @click="toInactive">toInactive</button>
-        <button @click="toInUse">toInUse</button>
-        -->
+        <button @click="toInUse">toInUse</button> -->
+
     </div>
 </template>

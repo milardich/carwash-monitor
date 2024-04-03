@@ -15,12 +15,6 @@ async function changeSelectedStation(stationId: number) {
     stationStore.selectedStation = await getStation(stationId);
 }
 
-// Watch for changes in props.stations and update selectedStation accordingly
-watch(() => stationStore.stations, (newStations) => {
-    if (newStations.length > 0) {
-        stationStore.selectedStation = newStations[0];
-    }
-});
 
 </script>
 
