@@ -2,6 +2,7 @@
 
 import { ref } from 'vue';
 import type { Unit } from '@/api/unit.api';
+import { setSelectedUnit, toggleUnitPopup } from '@/stores/unitPopup';
 
 const props = defineProps<{
     unit: Unit
@@ -46,7 +47,7 @@ function toInactive() {
         <div class="flex">
             <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
-                <button>
+                <button @click="toggleUnitPopup(); setSelectedUnit(unit);">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="" srcset="" class="card-button-icon-small">
                 </button>
             </div>
