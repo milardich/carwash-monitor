@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
-import { stationStore } from '@/stores/stationStore';
 import type { Unit } from '@/api/unit.api';
 
 const props = defineProps<{
@@ -17,7 +16,6 @@ switch (props.unit.status) {
         break
     case "IN_USE":
         backgroundColorCssClass.value = "bg-red-light";
-        unitStateLabel.value = "IN USE";
         break
     case "INACTIVE":
         backgroundColorCssClass.value = "bg-yellow-warning"

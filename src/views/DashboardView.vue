@@ -10,7 +10,6 @@ import UnitPopup from '@/components/UnitPopup.vue'
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { type Station, getAllStations } from '@/api/station.api'
-import { ref } from 'vue'
 
 export default defineComponent({
     async mounted() {

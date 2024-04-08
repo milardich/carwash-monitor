@@ -12,6 +12,7 @@ const toggleStationDropdown = () => {
 
 // Function to change selected station
 async function changeSelectedStation(stationId: number) {
+    stationStore.selectedStation = null; // fixes incorrect unit rendering for some reason
     stationStore.selectedStation = await getStation(stationId);
 }
 
