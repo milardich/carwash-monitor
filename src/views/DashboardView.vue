@@ -3,12 +3,14 @@ import StationDropdown from '@/components/StationDropdown.vue';
 import UnitCard from '@/components/UnitCard.vue';
 import ResourceChartCard from '@/components/ResourceChartCard.vue'
 import { stationStore } from '@/stores/stationStore'
+import UnitPopup from '@/components/UnitPopup.vue'
 </script>
 
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { type Station, getAllStations } from '@/api/station.api'
+import { ref } from 'vue'
 
 export default defineComponent({
     async mounted() {
@@ -57,7 +59,8 @@ export default defineComponent({
                         Loading units...
                     </span>
 
-
+                    <!-- testing this -->
+                    <UnitPopup />
                 </div>
             </div>
 
