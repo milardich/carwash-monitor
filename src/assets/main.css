@@ -136,6 +136,10 @@ body {
   background-color: var(--violet-ultralight);
 }
 
+.bg-transparent-black {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .side-menu {
   background-color: var(--white-light);
 }
