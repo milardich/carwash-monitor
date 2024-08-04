@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Line } from 'vue-chartjs';
 import { ref, watch } from 'vue';
+import { resourceStore } from '@/stores/resourceStore';
 
 const props = defineProps<{
     labels: String[],
@@ -65,6 +66,9 @@ export default {
 
 <template>
     <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-lg bg-white-light">
-        <Line :data="chartData" :options="chartOptions" />
+        <Line v-if="resourceStore.resourceConsumptions.length > 0" :data="chartData" :options="chartOptions" />
+        <div v-else>
+            Loading charts...
+        </div>
     </div>
 </template>

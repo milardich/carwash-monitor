@@ -24,8 +24,9 @@ export default defineComponent({
         stationStore.stations = stations.value;
         stationStore.selectedStation = stationStore.stations[0];
         var stationId = stationStore.selectedStation.stationId;
-        resourceStore.resourceConsumptions = await getChartData(stationId, "30 days");
-        resourceStore.pgTimeInterval = "100 days";
+        resourceStore.pgTimeInterval = "20 days";
+        var pgTimeInterval = resourceStore.pgTimeInterval;
+        resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
         resourceConsumptions.value = resourceStore.resourceConsumptions;
     },
     methods: {},
@@ -95,22 +96,14 @@ function populateDetergentConsumptionLabels(): String[] {
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
             <div class="rounded-lg overflow-y-auto p-6 h-full  bg-violet-ultralight shadow-lg">
                 <div class="text-3xl">Resource consumption</div>
+                <ResourceChartCard :labels="populateWaterConsumptionLabels()" :data="populateWaterConsumptionData()"
+                    :resource-label="'Water [L]'" />
 
-                <div v-if="resourceStore.resourceConsumptions.length > 0">
-                    {{ console.log(resourceStore) }}
-                    <ResourceChartCard :labels="populateWaterConsumptionLabels()" :data="populateWaterConsumptionData()"
-                        :resource-label="'Water [L]'" />
+                <ResourceChartCard :labels="populateWaxConsumptionLabels()" :data="populateWaxConsumptionData()"
+                    :resource-label="'Wax [L]'" />
 
-                    <ResourceChartCard :labels="populateWaxConsumptionLabels()" :data="populateWaxConsumptionData()"
-                        :resource-label="'Wax [L]'" />
-
-                    <ResourceChartCard :labels="populateDetergentConsumptionLabels()"
-                        :data="populateDetergentConsumptionData()" :resource-label="'Detergent [L]'" />
-                </div>
-
-                <div v-else>
-                    Loading charts...
-                </div>
+                <ResourceChartCard :labels="populateDetergentConsumptionLabels()"
+                    :data="populateDetergentConsumptionData()" :resource-label="'Detergent [L]'" />
             </div>
 
             <div class="rounded-lg overflow-y-auto p-6 h-full bg-violet-ultralight shadow-lg">
