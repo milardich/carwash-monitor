@@ -3,7 +3,6 @@ import { ref, watch } from 'vue';
 import { getStation } from '@/api/station.api';
 import { stationStore } from '@/stores/stationStore';
 import { resourceStore } from '@/stores/resourceStore';
-import { getChartData } from '@/api/resources.api';
 import { setChartDataByStationId } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
