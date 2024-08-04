@@ -15,12 +15,12 @@ const axiosClient = axios.create({
     baseURL: "http://localhost:8080/api/station",
 });
 
-export async function getAllStations() {
+export async function getAllStations(): Promise<Station[]> {
     try {
         const { data } = await axiosClient.get('');
-        return [null, data];
+        return data;
     } catch (error) {
-        return [error];
+        throw (error);
     }
 }
 
