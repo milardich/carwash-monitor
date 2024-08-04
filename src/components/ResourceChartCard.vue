@@ -5,14 +5,15 @@ import { ref, watch } from 'vue';
 const props = defineProps<{
     labels: String[],
     data: number[],
+    resourceLabel: string
 }>();
 
 const chartData = ref({
     labels: props.labels,
     datasets: [
         {
-            label: "Test Label",
-            backgroundColor: '#4B49AC',
+            label: props.resourceLabel,
+            backgroundColor: '#4B49AC', //TODO: make this a prop
             data: props.data
         }
     ]
@@ -27,6 +28,7 @@ const chartOptions = ref({
 watch(() => props, (newProps) => {
     chartData.value.labels = newProps.labels;
     chartData.value.datasets[0].data = newProps.data;
+    chartData.value.datasets[0].label = newProps.resourceLabel;
 }, { deep: true });
 
 </script>
@@ -64,6 +66,5 @@ export default {
 <template>
     <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-lg bg-white-light">
         <Line :data="chartData" :options="chartOptions" />
-        {{ console.log("loaded hheehheeh" + chartData) }}
     </div>
 </template>

@@ -23,7 +23,8 @@ export default defineComponent({
         stations.value = await getAllStations();
         stationStore.stations = stations.value;
         stationStore.selectedStation = stationStore.stations[0];
-        resourceStore.resourceConsumptions = await getChartData(1, "100 days");
+        var stationId = stationStore.selectedStation.stationId;
+        resourceStore.resourceConsumptions = await getChartData(stationId, "30 days");
         resourceStore.pgTimeInterval = "100 days";
         resourceConsumptions.value = resourceStore.resourceConsumptions;
     },
@@ -96,15 +97,15 @@ function populateDetergentConsumptionLabels(): String[] {
                 <div class="text-3xl">Resource consumption</div>
 
                 <div v-if="resourceStore.resourceConsumptions.length > 0">
-
+                    {{ console.log(resourceStore) }}
                     <ResourceChartCard :labels="populateWaterConsumptionLabels()" :data="populateWaterConsumptionData()"
-                        :resource="'Water [L]'" />
+                        :resource-label="'Water [L]'" />
 
                     <ResourceChartCard :labels="populateWaxConsumptionLabels()" :data="populateWaxConsumptionData()"
-                        :resource="'Wax [L]'" />
+                        :resource-label="'Wax [L]'" />
 
                     <ResourceChartCard :labels="populateDetergentConsumptionLabels()"
-                        :data="populateDetergentConsumptionData()" :resource="'Detergent [L]'" />
+                        :data="populateDetergentConsumptionData()" :resource-label="'Detergent [L]'" />
                 </div>
 
                 <div v-else>

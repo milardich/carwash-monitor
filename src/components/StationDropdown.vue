@@ -2,6 +2,9 @@
 import { ref, watch } from 'vue';
 import { getStation } from '@/api/station.api';
 import { stationStore } from '@/stores/stationStore';
+import { resourceStore } from '@/stores/resourceStore';
+import { getChartData } from '@/api/resources.api';
+import { setChartDataByStationId } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
 
@@ -14,6 +17,9 @@ const toggleStationDropdown = () => {
 async function changeSelectedStation(stationId: number) {
     stationStore.selectedStation = null; // fixes incorrect unit rendering for some reason
     stationStore.selectedStation = await getStation(stationId);
+    if (stationStore.selectedStation) {
+        setChartDataByStationId(stationStore.selectedStation.stationId);
+    }
 }
 
 
