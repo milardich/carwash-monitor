@@ -5,6 +5,7 @@ import ResourceChartCard from '@/components/ResourceChartCard.vue'
 import { stationStore } from '@/stores/stationStore'
 import UnitPopup from '@/components/UnitPopup.vue'
 import { getChartData } from '@/api/resources.api';
+import { computed } from 'vue';
 </script>
 
 
@@ -33,53 +34,22 @@ export default defineComponent({
     methods: {},
 });
 
-function populateWaterConsumptionData(): number[] {
-    var waterData: number[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        waterData.push(consumption.totalWaterConsumption);
-    });
-    return waterData;
-}
 
-function populateWaterConsumptionLabels(): String[] {
-    var waterLabels: String[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        waterLabels.push(consumption.washCycleDate);
-    });
-    return waterLabels;
-}
+export const waterData = computed(() => {
+    return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaterConsumption);
+});
 
-function populateWaxConsumptionData(): number[] {
-    var waxData: number[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        waxData.push(consumption.totalWaxConsumption);
-    });
-    return waxData;
-}
+export const waxData = computed(() => {
+    return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaxConsumption);
+});
 
-function populateWaxConsumptionLabels(): String[] {
-    var waxLabels: String[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        waxLabels.push(consumption.washCycleDate);
-    });
-    return waxLabels;
-}
+export const detergentData = computed(() => {
+    return resourceStore.resourceConsumptions.map(consumption => consumption.totalDetergentConsumption);
+});
 
-function populateDetergentConsumptionData(): number[] {
-    var detergentData: number[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        detergentData.push(consumption.totalDetergentConsumption);
-    });
-    return detergentData;
-}
-
-function populateDetergentConsumptionLabels(): String[] {
-    var detergentLabels: String[] = [];
-    resourceStore.resourceConsumptions.forEach((consumption) => {
-        detergentLabels.push(consumption.washCycleDate);
-    });
-    return detergentLabels;
-}
+export const labels = computed(() => {
+    return resourceStore.resourceConsumptions.map(consumption => consumption.washCycleDate);
+});
 
 </script>
 
@@ -97,14 +67,12 @@ function populateDetergentConsumptionLabels(): String[] {
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
             <div class="rounded-lg overflow-y-auto p-6 h-full  bg-violet-ultralight shadow-lg">
                 <div class="text-3xl">Resource consumption</div>
-                <ResourceChartCard :labels="populateWaterConsumptionLabels()" :data="populateWaterConsumptionData()"
-                    :resource-label="'Water [L]'" />
+                <!-- {{ waterData }} -->
+                <ResourceChartCard :labels="labels" :data="waterData" :resource-label="'Water [L]'" />
 
-                <ResourceChartCard :labels="populateWaxConsumptionLabels()" :data="populateWaxConsumptionData()"
-                    :resource-label="'Wax [L]'" />
+                <ResourceChartCard :labels="labels" :data="waxData" :resource-label="'Wax [L]'" />
 
-                <ResourceChartCard :labels="populateDetergentConsumptionLabels()"
-                    :data="populateDetergentConsumptionData()" :resource-label="'Detergent [L]'" />
+                <ResourceChartCard :labels="labels" :data="detergentData" :resource-label="'Detergent [L]'" />
             </div>
 
             <div class="rounded-lg overflow-y-auto p-6 h-full bg-violet-ultralight shadow-lg">

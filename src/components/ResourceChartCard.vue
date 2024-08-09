@@ -2,6 +2,7 @@
 import { Line } from 'vue-chartjs';
 import { ref, watch } from 'vue';
 import { resourceStore } from '@/stores/resourceStore';
+import { computed } from 'vue';
 
 const props = defineProps<{
     labels: String[],
@@ -9,7 +10,7 @@ const props = defineProps<{
     resourceLabel: string
 }>();
 
-const chartData = ref({
+const chartData = computed(() => ({
     labels: props.labels,
     datasets: [
         {
@@ -18,19 +19,12 @@ const chartData = ref({
             data: props.data
         }
     ]
-});
+}));
 
 const chartOptions = ref({
     responsive: true,
     maintainAspectRatio: false
 });
-
-// Watch for changes in props and update chartData accordingl
-watch(() => props, (newProps) => {
-    chartData.value.labels = newProps.labels;
-    chartData.value.datasets[0].data = newProps.data;
-    chartData.value.datasets[0].label = newProps.resourceLabel;
-}, { deep: true });
 
 </script>
 
@@ -67,8 +61,8 @@ export default {
 <template>
     <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-lg bg-white-light">
         <Line v-if="resourceStore.resourceConsumptions.length > 0" :data="chartData" :options="chartOptions" />
-        <div v-else>
+        <!-- <div v-else>
             Loading charts...
-        </div>
+        </div> -->
     </div>
 </template>
