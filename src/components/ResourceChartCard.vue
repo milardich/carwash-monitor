@@ -61,8 +61,8 @@ export default {
 <template>
     <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-lg bg-white-light">
         <Line v-if="resourceStore.resourceConsumptions.length > 0" :data="chartData" :options="chartOptions" />
-        <!-- <div v-else>
+        <div v-else>
             Loading charts...
-        </div> -->
+        </div>
     </div>
 </template>
