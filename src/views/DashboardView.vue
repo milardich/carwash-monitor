@@ -22,7 +22,8 @@ export default defineComponent({
     async mounted() {
         stations.value = await getAllStations();
         stationStore.stations = stations.value;
-        stationStore.selectedStation = stationStore.stations[0];
+        if (stationStore.selectedStation == null)
+            stationStore.selectedStation = stationStore.stations[0];
         var stationId = stationStore.selectedStation.stationId;
         resourceStore.pgTimeInterval = "30 days";
         var pgTimeInterval = resourceStore.pgTimeInterval;
