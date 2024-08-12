@@ -20,6 +20,6 @@ export async function setChartDataByStationId(stationId: number) {
 setInterval(() => {
     if(stationStore.selectedStation != null) {
         setChartDataByStationId(stationStore.selectedStation.stationId);
-        console.log(resourceStore);
+        // console.log(resourceStore);
     }
 }, 5000);

@@ -26,7 +26,7 @@ export default defineComponent({
         if (stationStore.selectedStation == null)
             stationStore.selectedStation = stationStore.stations[0];
         var stationId = stationStore.selectedStation.stationId;
-        resourceStore.pgTimeInterval = "24 hours";
+        resourceStore.pgTimeInterval = "7 days";
         var pgTimeInterval = resourceStore.pgTimeInterval;
         resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
         resourceConsumptions.value = resourceStore.resourceConsumptions;

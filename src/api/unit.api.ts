@@ -4,7 +4,11 @@ import axios from 'axios';
 export interface Unit {
     unitId: number; 
     status: string;
-    coinTrayAmount: number;
+}
+
+export interface UnitInfo {
+    washCycleCount: number;
+    totalCoinAmount: number;
     totalWaterConsumption: number;
     totalDetergentConsumption: number;
     totalWaxConsumption: number;
@@ -17,14 +21,28 @@ enum UnitStatus {
 }
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080/api/station/{stationId}",
+    baseURL: "http://localhost:8080/api",
 });
 
-export async function getUnit(stationId: number, unitId: number) {
+export async function getUnit(stationId: number, unitId: number): Promise<Unit> {
     try {
-        const { data } = await axiosClient.get('/unit/${unitId}');
-        return [null, data];
+        const { data } = await axiosClient.get(`/station/${stationId}/unit/${unitId}`);
+        return data;
     } catch (error) {
-        return [error];
+        throw(error);
+    }
+}
+
+export async function getUnitInfo(stationId: number, unitId: number, dateTimeFrom: string, dateTimeTo: string): Promise<UnitInfo>{
+    try {
+        const { data } = await axiosClient.get(`/station/${stationId}/unit/${unitId}/info`, {
+            params: {
+                dateTimeFrom: dateTimeFrom,
+                dateTimeTo: dateTimeTo
+            }
+        });
+        return data;
+    } catch (error) {
+        throw(error);
     }
 }

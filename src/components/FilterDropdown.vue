@@ -7,27 +7,28 @@ import { setChartDataByStationId } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
 
-const toggleStationDropdown = () => {
+const toggleFilterOptionDropdown = () => {
     stationDropdownOpen.value = !stationDropdownOpen.value;
 }
 
-async function changeSelectedStation(stationId: number) {
-    stationStore.selectedStation = null; // fixes incorrect unit rendering for some reason
-    stationStore.selectedStation = await getStation(stationId);
-    if (stationStore.selectedStation) {
-        setChartDataByStationId(stationStore.selectedStation.stationId);
-    }
+const filters = ref(["Today", "Last 7 days", "This month"]);
+
+const filterOption = ref("");
+
+function changeSelectedFilterOption(option: string) {
+    filterOption.value = option;
 }
 
 
 </script>
 
 <template>
-    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
+    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleFilterOptionDropdown"
         class="px-5 py-2.5 text-center inline-flex bg-violet-dark text-white-light rounded-lg text-xl" type="button">
 
-        <span v-if="stationStore.selectedStation != null"> {{ stationStore.selectedStation.stationName }} </span>
-        <span v-else> {{ stationStore.stations[0].stationName }} </span>
+        <span v-if="filterOption == ''"> {{ filters[0] }} </span>
+        <span v-else> {{ filterOption }} </span>
+
 
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 10 6">
@@ -41,11 +42,13 @@ async function changeSelectedStation(stationId: number) {
         class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
         <ul class="py-2 text-sm station-dropdown rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
-                <li v-for="station in stationStore.stations" class="block px-4 py-2"
-                    @click="changeSelectedStation(station.stationId); toggleStationDropdown()">
-                    {{ station.stationName }}
+                <li v-for="option in filters"
+                    @click="changeSelectedFilterOption(option); toggleFilterOptionDropdown();">
+                    {{ option }} <option value=""></option>
                 </li>
             </a>
         </ul>
     </div>
+
+    <span> *Reload data button* </span>
 </template>

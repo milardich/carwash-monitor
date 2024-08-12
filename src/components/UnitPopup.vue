@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { unitPopup, toggleUnitPopup } from '@/stores/unitPopup';
+import StationDropdown from './StationDropdown.vue';
+import FilterDropdown from './FilterDropdown.vue';
 
 </script>
 
@@ -35,16 +37,16 @@ import { unitPopup, toggleUnitPopup } from '@/stores/unitPopup';
                         Filter by:
                     </div>
                     <div class="ml-6">
-                        Today <!-- TODO: make this a dropdown -->
+                        <FilterDropdown />
                     </div>
                 </div>
 
                 <div class="mt-6">
                     <div>Number of washes: 12</div> <!-- TODO: -->
-                    <div>Coin tray: {{ unitPopup.selectedUnit?.coinTrayAmount }}</div>
-                    <div>Water consumption: {{ unitPopup.selectedUnit?.totalWaterConsumption }}</div>
-                    <div>Detergent consumption: {{ unitPopup.selectedUnit?.totalDetergentConsumption }}</div>
-                    <div>Wax consumption: {{ unitPopup.selectedUnit?.totalWaxConsumption }}</div>
+                    <div>Coin tray: 6</div>
+                    <div>Water consumption: 5</div>
+                    <div>Detergent consumption: 5</div>
+                    <div>Wax consumption: 5</div>
                 </div>
 
 
