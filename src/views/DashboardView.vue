@@ -10,10 +10,14 @@ import { computed, onMounted, onBeforeUnmount, onUnmounted, onBeforeMount } from
 import { type Station, getAllStations } from '@/api/station.api'
 import { ref } from 'vue';
 import { type ResourceConsumption } from '@/api/resources.api';
+import { useUnitStore } from '@/stores/unitPopup';
+import { getUnitInfo } from '@/api/unit.api';
+import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
 
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
+const unitStore = useUnitStore();
 const resourceConsumptions = ref<ResourceConsumption[]>([]);
 var intervalId: number;
 
@@ -28,6 +32,14 @@ onMounted(async () => {
     pgTimeInterval = resourceStore.pgTimeInterval.toString();
     resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
     resourceConsumptions.value = resourceStore.resourceConsumptions;
+    unitStore.setSelectedUnit(stationStore.selectedStation.units[0]);
+    unitStore.selectedUnitInfo = await getUnitInfo(
+        "2024-01-01T00:00:00",
+        "2024-08-15T00:00:00",
+        stationId,
+        unitStore.selectedUnit?.unitId
+    );
+
 
     // Update chart data every 5 seconds
     intervalId = setInterval(() => {
@@ -104,7 +116,9 @@ const labels = computed(() => {
                     </span>
 
                     <!-- testing this -->
-                    <UnitPopup />
+                    <Suspense>
+                        <UnitPopup />
+                    </Suspense>
                 </div>
             </div>
 

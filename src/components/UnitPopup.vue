@@ -2,8 +2,12 @@
 import { useUnitStore } from '@/stores/unitPopup';
 import StationDropdown from './StationDropdown.vue';
 import FilterDropdown from './FilterDropdown.vue';
+import { getUnit, getUnitInfo, type UnitInfo } from '@/api/unit.api';
+import { useStationStore } from '@/stores/stationStore';
+import { onBeforeUpdate, onMounted, onUpdated, reactive } from 'vue';
 
 const unitStore = useUnitStore();
+
 </script>
 
 <template>
@@ -42,13 +46,19 @@ const unitStore = useUnitStore();
                     </div>
                 </div>
 
-                <div class="mt-6">
-                    <div>Number of washes: 12</div> <!-- TODO: -->
-                    <div>Coin tray: 6</div>
-                    <div>Water consumption: 5</div>
-                    <div>Detergent consumption: 5</div>
-                    <div>Wax consumption: 5</div>
+                <div v-if="unitStore.selectedUnitInfo">
+                    <div class="mt-6">
+                        <div>Number of washes: {{ unitStore.selectedUnitInfo.washCycleCount }}</div> <!-- TODO: -->
+                        <div>Coin tray: {{ unitStore.selectedUnitInfo.totalCoinAmount }}</div>
+                        <div>Water consumption: {{ unitStore.selectedUnitInfo.totalWaterConsumption }}</div>
+                        <div>Detergent consumption: {{ unitStore.selectedUnitInfo.totalDetergentConsumption }}</div>
+                        <div>Wax consumption: {{ unitStore.selectedUnitInfo.totalWaxConsumption }}</div>
+                    </div>
                 </div>
+                <div v-else>
+                    Loading unit info...
+                </div>
+
 
 
                 <!-- Modal footer -->

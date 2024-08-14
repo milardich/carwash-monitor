@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { type UnitInfo, type Unit, getUnitInfo } from '@/api/unit.api';
 import { useUnitStore } from '@/stores/unitPopup';
 import { useStationStore } from '@/stores/stationStore';
@@ -7,24 +7,20 @@ import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
 const unitStore = useUnitStore();
 
+
 const props = defineProps({
     unit: null
 });
 
-const unitInfo = ref<UnitInfo | null>(null);
+var unitInfo = ref<UnitInfo>();
 const stationStore = useStationStore();
-
-var currentDate = new Date();
-var dateTimeTodayMidnight: string = strDateTimeMidnight(currentDate);
-var dateTimeNow: string = strDateTime(currentDate);
-
-const dateTimeFrom = ref<string>(dateTimeTodayMidnight);
-const dateTimeTo = ref<string>(dateTimeNow);
 
 const stationId = stationStore.selectedStation?.stationId;
 
 try {
-    unitInfo.value = await getUnitInfo(dateTimeFrom.value, dateTimeTo.value, stationId, props.unit.unitId);
+    unitStore.dateTo = strDateTime(new Date());
+    unitStore.dateFrom = strDateTimeMidnight(new Date());
+    unitInfo.value = await getUnitInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
 } catch (error) {
     console.error("Failed to fetch unit info:", error);
 }
@@ -45,6 +41,25 @@ switch (props.unit.status) {
         backgroundColorCssClass.value = "bg-yellow-warning"
         break
 }
+
+var intervalId: number = 0;
+
+onMounted(() => {
+    intervalId = setInterval(async () => {
+        var currentDate = new Date();
+        unitStore.dateTo = strDateTime(currentDate);
+        unitStore.dateFrom = strDateTimeMidnight(currentDate);
+        try {
+            unitInfo.value = await getUnitInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
+        } catch (error) {
+            throw (error);
+        }
+    }, 5000);
+});
+
+onBeforeUnmount(() => {
+    clearInterval(intervalId);
+});
 </script>
 
 <template>
@@ -53,7 +68,8 @@ switch (props.unit.status) {
         <div class="flex">
             <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
-                <button @click="unitStore.toggleUnitPopup(); unitStore.setSelectedUnit(unit);">
+                <button
+                    @click="unitStore.setSelectedUnit(unit); unitStore.updateUnitInfo(unit); unitStore.toggleUnitPopup();">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="" srcset="" class="card-button-icon-small">
                 </button>
             </div>
