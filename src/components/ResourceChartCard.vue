@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Line } from 'vue-chartjs';
 import { ref, watch } from 'vue';
-import { resourceStore } from '@/stores/resourceStore';
+import { useResourceStore } from '@/stores/resourceStore';
 import { computed } from 'vue';
+
+const resourceStore = useResourceStore();
 
 const props = defineProps<{
     labels: String[],

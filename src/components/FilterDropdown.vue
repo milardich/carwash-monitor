@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { getStation } from '@/api/station.api';
-import { stationStore } from '@/stores/stationStore';
-import { resourceStore } from '@/stores/resourceStore';
-import { setChartDataByStationId } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
 

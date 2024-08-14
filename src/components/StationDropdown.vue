@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { getStation } from '@/api/station.api';
-import { stationStore } from '@/stores/stationStore';
-import { resourceStore } from '@/stores/resourceStore';
-import { setChartDataByStationId } from '@/stores/resourceStore';
+import { useStationStore } from '@/stores/stationStore';
+import { useResourceStore } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
+
+const stationStore = useStationStore();
+const resourceStore = useResourceStore();
 
 const toggleStationDropdown = () => {
     stationDropdownOpen.value = !stationDropdownOpen.value;
 }
 
 async function changeSelectedStation(stationId: number) {
-    stationStore.selectedStation = null; // fixes incorrect unit rendering for some reason
+    stationStore.selectedStation = undefined; // fixes incorrect unit rendering for some reason
     stationStore.selectedStation = await getStation(stationId);
     if (stationStore.selectedStation) {
-        setChartDataByStationId(stationStore.selectedStation.stationId);
+        resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
     }
 }
 

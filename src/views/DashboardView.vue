@@ -2,56 +2,68 @@
 import StationDropdown from '@/components/StationDropdown.vue';
 import UnitCard from '@/components/UnitCard.vue';
 import ResourceChartCard from '@/components/ResourceChartCard.vue'
-import { stationStore } from '@/stores/stationStore'
+import { useStationStore } from '@/stores/stationStore'
+import { useResourceStore } from '@/stores/resourceStore';
 import UnitPopup from '@/components/UnitPopup.vue'
 import { getChartData } from '@/api/resources.api';
-import { computed } from 'vue';
-</script>
-
-
-<script lang="ts">
+import { computed, onMounted, onBeforeUnmount, onUnmounted, onBeforeMount } from 'vue';
 import { defineComponent } from 'vue'
 import { type Station, getAllStations } from '@/api/station.api'
-import { resourceStore } from '@/stores/resourceStore';
 import { ref } from 'vue';
 import { type ResourceConsumption } from '@/api/resources.api';
+import type { Store } from 'pinia';
+
+
+
+const stationStore = useStationStore();
+const resourceStore = useResourceStore();
 
 const stations = ref<Station[]>([]);
 const resourceConsumptions = ref<ResourceConsumption[]>([]);
 
-export default defineComponent({
-    async mounted() {
-        stations.value = await getAllStations();
-        stationStore.stations = stations.value;
-        if (stationStore.selectedStation == null)
-            stationStore.selectedStation = stationStore.stations[0];
-        var stationId = stationStore.selectedStation.stationId;
-        resourceStore.pgTimeInterval = "7 days";
-        var pgTimeInterval = resourceStore.pgTimeInterval;
-        resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
-        resourceConsumptions.value = resourceStore.resourceConsumptions;
-    },
-    methods: {},
+var intervalId: number;
+
+onMounted(async () => {
+    stations.value = await getAllStations();
+    stationStore.stations = stations.value;
+    if (stationStore.selectedStation == null)
+        stationStore.selectedStation = stationStore.stations[0];
+    var stationId = stationStore.selectedStation.stationId;
+    resourceStore.pgTimeInterval = "7 days";
+    var pgTimeInterval = resourceStore.pgTimeInterval;
+    resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
+    resourceConsumptions.value = resourceStore.resourceConsumptions;
+
+    intervalId = setInterval(() => {
+        if (stationStore.selectedStation != null) {
+            resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
+        }
+    }, 5000);
+});
+
+onBeforeUnmount(() => {
+    clearInterval(intervalId);
 });
 
 
-export const waterData = computed(() => {
+const waterData = computed(() => {
     return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaterConsumption);
 });
 
-export const waxData = computed(() => {
+const waxData = computed(() => {
     return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaxConsumption);
 });
 
-export const detergentData = computed(() => {
+const detergentData = computed(() => {
     return resourceStore.resourceConsumptions.map(consumption => consumption.totalDetergentConsumption);
 });
 
-export const labels = computed(() => {
+const labels = computed(() => {
     return resourceStore.resourceConsumptions.map(consumption => consumption.washCycleDate);
 });
 
 </script>
+
 
 <template>
     <div class="h-full">
@@ -81,7 +93,9 @@ export const labels = computed(() => {
                 <div class="grid grid-cols-3 gap-4 mt-6">
                     <span v-if="stationStore.selectedStation?.units"
                         v-for="unit in stationStore.selectedStation?.units ">
-                        <UnitCard :unit="unit" />
+                        <Suspense>
+                            <UnitCard :unit="unit" />
+                        </Suspense>
                     </span>
                     <span v-else>
                         Loading units...

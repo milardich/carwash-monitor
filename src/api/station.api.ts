@@ -24,12 +24,12 @@ export async function getAllStations(): Promise<Station[]> {
     }
 }
 
-export async function getStation(stationId: number): Promise<Station | null> {
+export async function getStation(stationId: number): Promise<Station | undefined> {
     try {
         const { data } = await axiosClient.get(`/${stationId}`);
         return data;
     } catch (error) {
         console.error(error);
-        return null;
+        throw(error);
     }
 }

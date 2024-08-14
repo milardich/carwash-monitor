@@ -1,86 +1,54 @@
-<script lang="ts">
+<script lang="ts" setup>
 import { defineComponent, ref } from 'vue';
 import { type UnitInfo, type Unit, getUnitInfo } from '@/api/unit.api';
-import { setSelectedUnit, toggleUnitPopup } from '@/stores/unitPopup';
-import { stationStore } from '@/stores/stationStore';
+import { useUnitStore } from '@/stores/unitPopup';
+import { useStationStore } from '@/stores/stationStore';
+import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
-export default defineComponent({
-    props: {
-        unit: {
-            type: Object,
-            required: true
-        }
-    },
-    setup(props) {
-        const unitInfo = ref<UnitInfo | null>(null);
+const unitStore = useUnitStore();
 
-        // construct dateTimeFrom and dateTimeTo
-        var currentDate = new Date();
-        var month = currentDate.getMonth() < 10 ? "0" + (currentDate.getMonth() + 1) : currentDate.getMonth();
-        var day = currentDate.getDate() < 10 ? "0" + currentDate.getDate() : currentDate.getDate();
-        var hour = currentDate.getHours() < 10 ? "0" + currentDate.getHours() : currentDate.getHours();
-        var minute = currentDate.getMinutes() < 10 ? "0" + currentDate.getMinutes() : currentDate.getMinutes();
-        var second = currentDate.getSeconds() < 10 ? "0" + currentDate.getSeconds() : currentDate.getSeconds();
-
-        var dateTimeTodayMidnight: string =
-            currentDate.getFullYear() +
-            "-" + month +
-            "-" + day +
-            "T" + "00" +
-            ":" + "00" +
-            ":" + "00";
-
-        var dateTimeNow: string =
-            currentDate.getFullYear() +
-            "-" + month +
-            "-" + day +
-            "T" + hour +
-            ":" + minute +
-            ":" + second;
-
-        const dateTimeFrom = ref<string>(dateTimeTodayMidnight);
-        const dateTimeTo = ref<string>(dateTimeNow);
-        //
-
-        async function fetchUnitInfo() {
-            const stationId = stationStore.selectedStation?.stationId;
-            if (!stationId) {
-                console.error("Station ID is not available.");
-                return;
-            }
-            try {
-                unitInfo.value = await getUnitInfo(stationId, props.unit.unitId, dateTimeFrom.value, dateTimeTo.value);
-            } catch (error) {
-                console.error("Failed to fetch unit info:", error);
-            }
-        }
-
-        fetchUnitInfo();
-
-        const backgroundColorCssClass = ref<string>("bg-yellow-warning");
-        const unitStateLabel = ref<string>(props.unit.status);
-
-        switch (props.unit.status) {
-            case "AVAILABLE":
-                backgroundColorCssClass.value = "bg-green-light";
-                break
-            case "IN_USE":
-                backgroundColorCssClass.value = "bg-red-light";
-                break
-            case "INACTIVE":
-                backgroundColorCssClass.value = "bg-yellow-warning"
-                break
-        }
-
-        return {
-            unitInfo,
-            toggleUnitPopup,
-            setSelectedUnit,
-            backgroundColorCssClass,
-            unitStateLabel
-        };
-    }
+const props = defineProps({
+    unit: null
 });
+
+const unitInfo = ref<UnitInfo | null>(null);
+const stationStore = useStationStore();
+
+var currentDate = new Date();
+var dateTimeTodayMidnight: string = strDateTimeMidnight(currentDate);
+var dateTimeNow: string = strDateTime(currentDate);
+
+const dateTimeFrom = ref<string>(dateTimeTodayMidnight);
+const dateTimeTo = ref<string>(dateTimeNow);
+
+
+
+const stationId = stationStore.selectedStation?.stationId;
+if (!stationId) {
+    console.error("Station ID is not available.");
+}
+try {
+    unitInfo.value = await getUnitInfo(dateTimeFrom.value, dateTimeTo.value, stationId, props.unit.unitId);
+} catch (error) {
+    console.error("Failed to fetch unit info:", error);
+}
+
+
+
+const backgroundColorCssClass = ref<string>("bg-yellow-warning");
+const unitStateLabel = ref<string>(props.unit.status);
+
+switch (props.unit.status) {
+    case "AVAILABLE":
+        backgroundColorCssClass.value = "bg-green-light";
+        break
+    case "IN_USE":
+        backgroundColorCssClass.value = "bg-red-light";
+        break
+    case "INACTIVE":
+        backgroundColorCssClass.value = "bg-yellow-warning"
+        break
+}
 </script>
 
 <template>
@@ -89,7 +57,7 @@ export default defineComponent({
         <div class="flex">
             <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
-                <button @click="toggleUnitPopup(); setSelectedUnit(unit.value);">
+                <button @click="unitStore.toggleUnitPopup(); unitStore.setSelectedUnit(unit);">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="" srcset="" class="card-button-icon-small">
                 </button>
             </div>

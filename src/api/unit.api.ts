@@ -33,7 +33,7 @@ export async function getUnit(stationId: number, unitId: number): Promise<Unit> 
     }
 }
 
-export async function getUnitInfo(stationId: number, unitId: number, dateTimeFrom: string, dateTimeTo: string): Promise<UnitInfo>{
+export async function getUnitInfo(dateTimeFrom: string, dateTimeTo: string, stationId?: number, unitId?: number): Promise<UnitInfo>{
     try {
         const { data } = await axiosClient.get(`/station/${stationId}/unit/${unitId}/info`, {
             params: {
