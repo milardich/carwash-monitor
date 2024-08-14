@@ -21,12 +21,8 @@ var dateTimeNow: string = strDateTime(currentDate);
 const dateTimeFrom = ref<string>(dateTimeTodayMidnight);
 const dateTimeTo = ref<string>(dateTimeNow);
 
-
-
 const stationId = stationStore.selectedStation?.stationId;
-if (!stationId) {
-    console.error("Station ID is not available.");
-}
+
 try {
     unitInfo.value = await getUnitInfo(dateTimeFrom.value, dateTimeTo.value, stationId, props.unit.unitId);
 } catch (error) {
@@ -34,7 +30,7 @@ try {
 }
 
 
-
+// Colors for IN_USE, AVAILABLE and INACTIVE labels
 const backgroundColorCssClass = ref<string>("bg-yellow-warning");
 const unitStateLabel = ref<string>(props.unit.status);
 

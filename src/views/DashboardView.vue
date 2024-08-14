@@ -7,33 +7,29 @@ import { useResourceStore } from '@/stores/resourceStore';
 import UnitPopup from '@/components/UnitPopup.vue'
 import { getChartData } from '@/api/resources.api';
 import { computed, onMounted, onBeforeUnmount, onUnmounted, onBeforeMount } from 'vue';
-import { defineComponent } from 'vue'
 import { type Station, getAllStations } from '@/api/station.api'
 import { ref } from 'vue';
 import { type ResourceConsumption } from '@/api/resources.api';
-import type { Store } from 'pinia';
-
 
 
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
-
-const stations = ref<Station[]>([]);
 const resourceConsumptions = ref<ResourceConsumption[]>([]);
-
 var intervalId: number;
 
 onMounted(async () => {
-    stations.value = await getAllStations();
-    stationStore.stations = stations.value;
-    if (stationStore.selectedStation == null)
+    var stationId: number = 0;
+    var pgTimeInterval: string = "7 days";
+    stationStore.stations = await getAllStations();
+    if (stationStore.selectedStation == undefined)
         stationStore.selectedStation = stationStore.stations[0];
-    var stationId = stationStore.selectedStation.stationId;
-    resourceStore.pgTimeInterval = "7 days";
-    var pgTimeInterval = resourceStore.pgTimeInterval;
+    stationId = stationStore.selectedStation.stationId;
+    resourceStore.pgTimeInterval = "7 days"; // TODO: make this not hard coded
+    pgTimeInterval = resourceStore.pgTimeInterval.toString();
     resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
     resourceConsumptions.value = resourceStore.resourceConsumptions;
 
+    // Update chart data every 5 seconds
     intervalId = setInterval(() => {
         if (stationStore.selectedStation != null) {
             resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
@@ -45,23 +41,29 @@ onBeforeUnmount(() => {
     clearInterval(intervalId);
 });
 
-
 const waterData = computed(() => {
-    return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaterConsumption);
+    return resourceStore.resourceConsumptions.map(
+        consumption => consumption.totalWaterConsumption
+    );
 });
 
 const waxData = computed(() => {
-    return resourceStore.resourceConsumptions.map(consumption => consumption.totalWaxConsumption);
+    return resourceStore.resourceConsumptions.map(
+        consumption => consumption.totalWaxConsumption
+    );
 });
 
 const detergentData = computed(() => {
-    return resourceStore.resourceConsumptions.map(consumption => consumption.totalDetergentConsumption);
+    return resourceStore.resourceConsumptions.map(
+        consumption => consumption.totalDetergentConsumption
+    );
 });
 
 const labels = computed(() => {
-    return resourceStore.resourceConsumptions.map(consumption => consumption.washCycleDate);
+    return resourceStore.resourceConsumptions.map(
+        consumption => consumption.washCycleDate
+    );
 });
-
 </script>
 
 
