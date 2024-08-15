@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
-import { type UnitInfo, type Unit, getUnitInfo } from '@/api/unit.api';
+import { type UnitInfo, type Unit, getUnitInfo, getUnit } from '@/api/unit.api';
 import { useUnitStore } from '@/stores/unitPopup';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
+import { watch } from 'vue';
 
 const unitStore = useUnitStore();
 
@@ -24,7 +25,6 @@ try {
 } catch (error) {
     console.error("Failed to fetch unit info:", error);
 }
-
 
 // Colors for IN_USE, AVAILABLE and INACTIVE labels
 const backgroundColorCssClass = ref<string>("bg-yellow-warning");
@@ -60,6 +60,24 @@ onMounted(() => {
 onBeforeUnmount(() => {
     clearInterval(intervalId);
 });
+
+watch(
+    () => props.unit.status,
+    (status) => {
+        if (status == "AVAILABLE") {
+            backgroundColorCssClass.value = "bg-green-light";
+            unitStateLabel.value = status;
+        }
+        else if (status == "IN_USE") {
+            backgroundColorCssClass.value = "bg-red-light";
+            unitStateLabel.value = status;
+        }
+        else if (status == "INACTIVE") {
+            backgroundColorCssClass.value = "bg-yellow-warning"
+            unitStateLabel.value = status;
+        }
+    }
+);
 </script>
 
 <template>

@@ -46,3 +46,14 @@ export async function getUnitInfo(dateTimeFrom: string, dateTimeTo: string, stat
         throw(error);
     }
 }
+
+export async function changeUnitStatus(stationId: number, unitId: number, unitStatus: string): Promise<Unit> {
+    try {
+        const { data } = await axiosClient.patch(`/station/${stationId}/unit/${unitId}/status`, {
+            status: unitStatus
+        });
+        return data;
+    } catch (error) {
+        throw(error);
+    }
+}

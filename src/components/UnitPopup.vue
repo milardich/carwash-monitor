@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useUnitStore } from '@/stores/unitPopup';
+import { ref } from 'vue';
+import { changeUnitStatus } from '@/api/unit.api';
+import { useStationStore } from '@/stores/stationStore';
 
 const unitStore = useUnitStore();
+const stationStore = useStationStore();
+const picked = ref(unitStore.selectedUnit?.status);
+
+
 </script>
 
 <template>
@@ -47,19 +54,23 @@ const unitStore = useUnitStore();
 
 
                 <!-- Modal footer -->
-                <div class="mt-6 grid grid-cols-3">
+                <div class="mt-6 grid grid-cols-3" v-if="stationStore.selectedStation && unitStore.selectedUnit">
                     <div>
-                        <input type="radio" id="AVAILABLE" value="AVAILABLE" />
+                        <input type="radio" id="AVAILABLE" value="AVAILABLE" v-model="picked" @click="
+                            changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'AVAILABLE');
+                        unitStore.setUnitStatus('AVAILABLE')" />
                         <label for="AVAILABLE">AVAILABLE</label>
                     </div>
 
                     <div>
-                        <input type="radio" id="INACTIVE" value="INACTIVE" />
+                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'INACTIVE');
+                        unitStore.setUnitStatus('INACTIVE')" />
                         <label for="INACTIVE">INACTIVE</label>
                     </div>
 
                     <div>
-                        <input type="radio" id="IN_USE" value="IN_USE" />
+                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'IN_USE');
+                        unitStore.setUnitStatus('IN_USE')" />
                         <label for="IN_USE">IN_USE</label>
                     </div>
                 </div>

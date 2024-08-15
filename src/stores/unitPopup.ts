@@ -25,6 +25,11 @@ export const useUnitStore = defineStore('unit', {
         },
         toggleUnitPopup() {
             this.unitPopupOpen = !this.unitPopupOpen;
-        }
+        },
+        setUnitStatus(unitState: string) {
+            if (this.selectedUnit) {
+                this.selectedUnit.status = unitState;
+            }
+        },
     },
 });
