@@ -76,12 +76,10 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="mt-2">
-            <div class="grid grid-cols-2 text-sm">
+            <div class="grid grid-cols-1 text-sm">
                 <div v-if="unitInfo">
-                    <div>Washes today:</div>
-                    <div class="font-bold"> {{ unitInfo.washCycleCount }} </div>
-                    <div>Coin tray:</div>
-                    <div class="font-bold"> {{ unitInfo.totalCoinAmount }} </div>
+                    <div>Washes today: <span class="font-bold">{{ unitInfo.washCycleCount }}</span></div>
+                    <div>Coin tray: <span class="font-bold">{{ unitInfo.totalCoinAmount }}</span></div>
                 </div>
                 <div v-else>
                     <div> Loading info... </div>

@@ -1,13 +1,7 @@
 <script setup lang="ts">
 import { useUnitStore } from '@/stores/unitPopup';
-import StationDropdown from './StationDropdown.vue';
-import FilterDropdown from './FilterDropdown.vue';
-import { getUnit, getUnitInfo, type UnitInfo } from '@/api/unit.api';
-import { useStationStore } from '@/stores/stationStore';
-import { onBeforeUpdate, onMounted, onUpdated, reactive } from 'vue';
 
 const unitStore = useUnitStore();
-
 </script>
 
 <template>
@@ -37,19 +31,10 @@ const unitStore = useUnitStore();
 
 
                 <!-- Modal body -->
-                <div class="flex mt-6">
-                    <div>
-                        Filter by:
-                    </div>
-                    <div class="ml-6">
-                        <FilterDropdown />
-                    </div>
-                </div>
-
                 <div v-if="unitStore.selectedUnitInfo">
                     <div class="mt-6">
-                        <div>Number of washes: {{ unitStore.selectedUnitInfo.washCycleCount }}</div> <!-- TODO: -->
-                        <div>Coin tray: {{ unitStore.selectedUnitInfo.totalCoinAmount }}</div>
+                        <div>Wash count: {{ unitStore.selectedUnitInfo.washCycleCount }}</div>
+                        <div>Coin amount: {{ unitStore.selectedUnitInfo.totalCoinAmount }}</div>
                         <div>Water consumption: {{ unitStore.selectedUnitInfo.totalWaterConsumption }}</div>
                         <div>Detergent consumption: {{ unitStore.selectedUnitInfo.totalDetergentConsumption }}</div>
                         <div>Wax consumption: {{ unitStore.selectedUnitInfo.totalWaxConsumption }}</div>
@@ -62,8 +47,21 @@ const unitStore = useUnitStore();
 
 
                 <!-- Modal footer -->
-                <div class="mt-6">
-                    TODO: change status button
+                <div class="mt-6 grid grid-cols-3">
+                    <div>
+                        <input type="radio" id="AVAILABLE" value="AVAILABLE" />
+                        <label for="AVAILABLE">AVAILABLE</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="INACTIVE" value="INACTIVE" />
+                        <label for="INACTIVE">INACTIVE</label>
+                    </div>
+
+                    <div>
+                        <input type="radio" id="IN_USE" value="IN_USE" />
+                        <label for="IN_USE">IN_USE</label>
+                    </div>
                 </div>
             </div>
         </div>
