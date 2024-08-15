@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUnitStore } from '@/stores/unitPopup';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { changeUnitStatus } from '@/api/unit.api';
 import { useStationStore } from '@/stores/stationStore';
 
@@ -8,6 +8,12 @@ const unitStore = useUnitStore();
 const stationStore = useStationStore();
 const picked = ref(unitStore.selectedUnit?.status);
 
+watch(
+    () => unitStore.selectedUnit,
+    (unit) => {
+        picked.value = unit?.status;
+    }
+);
 
 </script>
 
