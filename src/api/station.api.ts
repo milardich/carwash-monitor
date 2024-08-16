@@ -12,12 +12,12 @@ export interface Station {
 }
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080/api/station",
+    baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL,
 });
 
 export async function getAllStations(): Promise<Station[]> {
     try {
-        const { data } = await axiosClient.get('');
+        const { data } = await axiosClient.get('/station');
         return data;
     } catch (error) {
         throw (error);
@@ -26,7 +26,7 @@ export async function getAllStations(): Promise<Station[]> {
 
 export async function getStation(stationId: number): Promise<Station | undefined> {
     try {
-        const { data } = await axiosClient.get(`/${stationId}`);
+        const { data } = await axiosClient.get(`/station/${stationId}`);
         return data;
     } catch (error) {
         console.error(error);

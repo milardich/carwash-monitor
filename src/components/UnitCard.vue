@@ -42,10 +42,10 @@ switch (props.unit.status) {
         break
 }
 
-var intervalId: number = 0;
+var intervalId: number;
 
 onMounted(() => {
-    intervalId = setInterval(async () => {
+    intervalId = window.setInterval(async () => {
         var currentDate = new Date();
         unitStore.dateTo = strDateTime(currentDate);
         unitStore.dateFrom = strDateTimeMidnight(currentDate);

@@ -21,7 +21,7 @@ enum UnitStatus {
 }
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL,
 });
 
 export async function getUnit(stationId: number, unitId: number): Promise<Unit> {

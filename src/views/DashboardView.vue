@@ -35,7 +35,7 @@ onMounted(async () => {
 
 
     // Update chart data every 5 seconds
-    intervalId = setInterval(() => {
+    intervalId = window.setInterval(() => {
         if (stationStore.selectedStation != null) {
             resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
         }

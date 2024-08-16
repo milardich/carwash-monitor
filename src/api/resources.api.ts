@@ -8,12 +8,12 @@ export interface ResourceConsumption {
 }
 
 const axiosClient = axios.create({
-    baseURL: "http://localhost:8080/api/resources/station/"
+    baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL,
 });
 
 export async function getChartData(stationId: number, pgTimeInterval: String): Promise<ResourceConsumption[]> {
     try {
-        const { data } = await axiosClient.get(stationId + '/resource-consumption/chart-data', {
+        const { data } = await axiosClient.get(`/resources/station/${stationId}/resource-consumption/chart-data`, {
             params: {
                 pgTimeInterval: pgTimeInterval
             }
