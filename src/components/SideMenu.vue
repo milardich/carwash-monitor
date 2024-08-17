@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const activeMenuItem = ref<string>("dashboard");
+
+function changeActiveMenuItem(menuItem: string) {
+    activeMenuItem.value = menuItem;
+}
+
+function menuItemColor(menuItem: string): string {
+    if (menuItem == activeMenuItem.value) {
+        return "side-menu-item-selected";
+    }
+    return "side-menu-item";
+}
+</script>
+
 <template>
 
 
@@ -8,8 +25,8 @@
             <ul class="space-y-2 font-medium">
                 <li>
                     <RouterLink to="/dashboard">
-                        <a href="#"
-                            class="side-menu-item side-menu-item-selected flex items-center p-2 rounded-lg group">
+                        <a href="#" class="side-menu-item flex items-center p-2 rounded-lg group"
+                            :class="menuItemColor('dashboard')" @click="changeActiveMenuItem('dashboard');">
                             <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 22 21">
@@ -25,7 +42,8 @@
                 <li>
                     <RouterLink to="/statistics">
                         <a href="#"
-                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            :class="menuItemColor('statistics')" @click="changeActiveMenuItem('statistics');">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 18 18">
@@ -39,7 +57,8 @@
                 <li>
                     <RouterLink to="/about">
                         <a href="#"
-                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            :class="menuItemColor('about')" @click="changeActiveMenuItem('about');">
                             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 20 20">
@@ -53,7 +72,8 @@
                 <li>
                     <RouterLink to="/settings">
                         <a href="#"
-                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            class="side-menu-item flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                            :class="menuItemColor('settings')" @click="changeActiveMenuItem('settings');">
                             <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                 viewBox="0 0 22 21">

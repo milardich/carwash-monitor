@@ -150,7 +150,7 @@ body {
 }
 
 .side-menu-item:hover {
-  background-color: var(--white-dark);
+  background-color: var(--violet-light);
   color: var(--gray-dark);
 }
 
