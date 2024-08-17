@@ -43,19 +43,28 @@ a,
 }
 
 :root {
-  --violet-dark: #4B49AC;
-  --violet-light: #7978E9;
-  --violet-light2: #dcd7fd;
-  --violet-ultralight: #edebfd;
-  --white-medium: #f8f6ff;
-  --blue-light: #fafbff;
+  --violet-dark: #34113F;
+  --violet-light: #bdbccf;
+  --violet-light2: #BEB7DF;
+  --violet-ultralight: #b49db8;
+  --white-medium: #868784;
+  --blue-light: #6584ff;
   --red-light: #F3797E;
-  --white-dark: #e8e9f0;
-  --white-light: #FFFFFF;
+  --white-dark: #b3b3b3af;
+  --white-light: #D4F2D2;
   --gray-light: #757C8B;
   --gray-dark: #232323;
   --green-light: #74A67E;
   --yellow-warning: #F7CC7F;
+
+  --custom-grey-dark: #0f0f0f;
+  --custom-grey: #565554;
+  --custom-blue: #2E86AB;
+  --custom-beige: #F6F5AE;
+  --custom-beige-dark: #b9b982;
+  --custom-yellow: #F5F749;
+  --custom-red: #F24236;
+  --custom-red-light: #ff9b94;
 }
 
 /* width */
@@ -65,67 +74,67 @@ a,
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 1px var(--violet-dark);
+  box-shadow: inset 0 0 1px var(--custom-red);
   border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--violet-dark);
+  background: var(--custom-red);
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--violet-dark);
+  background: var(--custom-red);
 }
 
 body {
-  background-color: var(--violet-light2); 
+  background-color: var(--custom-beige); 
 }
 
 .text-gray-dark {
-  color: var(--gray-dark);
+  color: var(--custom-grey-dark);
 }
 
 .text-gray-light {
-  color: var(--gray-light)
+  color: var(--custom-grey)
 }
 
 .text-white-light {
-  color: var(--white-light);
+  color: var(--custom-beige);
 }
 
 .bg-white-medium {
-  background-color: var(--white-medium);
+  background-color: var(--custom-beige);
 }
 
 .bg-violet-dark {
-  background-color: var(--violet-dark);
+  background-color: var(--custom-red);
 }
 
 .bg-violet-light {
-  background-color: var(--violet-light);
+  background-color: var(--custom-beige);
 }
 
 .bg-white-dark {
-  background-color: var(--white-dark);
+  background-color: var(--custom-grey-dark);
 }
 
 .bg-white-light {
-  background-color: var(--white-light);
+  background-color: var(--custom-beige);
 }
 
 .bg-blue-light {
-  background-color: var(--blue-light);
+  background-color: var(--custom-blue);
 }
 
 .bg-red-light {
-  background-color: var(--red-light);
+  background-color: var(--custom-red);
 }
 
 .bg-yellow-warning {
-  background-color: var(--yellow-warning);
+  background-color: var(--custom-yellow);
 }
 
 .bg-green-light {
@@ -133,7 +142,7 @@ body {
 }
 
 .bg-violet-ultralight {
-  background-color: var(--violet-ultralight);
+  background-color: var(--custom-beige-dark);
 }
 
 .bg-transparent-black {
@@ -141,27 +150,27 @@ body {
 }
 
 .side-menu {
-  background-color: var(--white-light);
+  background-color: var(--custom-beige);
 }
 
 .side-menu-item {
-  background-color: var(--white-light);
-  color: var(--gray-light);
+  background-color: var(--custom-beige);
+  color: var(--custom-grey);
 }
 
 .side-menu-item:hover {
-  background-color: var(--violet-light);
-  color: var(--gray-dark);
+  background-color: var(--custom-red-light);
+  color: var(--custom-grey-dark);
 }
 
 .side-menu-item:active {
-  background-color: var(--gray-light);
-  color: var(--gray-dark);
+  background-color: var(--custom-red);
+  color: var(--custom-grey-dark);
 }
 
 .side-menu-item-selected {
-  background-color: var(--violet-dark);
-  color: var(--white-light);
+  background-color: var(--custom-red);
+  color: var(--custom-grey-dark);
 }
 
 .card-button-icon-small {
