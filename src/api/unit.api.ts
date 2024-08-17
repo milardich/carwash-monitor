@@ -34,11 +34,13 @@ export async function getUnit(stationId: number, unitId: number): Promise<Unit> 
 }
 
 export async function getUnitInfo(dateTimeFrom: string, dateTimeTo: string, stationId?: number, unitId?: number): Promise<UnitInfo>{
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
         const { data } = await axiosClient.get(`/station/${stationId}/unit/${unitId}/info`, {
             params: {
                 dateTimeFrom: dateTimeFrom,
-                dateTimeTo: dateTimeTo
+                dateTimeTo: dateTimeTo,
+                timezone: timezone
             }
         });
         return data;

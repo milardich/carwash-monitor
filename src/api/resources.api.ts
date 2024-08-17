@@ -12,10 +12,12 @@ const axiosClient = axios.create({
 });
 
 export async function getChartData(stationId: number, pgTimeInterval: String): Promise<ResourceConsumption[]> {
+    const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
         const { data } = await axiosClient.get(`/resources/station/${stationId}/resource-consumption/chart-data`, {
             params: {
-                pgTimeInterval: pgTimeInterval
+                pgTimeInterval: pgTimeInterval,
+                timezone: timezone
             }
         });
         return data;
