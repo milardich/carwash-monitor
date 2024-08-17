@@ -40,7 +40,7 @@ async function changeSelectedStation(stationId: number) {
 
     <!-- Dropdown menu -->
     <div id="dropdown" :class="{ 'hidden': !stationDropdownOpen }"
-        class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
+        class="z-10 bg-red-light divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
         <ul class="py-2 text-sm station-dropdown rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
                 <li v-for="station in stationStore.stations" class="block px-4 py-2"

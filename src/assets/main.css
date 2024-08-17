@@ -179,7 +179,7 @@ body {
 }
 
 .station-dropdown {
-  background-color: var(--violet-light);
+  background-color: var(--custom-red);
   color: var(--white-light);
 }
 
