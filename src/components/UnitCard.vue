@@ -32,13 +32,13 @@ const unitStateLabel = ref<string>(props.unit.status);
 
 switch (props.unit.status) {
     case "AVAILABLE":
-        backgroundColorCssClass.value = "bg-green-light";
+        backgroundColorCssClass.value = "available-bg-color";
         break
     case "IN_USE":
-        backgroundColorCssClass.value = "bg-red-light";
+        backgroundColorCssClass.value = "in-use-bg-color";
         break
     case "INACTIVE":
-        backgroundColorCssClass.value = "bg-yellow-warning"
+        backgroundColorCssClass.value = "inactive-bg-color";
         break
 }
 
@@ -65,15 +65,15 @@ watch(
     () => props.unit.status,
     (status) => {
         if (status == "AVAILABLE") {
-            backgroundColorCssClass.value = "bg-green-light";
+            backgroundColorCssClass.value = "available-bg-color";
             unitStateLabel.value = status;
         }
         else if (status == "IN_USE") {
-            backgroundColorCssClass.value = "bg-red-light";
-            unitStateLabel.value = status;
+            backgroundColorCssClass.value = "in-use-bg-color";
+            unitStateLabel.value = "IN USE";
         }
         else if (status == "INACTIVE") {
-            backgroundColorCssClass.value = "bg-yellow-warning"
+            backgroundColorCssClass.value = "inactive-bg-color"
             unitStateLabel.value = status;
         }
     }
@@ -82,7 +82,7 @@ watch(
 
 <template>
     <div
-        class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-lg p-4 content-between bg-white-light">
+        class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-xl p-4 content-between content-small-container-color">
         <div class="flex">
             <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
@@ -105,7 +105,7 @@ watch(
             </div>
         </div>
 
-        <div class="border-1 border-black rounded-lg text-center p-1" :class="backgroundColorCssClass">
+        <div class="border-1 border-black rounded-xl text-center p-1" :class="backgroundColorCssClass">
             {{ unitStateLabel }}
         </div>
     </div>

@@ -26,7 +26,7 @@ async function changeSelectedStation(stationId: number) {
 
 <template>
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
-        class="px-5 py-2.5 text-center inline-flex bg-violet-dark text-white-light rounded-lg text-xl" type="button">
+        class="px-5 py-2.5 text-center inline-flex select-station-big-button rounded-lg text-xl" type="button">
 
         <span v-if="stationStore.selectedStation != null"> {{ stationStore.selectedStation.stationName }} </span>
         <span v-else> {{ stationStore.stations[0].stationName }} </span>
@@ -40,10 +40,10 @@ async function changeSelectedStation(stationId: number) {
 
     <!-- Dropdown menu -->
     <div id="dropdown" :class="{ 'hidden': !stationDropdownOpen }"
-        class="z-10 bg-red-light divide-y divide-gray-100 rounded-lg shadow w-44 absolute">
-        <ul class="py-2 text-sm station-dropdown rounded-lg" aria-labelledby="dropdownDefaultButton">
+        class="z-10 divide-y divide-gray-100 rounded-lg shadow w-40 absolute select-station-dropdown shadow-xl">
+        <ul class="text-sm rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
-                <li v-for="station in stationStore.stations" class="block px-4 py-2"
+                <li v-for="station in stationStore.stations" class="block px-4 py-2 dropdown-item rounded-lg"
                     @click="changeSelectedStation(station.stationId); toggleStationDropdown()">
                     {{ station.stationName }}
                 </li>

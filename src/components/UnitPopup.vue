@@ -24,7 +24,7 @@ watch(
         <!-- Popup -->
         <div class="absolute p-2 w-full max-w-2xl max-h-full">
             <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 bg-white-light p-4">
+            <div class="relative bg-white rounded-lg shadow modal-bg-color p-4">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between rounded-t dark:border-gray-600">
                     <h3 class="text-2xl font-semibold dark:text-white">
