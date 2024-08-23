@@ -30,17 +30,23 @@ try {
 const backgroundColorCssClass = ref<string>("bg-yellow-warning");
 const unitStateLabel = ref<string>(props.unit.status);
 
-switch (props.unit.status) {
-    case "AVAILABLE":
+function setUnitStatusProperties(unitState: string) {
+    if (unitState == "AVAILABLE") {
         backgroundColorCssClass.value = "available-bg-color";
-        break
-    case "IN_USE":
+        unitStateLabel.value = unitState;
+    }
+    else if (unitState == "IN_USE") {
         backgroundColorCssClass.value = "in-use-bg-color";
-        break
-    case "INACTIVE":
-        backgroundColorCssClass.value = "inactive-bg-color";
-        break
+        unitStateLabel.value = unitState;
+    }
+    else if (unitState == "INACTIVE") {
+        backgroundColorCssClass.value = "inactive-bg-color"
+        unitStateLabel.value = unitState;
+    }
 }
+
+// set label and color when page loads
+setUnitStatusProperties(props.unit.status);
 
 var intervalId: number;
 
@@ -61,20 +67,20 @@ onBeforeUnmount(() => {
     clearInterval(intervalId);
 });
 
+// watch if status changed through UI
 watch(
     () => props.unit.status,
     (status) => {
-        if (status == "AVAILABLE") {
-            backgroundColorCssClass.value = "available-bg-color";
-            unitStateLabel.value = status;
-        }
-        else if (status == "IN_USE") {
-            backgroundColorCssClass.value = "in-use-bg-color";
-            unitStateLabel.value = "IN USE";
-        }
-        else if (status == "INACTIVE") {
-            backgroundColorCssClass.value = "inactive-bg-color"
-            unitStateLabel.value = status;
+        setUnitStatusProperties(status);
+    }
+);
+
+// watch if status fetched from api is updated
+watch(
+    () => unitInfo.value?.unitStatus,
+    (newUnitStatus) => {
+        if (newUnitStatus !== undefined) {
+            setUnitStatusProperties(newUnitStatus);
         }
     }
 );

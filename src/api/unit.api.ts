@@ -12,6 +12,7 @@ export interface UnitInfo {
     totalWaterConsumption: number;
     totalDetergentConsumption: number;
     totalWaxConsumption: number;
+    unitStatus: string;
 }
 
 enum UnitStatus {
@@ -24,7 +25,7 @@ const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL,
 });
 
-export async function getUnit(stationId: number, unitId: number): Promise<Unit> {
+export async function getUnit(stationId?: number, unitId?: number): Promise<Unit> {
     try {
         const { data } = await axiosClient.get(`/station/${stationId}/unit/${unitId}`);
         return data;
