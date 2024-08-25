@@ -73,6 +73,7 @@ a,
   --custom-figma-beige-darker: #E6D4DF;
   --custom-figma-red: #E27B7B;
   --custom-figma-green: #7BE28B;
+  --custom-figma-green-darker: #129e27;
   --custom-figma-yellow: #E2D27B;
   --custom-figma-white: #FFFFFF;
 }
@@ -84,23 +85,39 @@ a,
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 1px var(--custom-red);
+  box-shadow: inset 0 0 1px var(--custom-figma-blue);
   border-radius: 10px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--custom-red);
+  background: var(--custom-figma-blue);
   border-radius: 10px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--custom-red);
+  background: var(--custom-figma-lightblue);
 }
 
 body {
-  background-color: var(--custom-figma-white); 
+  background-color: var(--custom-figma-ultralightblue); 
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .side-menu {
@@ -128,7 +145,7 @@ body {
 }
 
 .content-background-container-color {
-  background-color: var(--custom-figma-white);
+  background-color: var(--custom-figma-ultralightblue);
 }
 
 .content-small-container-color {
@@ -177,6 +194,17 @@ body {
   color: var(--custom-grey-dark);
 }
 
+.text-green {
+  color: var(--custom-figma-green-darker);
+}
+
+.text-red {
+  color: var(--custom-figma-red);
+}
+
+.text-yellow {
+  color: var(--custom-figma-yellow);
+}
 
 .border-red {
   border: 2px solid red;

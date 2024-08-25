@@ -84,7 +84,7 @@ const labels = computed(() => {
         </div>
 
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
-            <div class="rounded-lg overflow-y-auto p-6 h-full  content-background-container-color shadow-xl">
+            <div class="rounded-lg overflow-y-auto p-6 h-full  content-background-container-color shadow-md">
                 <div class="text-3xl">Resource consumption</div>
                 <!-- {{ waterData }} -->
                 <ResourceChartCard :labels="labels" :data="waterData" :resource-label="'Water [L]'" />
@@ -94,7 +94,7 @@ const labels = computed(() => {
                 <ResourceChartCard :labels="labels" :data="detergentData" :resource-label="'Detergent [L]'" />
             </div>
 
-            <div class="rounded-lg overflow-y-auto p-6 h-full content-background-container-color shadow-xl">
+            <div class="rounded-lg overflow-y-auto p-6 h-full content-background-container-color shadow-md">
                 <div class="text-3xl">Units</div>
 
                 <div class="grid grid-cols-3 gap-4 mt-6">
