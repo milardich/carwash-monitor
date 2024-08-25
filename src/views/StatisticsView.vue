@@ -144,8 +144,8 @@
 
         <!-- All stations stats table -->
 
-        <div class="p-4 mt-2">
-            <div class="relative overflow-x-auto shadow-xl sm:rounded-lg">
+        <div class="m-4 shadow-2xl">
+            <div class="overflow-x-auto shadow-xl sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
@@ -252,7 +252,7 @@
                         </tr>
                     </tbody>
                     <tfoot>
-                        <tr class="font-semibold text-black">
+                        <tr class="font-semibold table-footer font-black">
                             <th scope="row" class="px-6 py-3 text-base">Total</th>
                             <td class="px-6 py-3">$192,493</td>
                             <td class="px-6 py-3">$8,435</td>
