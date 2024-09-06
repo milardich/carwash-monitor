@@ -31,3 +31,23 @@ export function strDateTimeMidnight(date: Date): string {
 
     return dateTime;
 }
+
+export function strDateTimeMonthBegin(date: Date): string {
+    var year = date.getFullYear();
+    var month = date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth();
+    var day = "01";
+    var hour = "00";
+    var minute = "00";
+    var second = "00";
+
+    var dateTime: string =
+        year + "-" + month + "-" + day + "T" + 
+        hour + ":" + minute + ":" + second;
+
+    return dateTime;
+}
+
+export function getMonthName(monthNumber: number): string {
+    var monthNames = ["January", "February", "March", "April", "May","June","July", "August", "September", "October", "November","December"];
+    return monthNames[monthNumber];
+}

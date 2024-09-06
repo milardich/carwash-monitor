@@ -1,7 +1,39 @@
+<script lang="ts" setup>
+import { getStatistics, type Statistics } from '@/api/statistics.api';
+import { getMonthName, strDateTime, strDateTimeMonthBegin } from '@/util/dateTimeUtils';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+import { watch } from 'vue';
+
+const statistics = ref<Statistics>();
+var currentDate = new Date();
+var dateTo = strDateTime(currentDate);
+var dateFrom = strDateTimeMonthBegin(currentDate);
+const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
+var monthName = getMonthName(currentDate.getMonth());
+
+onMounted(async () => {
+    console.log(dateTo, dateFrom, timezone);
+    try {
+        statistics.value = await getStatistics(dateFrom, dateTo, timezone);
+    } catch (error) {
+        throw (error);
+    }
+});
+
+watch(
+    () => statistics.value,
+    (newValue) => {
+        statistics.value = newValue;
+    }
+);
+
+</script>
+
 <template>
     <div class="h-full">
         <div class="p-4">
-            <h1 class="text-3xl">Stats (August, 2024)</h1>
+            <h1 class="text-3xl">Stats ({{ monthName }}, {{ currentDate.getFullYear() }})</h1>
         </div>
 
 
@@ -11,13 +43,14 @@
             <div class="relative p-6 rounded-2xl bg-white shadow-xl">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
-                        <span>Revenue</span>
+                        <span>Total revenue</span>
                     </div>
 
                     <div class="text-3xl text-black">
-                        $192.1k
+                        ${{ statistics?.totalRevenue }}
                     </div>
 
+                    <!-- TODO: increase / decrease from previous month -->
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green">
 
                         <span>32k increase</span>
@@ -41,12 +74,12 @@
                     </div>
 
                     <div class="text-3xl text-black">
-                        Vinkovci-1
+                        {{ statistics?.bestStationName }}
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total revenue: $35k</span>
+                        <span>Total revenue: ${{ statistics?.bestStationRevenue }}</span>
                     </div>
                 </div>
             </div>
@@ -60,11 +93,12 @@
                     </div>
 
                     <div class="text-3xl text-black">
-                        2048
+                        {{ statistics?.totalWashCount }}
                     </div>
 
-                    <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red">
 
+                    <!-- TODO: increase / decrease from previous month -->
+                    <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red">
                         <span>7% decrease</span>
 
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -91,12 +125,12 @@
                     </div>
 
                     <div class="text-3xl text-black">
-                        8421 L
+                        {{ statistics?.totalWaterConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ~$1k</span>
+                        <span>Total cost: ${{ statistics?.totalWaterCost }}</span>
 
                     </div>
                 </div>
@@ -111,12 +145,12 @@
                     </div>
 
                     <div class="text-3xl text-black">
-                        1024 L
+                        {{ statistics?.totalDetergentConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ~$2k</span>
+                        <span>Total cost: ${{ statistics?.totalDetergentCost }}</span>
                     </div>
                 </div>
             </div>
@@ -130,12 +164,12 @@
                     </div>
 
                     <div class="text-3xl text-black">
-                        742 L
+                        {{ statistics?.totalWaxConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ~$1k</span>
+                        <span>Total cost: ${{ statistics?.totalWaxCost }}</span>
                     </div>
                 </div>
             </div>
