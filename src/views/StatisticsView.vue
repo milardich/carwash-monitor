@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { getStatistics, type Statistics } from '@/api/statistics.api';
+import { getStatistics, type StationStatistics, type StatisticsHighlights, getStatisticsSummary, type StatisticsSummary } from '@/api/statistics.api';
 import { getMonthName, strDateTime, strDateTimeMonthBegin } from '@/util/dateTimeUtils';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { watch } from 'vue';
 
-const statistics = ref<Statistics>();
+const statisticsHighlights = ref<StatisticsHighlights>();
+const statisticsSummary = ref<StatisticsSummary>();
 var currentDate = new Date();
 var dateTo = strDateTime(currentDate);
 var dateFrom = strDateTimeMonthBegin(currentDate);
@@ -15,18 +16,28 @@ var monthName = getMonthName(currentDate.getMonth());
 onMounted(async () => {
     console.log(dateTo, dateFrom, timezone);
     try {
-        statistics.value = await getStatistics(dateFrom, dateTo, timezone);
+        statisticsHighlights.value = await getStatistics(dateFrom, dateTo, timezone);
+        statisticsSummary.value = await getStatisticsSummary(dateFrom, dateTo, timezone);
     } catch (error) {
         throw (error);
     }
 });
 
 watch(
-    () => statistics.value,
+    () => statisticsHighlights.value,
     (newValue) => {
-        statistics.value = newValue;
+        statisticsHighlights.value = newValue;
     }
 );
+
+watch(
+    () => statisticsSummary.value,
+    (newValue) => {
+        statisticsSummary.value = newValue;
+    }
+);
+
+
 
 </script>
 
@@ -47,7 +58,7 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        ${{ statistics?.totalRevenue }}
+                        ${{ statisticsHighlights?.totalRevenue.toFixed(2) }}
                     </div>
 
                     <!-- TODO: increase / decrease from previous month -->
@@ -74,12 +85,12 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statistics?.bestStationName }}
+                        {{ statisticsHighlights?.bestStationName }}
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total revenue: ${{ statistics?.bestStationRevenue }}</span>
+                        <span>Total revenue: ${{ statisticsHighlights?.bestStationRevenue.toFixed(2) }}</span>
                     </div>
                 </div>
             </div>
@@ -93,7 +104,7 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statistics?.totalWashCount }}
+                        {{ statisticsHighlights?.totalWashCount }}
                     </div>
 
 
@@ -125,12 +136,12 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statistics?.totalWaterConsumption }}L
+                        {{ statisticsHighlights?.totalWaterConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statistics?.totalWaterCost }}</span>
+                        <span>Total cost: ${{ statisticsHighlights?.totalWaterCost.toFixed(2) }}</span>
 
                     </div>
                 </div>
@@ -145,12 +156,12 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statistics?.totalDetergentConsumption }}L
+                        {{ statisticsHighlights?.totalDetergentConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statistics?.totalDetergentCost }}</span>
+                        <span>Total cost: ${{ statisticsHighlights?.totalDetergentCost.toFixed(2) }}</span>
                     </div>
                 </div>
             </div>
@@ -164,140 +175,83 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statistics?.totalWaxConsumption }}L
+                        {{ statisticsHighlights?.totalWaxConsumption }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statistics?.totalWaxCost }}</span>
+                        <span>Total cost: ${{ statisticsHighlights?.totalWaxCost.toFixed(2) }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
 
-        <!-- All stations stats table -->
+        <!-- Statistics summary table -->
 
-        <div class="m-4 shadow-2xl">
-            <div class="overflow-x-auto shadow-xl sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Station name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Total revenue
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Water cost
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Detergent cost
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Wax cost
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Gross revenue
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                            <td class="px-6 py-4">
-                                Vinkovci-1
-                            </td>
-                            <td class="px-6 py-4">
-                                $32,540
-                            </td>
-                            <td class="px-6 py-4">
-                                $2,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $4,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $3,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $22,540
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-white even:bg-gray-50 border-b ">
-                            <td class="px-6 py-4">
-                                Vinkovci-2
-                            </td>
-                            <td class="px-6 py-4">
-                                $32,540
-                            </td>
-                            <td class="px-6 py-4">
-                                $2,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $4,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $3,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $22,540
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                            <td class="px-6 py-4">
-                                Osijek-2
-                            </td>
-                            <td class="px-6 py-4">
-                                $32,540
-                            </td>
-                            <td class="px-6 py-4">
-                                $2,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $4,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $3,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $22,540
-                            </td>
-                        </tr>
-                        <tr class="odd:bg-white even:bg-gray-50  border-b ">
-                            <td class="px-6 py-4">
-                                Osijek-3
-                            </td>
-                            <td class="px-6 py-4">
-                                $32,540
-                            </td>
-                            <td class="px-6 py-4">
-                                $2,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $4,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $3,421
-                            </td>
-                            <td class="px-6 py-4">
-                                $22,540
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr class="font-semibold table-footer font-black">
-                            <th scope="row" class="px-6 py-3 text-base">Total</th>
-                            <td class="px-6 py-3">$192,493</td>
-                            <td class="px-6 py-3">$8,435</td>
-                            <td class="px-6 py-3">$20,212</td>
-                            <td class="px-6 py-3">$12,212</td>
-                            <td class="px-6 py-3">$154,861</td>
-                        </tr>
-                    </tfoot>
-                </table>
+        <div v-if="statisticsSummary">
+            <div class="m-4 shadow-2xl">
+                <div class="overflow-x-auto shadow-xl sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Station name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Total revenue
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Water cost
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Detergent cost
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Wax cost
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd:bg-white even:bg-gray-50 border-b" v-if="statisticsSummary"
+                                v-for="stationStatistics in statisticsSummary.allStationStatistics">
+                                <td class="px-6 py-4">
+                                    {{ stationStatistics.stationName }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ stationStatistics.revenue }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ stationStatistics.waterCost }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ stationStatistics.detergentCost }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ stationStatistics.waxCost }}
+                                </td>
+
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="font-semibold table-footer font-black">
+                                <th scope="row" class="px-6 py-3 text-base">Total</th>
+                                <td class="px-6 py-3">${{ statisticsSummary.totalRevenue.toFixed(2) }}</td>
+                                <td class="px-6 py-3">${{ statisticsSummary.totalWaterCost.toFixed(2) }}</td>
+                                <td class="px-6 py-3">${{ statisticsSummary.totalDetergentCost.toFixed(2) }}</td>
+                                <td class="px-6 py-3">${{ statisticsSummary.totalWaxCost.toFixed(2) }}</td>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
+        <div v-else>
+            Loading statistics summary table...
+        </div>
+
 
 
 
