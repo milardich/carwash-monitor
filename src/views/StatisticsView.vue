@@ -13,6 +13,8 @@ var dateFrom = strDateTimeMonthBegin(currentDate);
 const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
 var monthName = getMonthName(currentDate.getMonth());
 
+const currencySign = import.meta.env.VITE_CARWASH_CURRENCY_SIGN;
+
 onMounted(async () => {
     console.log(dateTo, dateFrom, timezone);
     try {
@@ -53,16 +55,16 @@ watch(
         <div class="grid gap-4 lg:gap-8 md:grid-cols-3 p-4 pt-8">
             <div class="relative p-6 rounded-2xl bg-white shadow-xl">
                 <div class="space-y-2">
-                    <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
-                        <span>Total revenue</span>
+                    <div class="flex text-sm font-medium text-gray">
+                        <div>Total revenue</div>
                     </div>
 
                     <div class="text-3xl text-black">
-                        ${{ statisticsHighlights?.totalRevenue.toFixed(2) }}
+                        {{ currencySign }} {{ statisticsHighlights?.totalRevenue.toFixed(2) }}
                     </div>
 
                     <!-- TODO: increase / decrease from previous month -->
-                    <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green">
+                    <!-- <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-green">
 
                         <span>32k increase</span>
 
@@ -72,7 +74,7 @@ watch(
                                 d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -90,7 +92,8 @@ watch(
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total revenue: ${{ statisticsHighlights?.bestStationRevenue.toFixed(2) }}</span>
+                        <span>Total revenue: {{ currencySign }} {{ statisticsHighlights?.bestStationRevenue.toFixed(2)
+                            }}</span>
                     </div>
                 </div>
             </div>
@@ -109,7 +112,7 @@ watch(
 
 
                     <!-- TODO: increase / decrease from previous month -->
-                    <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red">
+                    <!-- <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium text-red">
                         <span>7% decrease</span>
 
                         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -118,7 +121,7 @@ watch(
                                 d="M12 13a1 1 0 100 2h5a1 1 0 001-1V9a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -141,7 +144,8 @@ watch(
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statisticsHighlights?.totalWaterCost.toFixed(2) }}</span>
+                        <span>Total cost: {{ currencySign }} {{ statisticsHighlights?.totalWaterCost.toFixed(2)
+                            }}</span>
 
                     </div>
                 </div>
@@ -161,7 +165,8 @@ watch(
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statisticsHighlights?.totalDetergentCost.toFixed(2) }}</span>
+                        <span>Total cost: {{ currencySign }} {{ statisticsHighlights?.totalDetergentCost.toFixed(2)
+                            }}</span>
                     </div>
                 </div>
             </div>
@@ -175,12 +180,12 @@ watch(
                     </div>
 
                     <div class="text-3xl text-black">
-                        {{ statisticsHighlights?.totalWaxConsumption }}L
+                        {{ statisticsHighlights?.totalWaxConsumption.toFixed(2) }}L
                     </div>
 
                     <div class="flex items-center space-x-1 rtl:space-x-reverse text-sm font-medium">
 
-                        <span>Total cost: ${{ statisticsHighlights?.totalWaxCost.toFixed(2) }}</span>
+                        <span>Total cost: {{ currencySign }} {{ statisticsHighlights?.totalWaxCost.toFixed(2) }}</span>
                     </div>
                 </div>
             </div>
@@ -220,16 +225,16 @@ watch(
                                     {{ stationStatistics.stationName }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ stationStatistics.revenue }}
+                                    {{ currencySign }} {{ stationStatistics.revenue.toFixed(2) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ stationStatistics.waterCost }}
+                                    {{ currencySign }} {{ stationStatistics.waterCost.toFixed(2) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ stationStatistics.detergentCost }}
+                                    {{ currencySign }} {{ stationStatistics.detergentCost.toFixed(2) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ stationStatistics.waxCost }}
+                                    {{ currencySign }} {{ stationStatistics.waxCost.toFixed(2) }}
                                 </td>
 
                             </tr>
@@ -237,10 +242,14 @@ watch(
                         <tfoot>
                             <tr class="font-semibold table-footer font-black">
                                 <th scope="row" class="px-6 py-3 text-base">Total</th>
-                                <td class="px-6 py-3">${{ statisticsSummary.totalRevenue.toFixed(2) }}</td>
-                                <td class="px-6 py-3">${{ statisticsSummary.totalWaterCost.toFixed(2) }}</td>
-                                <td class="px-6 py-3">${{ statisticsSummary.totalDetergentCost.toFixed(2) }}</td>
-                                <td class="px-6 py-3">${{ statisticsSummary.totalWaxCost.toFixed(2) }}</td>
+                                <td class="px-6 py-3">{{ currencySign }} {{ statisticsSummary.totalRevenue.toFixed(2) }}
+                                </td>
+                                <td class="px-6 py-3">{{ currencySign }} {{ statisticsSummary.totalWaterCost.toFixed(2)
+                                    }}</td>
+                                <td class="px-6 py-3">{{ currencySign }} {{
+                                    statisticsSummary.totalDetergentCost.toFixed(2) }}</td>
+                                <td class="px-6 py-3">{{ currencySign }} {{ statisticsSummary.totalWaxCost.toFixed(2) }}
+                                </td>
 
                             </tr>
                         </tfoot>
