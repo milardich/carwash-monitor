@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { type Station } from './station.api';
 
 export interface Unit {
     unitId: number; 
@@ -58,5 +58,14 @@ export async function changeUnitStatus(stationId: number, unitId: number, unitSt
         return data;
     } catch (error) {
         throw(error);
+    }
+}
+
+export async function createUnit(stationId?: number): Promise<Station> {
+    try {
+        const { data } = await axiosClient.post(`/station/${stationId}/unit`);
+        return data;
+    } catch (error) {
+        throw (error);
     }
 }
