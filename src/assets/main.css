@@ -218,3 +218,13 @@ body {
 .border-red {
   border: 2px solid red;
 }
+
+.send-request-button {
+  color: white;
+  background-color: var(--custom-figma-blue);
+}
+
+.send-request-button:hover {
+  color: white;
+  background-color: var(--custom-figma-lightblue);
+}

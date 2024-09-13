@@ -22,14 +22,14 @@ var intervalId: number;
 
 onMounted(async () => {
     var stationId: number = 0;
-    var pgTimeInterval: string = "7 days";
     stationStore.stations = await getAllStations();
     if (stationStore.selectedStation == undefined)
         stationStore.selectedStation = stationStore.stations[0];
     stationId = stationStore.selectedStation.stationId;
-    resourceStore.pgTimeInterval = "1 hour"; // TODO: make this not hard coded
-    pgTimeInterval = resourceStore.pgTimeInterval.toString();
-    resourceStore.resourceConsumptions = await getChartData(stationId, pgTimeInterval);
+    resourceStore.pgTimeInterval = "7 days";
+    resourceStore.resourceConsumptions = await getChartData(
+        stationId, resourceStore.pgTimeInterval.toString()
+    );
     resourceConsumptions.value = resourceStore.resourceConsumptions;
     unitStore.setSelectedUnit(stationStore.selectedStation.units[0]);
 
@@ -85,7 +85,7 @@ const labels = computed(() => {
 
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">
             <div class="rounded-lg overflow-y-auto p-6 h-full  content-background-container-color shadow-md">
-                <div class="text-3xl">Resource consumption</div>
+                <div class="text-3xl">Resource consumption (last 7 days)</div>
                 <!-- {{ waterData }} -->
                 <ResourceChartCard :labels="labels" :data="waterData" :resource-label="'Water [L]'" />
 
