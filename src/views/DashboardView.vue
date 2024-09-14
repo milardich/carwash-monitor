@@ -26,7 +26,7 @@ onMounted(async () => {
     if (stationStore.selectedStation == undefined)
         stationStore.selectedStation = stationStore.stations[0];
     stationId = stationStore.selectedStation.stationId;
-    resourceStore.pgTimeInterval = "7 days";
+    resourceStore.pgTimeInterval = "24 hours";
     resourceStore.resourceConsumptions = await getChartData(
         stationId, resourceStore.pgTimeInterval.toString()
     );
