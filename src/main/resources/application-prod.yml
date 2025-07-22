@@ -1,7 +1,0 @@
-environment:
-  name: "prod"
-spring:
-  datasource:
-    username: ""
-    url: ""
-    password: ""
