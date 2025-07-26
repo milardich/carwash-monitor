@@ -11,5 +11,6 @@ namespace CarwashMonitor.Model
 
         public DbSet<Station> Stations { get; set; }
         public DbSet<Box> Boxes { get; set; }
+        public DbSet<WashCycle> WashCycles { get; set; }
     }
 }

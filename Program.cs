@@ -10,6 +10,7 @@ builder.Services.AddDbContext<CarwashDbContext>(options =>
 
 builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IBoxService, BoxService>();
+builder.Services.AddScoped<IWashCycleService, WashCycleService>();
 
 builder.Services.AddControllers();
 

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarwashMonitor.Controllers
 {
-    [Route("api/station")]
     [ApiController]
     public class StationController : ControllerBase
     {
@@ -35,6 +34,7 @@ namespace CarwashMonitor.Controllers
         #region Methods
 
         [HttpPost]
+        [Route("/station")]
         public async Task<ActionResult<int>> CreateStationAsync(Station station)
         {
             station.Id = Guid.NewGuid();
@@ -43,6 +43,7 @@ namespace CarwashMonitor.Controllers
         }
 
         [HttpGet]
+        [Route("/station")]
         public async Task<ActionResult<List<Station>>> GetStationsAsync()
         {
             var response = await StationService.GetStationsAsync();
@@ -50,7 +51,7 @@ namespace CarwashMonitor.Controllers
         }
 
         [HttpGet]
-        [Route("{stationId}")]
+        [Route("/station/{stationId}")]
         public async Task<ActionResult<Station>> GetStationAsync(Guid stationId)
         {
             var response = await StationService.GetStationAsync(stationId);
@@ -58,9 +59,9 @@ namespace CarwashMonitor.Controllers
         }
 
         [HttpGet]
-        [Route("{stationId}/boxes")]
-        public async Task<ActionResult<List<Box>>> GetBoxesAsync(Guid stationId)
-        {
+        [Route("/station/{stationId}/boxes")]
+        public async Task<ActionResult<List<Box>>> GetStationsBoxesAsync(Guid stationId)
+        {   
             var response = await BoxService.GetBoxesAsync(stationId);
             return Ok(response);
         }
