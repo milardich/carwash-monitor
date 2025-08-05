@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { type CreateStationRequest, createStation } from '@/api/station.api';
-import { createUnit } from '@/api/unit.api';
+import { createBox } from '@/api/box.api';
 import { createWashCycle, type WashCycleRequest } from '@/api/washCycle.api';
 import { reactive, ref } from 'vue';
 
 // station
 const stationRequest = reactive<CreateStationRequest>({
-    stationName: '',
+    name: '',
     city: '',
     streetName: '',
     streetNumber: '',
@@ -43,7 +43,7 @@ const washCycleRequestUnitId = ref<number>();
             <div class="text-xl">Create new station</div>
             <div class="mt-2">
                 <div class="mt-2">
-                    <input v-model="stationRequest.stationName" type="text" id="small-input" placeholder="Station name"
+                    <input v-model="stationRequest.name" type="text" id="small-input" placeholder="Station name"
                         class="rounded-lg border p-1">
                 </div>
                 <div class="mt-2">
@@ -81,7 +81,7 @@ const washCycleRequestUnitId = ref<number>();
                 </div>
             </div>
             <div class="mt-2 inset-x-0 bottom-0">
-                <button type="button" @click="createUnit(unitRequestStationId)"
+                <button type="button" @click="createBox(unitRequestStationId)"
                     class="w-full shadow-lg text-center p-2 rounded-lg border send-request-button">Send
                     request</button>
             </div>

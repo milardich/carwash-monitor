@@ -17,7 +17,7 @@ async function changeSelectedStation(stationId: number) {
     stationStore.selectedStation = undefined; // fixes incorrect unit rendering for some reason
     stationStore.selectedStation = await getStation(stationId);
     if (stationStore.selectedStation) {
-        resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
+        resourceStore.setChartDataByStationId(stationStore.selectedStation.id);
     }
 }
 
@@ -28,8 +28,8 @@ async function changeSelectedStation(stationId: number) {
     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" @click="toggleStationDropdown"
         class="px-5 py-2.5 text-center inline-flex select-station-big-button rounded-lg text-xl" type="button">
 
-        <span v-if="stationStore.selectedStation != null"> {{ stationStore.selectedStation.stationName }} </span>
-        <span v-else> {{ stationStore.stations[0].stationName }} </span>
+        <span v-if="stationStore.selectedStation != null"> {{ stationStore.selectedStation.name }} </span>
+        <span v-else> {{ stationStore.stations[0].name }} </span>
 
         <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 10 6">
@@ -44,8 +44,8 @@ async function changeSelectedStation(stationId: number) {
         <ul class="text-sm rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
                 <li v-for="station in stationStore.stations" class="block px-4 py-2 dropdown-item rounded-lg"
-                    @click="changeSelectedStation(station.stationId); toggleStationDropdown()">
-                    {{ station.stationName }}
+                    @click="changeSelectedStation(station.id); toggleStationDropdown()">
+                    {{ station.name }}
                 </li>
             </a>
         </ul>

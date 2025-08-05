@@ -35,13 +35,12 @@ const axiosClient = axios.create({
 });
 
 // TODO: rename function to getStatisticsHighlights
-export async function getStatistics(dateTimeFrom: string, dateTimeTo: string, timezone: string): Promise<StatisticsHighlights>{
+export async function getStatistics(dateTimeFrom: string, dateTimeTo: string): Promise<StatisticsHighlights>{
     try {
         const { data } = await axiosClient.get(`/statistics/highlights`, {
             params: {
                 dateTimeFrom: dateTimeFrom,
-                dateTimeTo: dateTimeTo,
-                timezone: timezone
+                dateTimeTo: dateTimeTo
             }
         });
         return data;

@@ -12,8 +12,7 @@ export interface WashCycleRequest {
 }
 
 export interface WashCycle {
-    washCycleId: number;
-    stationId: number;
+    id: string;
     unitId: number;
     washCycleDate: string,
     coinAmount: number;
@@ -22,9 +21,9 @@ export interface WashCycle {
     waxConsumption: number;
 }
 
-export async function createWashCycle(request: WashCycleRequest, stationId?: number, unitId?: number): Promise<WashCycle> {
+export async function createWashCycle(request: WashCycleRequest, boxId?: number): Promise<WashCycle> {
     try {
-        const { data } = await axiosClient.post(`/station/${stationId}/unit/${unitId}/wash-cycle`, 
+        const { data } = await axiosClient.post(`/box/${boxId}/washcycle`, 
             {
                 waterConsumption: request.waterConsumption,
                 detergentConsumption: request.detergentConsumption,

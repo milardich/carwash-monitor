@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
-import { type UnitInfo, type Unit, getUnitInfo, getUnit } from '@/api/unit.api';
+import { type BoxInfo, type Box, getBoxInfo, getBox } from '@/api/box.api';
 import { useUnitStore } from '@/stores/unitPopup';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
@@ -13,15 +13,15 @@ const props = defineProps({
     unit: null
 });
 
-var unitInfo = ref<UnitInfo>();
+var unitInfo = ref<BoxInfo>();
 const stationStore = useStationStore();
 
-const stationId = stationStore.selectedStation?.stationId;
+const stationId = stationStore.selectedStation?.id;
 
 try {
     unitStore.dateTo = strDateTime(new Date());
     unitStore.dateFrom = strDateTimeMidnight(new Date());
-    unitInfo.value = await getUnitInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
+    unitInfo.value = await getBoxInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
 } catch (error) {
     console.error("Failed to fetch unit info:", error);
 }
@@ -56,7 +56,7 @@ onMounted(() => {
         unitStore.dateTo = strDateTime(currentDate);
         unitStore.dateFrom = strDateTimeMidnight(currentDate);
         try {
-            unitInfo.value = await getUnitInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
+            unitInfo.value = await getBoxInfo(unitStore.dateFrom, unitStore.dateTo, stationId, props.unit.unitId);
         } catch (error) {
             throw (error);
         }
@@ -77,7 +77,7 @@ watch(
 
 // watch if status fetched from api is updated
 watch(
-    () => unitInfo.value?.unitStatus,
+    () => unitInfo.value?.status,
     (newUnitStatus) => {
         if (newUnitStatus !== undefined) {
             setUnitStatusProperties(newUnitStatus);

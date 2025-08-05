@@ -1,22 +1,14 @@
 import axios from 'axios';
-import { type Unit } from '@/api/unit.api'
+import { type Box } from '@/api/box.api'
 
 export interface Station {
-    stationId: number;
-    stationName: string;
-    city: string;
-    streetName: string;
-    streetNumber: string;
-    country: string;
-    units: Unit[];
+    id: string;
+    name: string;
+    units: Box[];
 }
 
 export interface CreateStationRequest {
-    stationName: string;
-    city: string;
-    streetName: string;
-    streetNumber: string;
-    country: string;
+    name: string;
 }
 
 const axiosClient = axios.create({
@@ -32,7 +24,7 @@ export async function getAllStations(): Promise<Station[]> {
     }
 }
 
-export async function getStation(stationId: number): Promise<Station | undefined> {
+export async function getStation(stationId: string): Promise<Station> {
     try {
         const { data } = await axiosClient.get(`/station/${stationId}`);
         return data;
@@ -45,11 +37,7 @@ export async function createStation(request: CreateStationRequest): Promise<Stat
     try {
         const { data } = await axiosClient.post(`/station`, 
             {
-                stationName: request.stationName,
-                city: request.city,
-                streetName: request.streetName,
-                streetNumber: request.streetNumber,
-                country: request.country
+                name: request.name,
             }, 
             { 
                 headers: {

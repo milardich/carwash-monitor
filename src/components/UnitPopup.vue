@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useUnitStore } from '@/stores/unitPopup';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { changeUnitStatus, getUnitInfo, type UnitInfo } from '@/api/unit.api';
+import { changeBoxStatus, getBoxInfo, type BoxInfo } from '@/api/box.api';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
 const unitStore = useUnitStore();
 const stationStore = useStationStore();
 const picked = ref(unitStore.selectedUnit?.status);
-const unitInfo = ref<UnitInfo | null>();
+const unitInfo = ref<BoxInfo | null>();
 
 var intervalId: number;
 
@@ -22,11 +22,11 @@ onMounted(async () => {
         unitStore.dateTo = strDateTime(currentDate);
         unitStore.dateFrom = strDateTimeMidnight(currentDate);
         try {
-            unitInfo.value = await getUnitInfo(
+            unitInfo.value = await getBoxInfo(
                 unitStore.dateFrom,
                 unitStore.dateTo,
-                stationStore.selectedStation?.stationId,
-                unitStore.selectedUnit?.unitId
+                stationStore.selectedStation?.id,
+                unitStore.selectedUnit?.id
             );
         } catch (error) {
             throw (error);
@@ -74,7 +74,7 @@ watch(
                 <!-- Modal header -->
                 <div class="flex items-center justify-between rounded-t dark:border-gray-600">
                     <h3 class="text-2xl font-semibold text-black">
-                        Unit #{{ unitStore.selectedUnit?.unitId }} - Today
+                        Unit #{{ unitStore.selectedUnit?.id }} - Today
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -292,19 +292,19 @@ watch(
                 <div class="mt-6 grid grid-cols-3" v-if="stationStore.selectedStation && unitStore.selectedUnit">
                     <div class="available-bg-color rounded-xl p-1 m-2 text-center">
                         <input type="radio" id="AVAILABLE" value="AVAILABLE" v-model="picked" @click="
-                            changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'AVAILABLE');
+                            changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'AVAILABLE');
                         unitStore.setUnitStatus('AVAILABLE')" />
                         <label for="AVAILABLE">AVAILABLE</label>
                     </div>
 
                     <div class="inactive-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'INACTIVE');
+                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'INACTIVE');
                         unitStore.setUnitStatus('INACTIVE')" />
                         <label for="INACTIVE">INACTIVE</label>
                     </div>
 
                     <div class="in-use-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeUnitStatus(stationStore.selectedStation?.stationId, unitStore.selectedUnit?.unitId, 'IN_USE');
+                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'IN_USE');
                         unitStore.setUnitStatus('IN_USE')" />
                         <label for="IN_USE">IN_USE</label>
                     </div>

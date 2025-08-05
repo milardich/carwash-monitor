@@ -25,7 +25,7 @@ onMounted(async () => {
     stationStore.stations = await getAllStations();
     if (stationStore.selectedStation == undefined)
         stationStore.selectedStation = stationStore.stations[0];
-    stationId = stationStore.selectedStation.stationId;
+    stationId = stationStore.selectedStation.id;
     resourceStore.pgTimeInterval = "7 days";
     resourceStore.resourceConsumptions = await getChartData(
         stationId, resourceStore.pgTimeInterval.toString()
@@ -37,7 +37,7 @@ onMounted(async () => {
     // Update chart data every 5 seconds
     intervalId = window.setInterval(() => {
         if (stationStore.selectedStation != null) {
-            resourceStore.setChartDataByStationId(stationStore.selectedStation.stationId);
+            resourceStore.setChartDataByStationId(stationStore.selectedStation.id);
         }
     }, 5000);
 });
@@ -99,7 +99,7 @@ const labels = computed(() => {
 
                 <div class="grid grid-cols-3 gap-4 mt-6">
                     <span v-if="stationStore.selectedStation?.units"
-                        v-for="unit in stationStore.selectedStation?.units ">
+                        v-for="unit in stationStore.selectedStation?.units">
                         <Suspense>
                             <UnitCard :unit="unit" />
                         </Suspense>
