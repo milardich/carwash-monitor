@@ -16,13 +16,19 @@ namespace CarwashMonitor.Service.Boxes
 
         public async Task<int> CreateBoxAsync(Guid stationId)
         {
-            var station = await _context.Stations.FindAsync(stationId);
+            var station = await _context.Stations
+                .Include(s => s.Boxes)
+                .FirstOrDefaultAsync(station => station.Id == stationId);
+
             if (station == null)
                 throw new Exception("Station not found.");
-            
+
+            var boxNumber = station.Boxes.Count() + 1;
+
             var newBox = new Box()
             { 
                 Id = Guid.NewGuid(),
+                Number = boxNumber,
                 StationId = stationId,
                 Status = BoxStatus.INACTIVE,
             };
@@ -60,7 +66,7 @@ namespace CarwashMonitor.Service.Boxes
                 TotalWaterConsumption = washCycles.Sum(wc => wc.WaterConsumption ?? 0),
                 TotalWaxConsumption = washCycles.Sum(wc => wc.WaxConsumption ?? 0),
                 TotalDetergentConsumption = washCycles.Sum(wc => wc.DetergentConsumption ?? 0),
-                BoxStatus = await _context.Boxes
+                Status = await _context.Boxes
                     .Where(b => b.Id == boxId)
                     .Select(b => b.Status.ToString())
                     .FirstOrDefaultAsync()

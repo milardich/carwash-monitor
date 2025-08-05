@@ -18,7 +18,7 @@ namespace CarwashMonitor.Controller
 
         [HttpPost]
         [Route("/box/{boxId}/washcycle")]
-        public async Task<ActionResult<int>> CreateWashCycleAsync(Guid boxId, WashCycleCreateDto washCycleDto)
+        public async Task<ActionResult<int>> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycleDto)
         {
             var result = await WashCycleService.CreateWashCycleAsync(boxId, washCycleDto);
             return Ok(result);

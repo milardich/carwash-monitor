@@ -43,7 +43,7 @@ namespace CarwashMonitor.Controller
 
         [HttpGet]
         [Route("/station")]
-        public async Task<ActionResult<List<Station>>> GetStationsAsync()
+        public async Task<ActionResult<List<StationGetDto>>> GetStationsAsync()
         {
             var response = await StationService.GetStationsAsync();
             return Ok(response);
@@ -51,7 +51,7 @@ namespace CarwashMonitor.Controller
 
         [HttpGet]
         [Route("/station/{stationId}")]
-        public async Task<ActionResult<Station>> GetStationAsync(Guid stationId)
+        public async Task<ActionResult<StationGetDto>> GetStationAsync(Guid stationId)
         {
             var response = await StationService.GetStationAsync(stationId);
             return Ok(response);

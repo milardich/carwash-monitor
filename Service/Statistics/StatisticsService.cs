@@ -1,4 +1,5 @@
-﻿using CarwashMonitor.Dtos;
+﻿using CarwashMonitor.Constants;
+using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,10 +62,9 @@ namespace CarwashMonitor.Service.Statistics
 
         public async Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo)
         {
-            // TODO: move
-            const float waterPrice = 0.1f;
-            const float waxPrice = 0.2f;
-            const float detergentPrice = 0.3f;
+            float waterPrice = WashingResources.WaterPrice;
+            float waxPrice = WashingResources.WaxPrice;
+            float detergentPrice = WashingResources.DetergentPrice;
 
             var query = _context.Stations
                 .Select(station => new StationStatisticsDto

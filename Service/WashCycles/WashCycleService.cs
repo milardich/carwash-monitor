@@ -14,7 +14,7 @@ namespace CarwashMonitor.Service.WashCycles
             _context = context;
         }
 
-        public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycleCreateDto washCycleDto)
+        public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycleDto)
         {
             var washCycle = new WashCycle
             {
