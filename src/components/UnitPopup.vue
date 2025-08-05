@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { useUnitStore } from '@/stores/unitPopup';
+import { useBoxStore } from '@/stores/boxStore';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { changeBoxStatus, getBoxInfo, type BoxInfo } from '@/api/box.api';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
-const unitStore = useUnitStore();
+const unitStore = useBoxStore();
 const stationStore = useStationStore();
-const picked = ref(unitStore.selectedUnit?.status);
+const picked = ref(unitStore.selectedBox?.status);
 const unitInfo = ref<BoxInfo | null>();
 
 var intervalId: number;
 
 onMounted(async () => {
-    if (unitStore.selectedUnitInfo) {
-        unitInfo.value = unitStore.selectedUnitInfo;
+    if (unitStore.selectedBoxInfo) {
+        unitInfo.value = unitStore.selectedBoxInfo;
     }
 
     intervalId = window.setInterval(async () => {
@@ -26,7 +26,7 @@ onMounted(async () => {
                 unitStore.dateFrom,
                 unitStore.dateTo,
                 stationStore.selectedStation?.id,
-                unitStore.selectedUnit?.id
+                unitStore.selectedBox?.id
             );
         } catch (error) {
             throw (error);
@@ -40,21 +40,21 @@ onBeforeUnmount(() => {
 });
 
 watch(
-    () => unitStore.selectedUnit,
+    () => unitStore.selectedBox,
     (unit) => {
         picked.value = unit?.status;
     }
 );
 
 watch(
-    () => unitStore.selectedUnit?.status,
+    () => unitStore.selectedBox?.status,
     (newStatus) => {
         picked.value = newStatus
     }
 );
 
 watch(
-    () => unitStore.selectedUnitInfo,
+    () => unitStore.selectedBoxInfo,
     (newUnitInfo) => {
         unitInfo.value = newUnitInfo;
     }
@@ -65,7 +65,7 @@ watch(
 
 <template>
     <!-- Main modal -->
-    <div id="default-modal" :class="{ 'hidden': !unitStore.unitPopupOpen }" tabindex="-1"
+    <div id="default-modal" :class="{ 'hidden': !unitStore.boxPopupOpen }" tabindex="-1"
         class="flex justify-center items-center h-screen overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 backdrop-blur-sm z-50 bg-transparent-black">
         <!-- Popup -->
         <div class="absolute p-2 w-full max-w-5xl">
@@ -74,11 +74,11 @@ watch(
                 <!-- Modal header -->
                 <div class="flex items-center justify-between rounded-t dark:border-gray-600">
                     <h3 class="text-2xl font-semibold text-black">
-                        Unit #{{ unitStore.selectedUnit?.id }} - Today
+                        Unit #{{ unitStore.selectedBox?.id }} - Today
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="default-modal" @click="unitStore.toggleUnitPopup()">
+                        data-modal-hide="default-modal" @click="unitStore.toggleBoxPopup()">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -289,23 +289,23 @@ watch(
 
 
                 <!-- Modal footer -->
-                <div class="mt-6 grid grid-cols-3" v-if="stationStore.selectedStation && unitStore.selectedUnit">
+                <div class="mt-6 grid grid-cols-3" v-if="stationStore.selectedStation && unitStore.selectedBox">
                     <div class="available-bg-color rounded-xl p-1 m-2 text-center">
                         <input type="radio" id="AVAILABLE" value="AVAILABLE" v-model="picked" @click="
-                            changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'AVAILABLE');
-                        unitStore.setUnitStatus('AVAILABLE')" />
+                            changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedBox?.id, 'AVAILABLE');
+                        unitStore.setBoxStatus('AVAILABLE')" />
                         <label for="AVAILABLE">AVAILABLE</label>
                     </div>
 
                     <div class="inactive-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'INACTIVE');
-                        unitStore.setUnitStatus('INACTIVE')" />
+                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedBox?.id, 'INACTIVE');
+                        unitStore.setBoxStatus('INACTIVE')" />
                         <label for="INACTIVE">INACTIVE</label>
                     </div>
 
                     <div class="in-use-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedUnit?.id, 'IN_USE');
-                        unitStore.setUnitStatus('IN_USE')" />
+                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeBoxStatus(stationStore.selectedStation?.id, unitStore.selectedBox?.id, 'IN_USE');
+                        unitStore.setBoxStatus('IN_USE')" />
                         <label for="IN_USE">IN_USE</label>
                     </div>
                 </div>

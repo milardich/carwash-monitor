@@ -10,28 +10,29 @@ import { computed, onMounted, onBeforeUnmount, onUnmounted, onBeforeMount } from
 import { type Station, getAllStations } from '@/api/station.api'
 import { ref } from 'vue';
 import { type ResourceConsumption } from '@/api/resources.api';
-import { useUnitStore } from '@/stores/unitPopup';
+import { useBoxStore } from '@/stores/boxStore';
 
 
 
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
-const unitStore = useUnitStore();
+const unitStore = useBoxStore();
 const resourceConsumptions = ref<ResourceConsumption[]>([]);
 var intervalId: number;
 
 onMounted(async () => {
-    var stationId: number = 0;
+    var stationId: string = "";
     stationStore.stations = await getAllStations();
-    if (stationStore.selectedStation == undefined)
+    if (stationStore.selectedStation == undefined) {
         stationStore.selectedStation = stationStore.stations[0];
+    }
     stationId = stationStore.selectedStation.id;
     resourceStore.pgTimeInterval = "7 days";
     resourceStore.resourceConsumptions = await getChartData(
         stationId, resourceStore.pgTimeInterval.toString()
     );
     resourceConsumptions.value = resourceStore.resourceConsumptions;
-    unitStore.setSelectedUnit(stationStore.selectedStation.units[0]);
+    unitStore.setSelectedBox(stationStore.selectedStation.units[0]);
 
 
     // Update chart data every 5 seconds
@@ -95,7 +96,7 @@ const labels = computed(() => {
             </div>
 
             <div class="rounded-lg overflow-y-auto p-6 h-full content-background-container-color shadow-md">
-                <div class="text-3xl">Units</div>
+                <div class="text-3xl">Boxes</div>
 
                 <div class="grid grid-cols-3 gap-4 mt-6">
                     <span v-if="stationStore.selectedStation?.units"

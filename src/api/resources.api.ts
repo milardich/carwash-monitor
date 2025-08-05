@@ -11,7 +11,7 @@ const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL,
 });
 
-export async function getChartData(stationId: number, pgTimeInterval: String): Promise<ResourceConsumption[]> {
+export async function getChartData(stationId: string, pgTimeInterval: String): Promise<ResourceConsumption[]> {
     const timezone: string = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
         const { data } = await axiosClient.get(`/resources/station/${stationId}/resource-consumption/chart-data`, {

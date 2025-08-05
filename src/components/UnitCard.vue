@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { type BoxInfo, type Box, getBoxInfo, getBox } from '@/api/box.api';
-import { useUnitStore } from '@/stores/unitPopup';
+import { useBoxStore } from '@/stores/boxStore';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 import { watch } from 'vue';
 
-const unitStore = useUnitStore();
+const unitStore = useBoxStore();
 
 
 const props = defineProps({
@@ -93,7 +93,7 @@ watch(
             <div class="text-3xl"> #{{ unit.unitId }} </div>
             <div class="ml-auto justify-end">
                 <button
-                    @click="unitStore.setSelectedUnit(unit); unitStore.updateUnitInfo(unit); unitStore.toggleUnitPopup();">
+                    @click="unitStore.setSelectedBox(unit); unitStore.updateBoxInfo(unit); unitStore.toggleBoxPopup();">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="" srcset="" class="card-button-icon-small">
                 </button>
             </div>

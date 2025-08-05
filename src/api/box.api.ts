@@ -35,7 +35,7 @@ export async function getBox(boxId?: number): Promise<Box> {
     }
 }
 
-export async function getBoxInfo(dateFrom: string, dateTo: string, boxId?: number): Promise<BoxInfo>{
+export async function getBoxInfo(dateFrom: string, dateTo: string, boxId?: string): Promise<BoxInfo>{
     try {
         const { data } = await axiosClient.get(`/box/${boxId}/info`, {
             params: {
