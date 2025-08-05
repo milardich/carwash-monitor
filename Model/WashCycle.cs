@@ -9,5 +9,6 @@
         public float? DetergentConsumption { get; set; }
         public float? WaxConsumption { get; set; }
         public DateTime? DateCreated { get; set; }
+        public int? CoinAmount { get; set; }
     }
 }

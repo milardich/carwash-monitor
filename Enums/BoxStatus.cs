@@ -1,4 +1,4 @@
-﻿namespace CarwashMonitor.Enum
+﻿namespace CarwashMonitor.Enums
 {
     public enum BoxStatus
     {

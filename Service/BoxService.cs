@@ -1,5 +1,6 @@
-﻿using CarwashMonitor.Enum;
+﻿using CarwashMonitor.Enums;
 using CarwashMonitor.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarwashMonitor.Service
 {
@@ -41,6 +42,40 @@ namespace CarwashMonitor.Service
                 throw new Exception("Station not found.");
 
             return station.Boxes;
+        }
+
+        public async Task<BoxInfoDto> GetBoxInfoAsync(Guid boxId)
+        {
+            var washCycles = await _context.WashCycles.Where(wc => wc.BoxId == boxId).ToListAsync();
+            var dto = new BoxInfoDto
+            {
+                WashCycleCount = washCycles.Count,
+                TotalCoinAmount = washCycles.Sum(wc => wc.CoinAmount ?? 0),
+                TotalWaterConsumption = washCycles.Sum(wc => wc.WaterConsumption ?? 0),
+                TotalWaxConsumption = washCycles.Sum(wc => wc.WaxConsumption ?? 0),
+                TotalDetergentConsumption = washCycles.Sum(wc => wc.DetergentConsumption ?? 0),
+                BoxStatus = await _context.Boxes
+                    .Where(b => b.Id == boxId)
+                    .Select(b => b.Status.ToString())
+                    .FirstOrDefaultAsync()
+            };
+            return dto;
+        }
+
+        public async Task<Box?> UpdateBoxStatusAsync(Guid boxId, BoxStatusDto status)
+        {
+            var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
+
+            if (box == null)
+                return null;
+
+            if (!Enum.TryParse<BoxStatus>(status.Status, out var newStatus))
+                throw new ArgumentException("Invalid status value.");
+
+            box.Status = newStatus;
+            await _context.SaveChangesAsync();
+
+            return box;
         }
     }
 }

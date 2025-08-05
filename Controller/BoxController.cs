@@ -45,9 +45,23 @@ namespace CarwashMonitor.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [Route("/box/{boxId}/info")]
+        public async Task<ActionResult<BoxInfoDto>> GetBoxInfo(Guid boxId)
+        {
+            var response = await BoxService.GetBoxInfoAsync(boxId);
+            return Ok(response);
+        }
+
+        [HttpPatch]
+        [Route("/box/{boxId}/status")]
+        public async Task<ActionResult<Box>> UpdateStatus(Guid boxId, [FromBody] BoxStatusDto status)
+        {
+            var response = await BoxService.UpdateBoxStatusAsync(boxId, status);
+            return Ok(response);
+        }
+
         #endregion
-
-
 
         #region REST models
 
