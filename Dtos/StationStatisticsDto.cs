@@ -1,4 +1,4 @@
-﻿namespace CarwashMonitor.Model
+﻿namespace CarwashMonitor.Dtos
 {
     public class StationStatisticsDto
     {

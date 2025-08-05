@@ -1,7 +1,8 @@
-﻿using CarwashMonitor.Model;
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarwashMonitor.Service
+namespace CarwashMonitor.Service.WashCycles
 {
     public class WashCycleService : IWashCycleService
     {
@@ -13,8 +14,18 @@ namespace CarwashMonitor.Service
             _context = context;
         }
 
-        public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycle washCycle)
+        public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycleCreateDto washCycleDto)
         {
+            var washCycle = new WashCycle
+            {
+                Id = Guid.NewGuid(),
+                BoxId = boxId,
+                WaterConsumption = washCycleDto.WaterConsumption,
+                WaxConsumption = washCycleDto.WaxConsumption,
+                DetergentConsumption = washCycleDto.DetergentConsumption,
+                CoinAmount = washCycleDto.CoinAmount,
+                DateCreated = DateTime.UtcNow,
+            };
             await _context.AddAsync(washCycle);
             return await _context.SaveChangesAsync();
         }

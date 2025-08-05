@@ -1,10 +1,10 @@
-﻿using CarwashMonitor.Model;
+﻿using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
-using CarwashMonitor.Service;
-using Microsoft.AspNetCore.Http;
+using CarwashMonitor.Service.Boxes;
+using CarwashMonitor.Service.Stations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CarwashMonitor.Controllers
+namespace CarwashMonitor.Controller
 {
     [ApiController]
     public class StationController : ControllerBase
@@ -35,10 +35,9 @@ namespace CarwashMonitor.Controllers
 
         [HttpPost]
         [Route("/station")]
-        public async Task<ActionResult<int>> CreateStationAsync(Station station)
+        public async Task<ActionResult<int>> CreateStationAsync(StationCreateDto stationDto)
         {
-            station.Id = Guid.NewGuid();
-            var response = await StationService.CreateStationAsync(station);
+            var response = await StationService.CreateStationAsync(stationDto);
             return Ok(response);
         }
 

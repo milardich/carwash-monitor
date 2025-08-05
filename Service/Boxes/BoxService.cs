@@ -1,8 +1,9 @@
-﻿using CarwashMonitor.Enums;
-using CarwashMonitor.Model;
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Enums;
+using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarwashMonitor.Service
+namespace CarwashMonitor.Service.Boxes
 {
     public class BoxService : IBoxService
     {
@@ -18,7 +19,7 @@ namespace CarwashMonitor.Service
             var station = await _context.Stations.FindAsync(stationId);
             if (station == null)
                 throw new Exception("Station not found.");
-
+            
             var newBox = new Box()
             { 
                 Id = Guid.NewGuid(),
@@ -32,19 +33,24 @@ namespace CarwashMonitor.Service
 
         public async Task<Box?> GetBoxAsync(Guid boxId)
         {
-            return await _context.Boxes.FindAsync(boxId);
+            return await _context.Boxes
+                .Include(b => b.WashCycles)
+                .FirstOrDefaultAsync(box => box.Id == boxId);
         }
 
-        public async Task<List<Box?>> GetBoxesAsync(Guid stationId)
+        public async Task<List<Box>?> GetBoxesAsync(Guid stationId)
         {
-            var station = await _context.Stations.FindAsync(stationId);
+            var station = await _context.Stations
+                .Include(s => s.Boxes)
+                .FirstOrDefaultAsync(station => station.Id == stationId);
+
             if (station == null)
                 throw new Exception("Station not found.");
 
             return station.Boxes;
         }
 
-        public async Task<BoxInfoDto> GetBoxInfoAsync(Guid boxId)
+        public async Task<BoxInfoDto?> GetBoxInfoAsync(Guid boxId)
         {
             var washCycles = await _context.WashCycles.Where(wc => wc.BoxId == boxId).ToListAsync();
             var dto = new BoxInfoDto

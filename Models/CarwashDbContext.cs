@@ -1,7 +1,6 @@
-﻿using CarwashMonitor.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace CarwashMonitor.Model
+namespace CarwashMonitor.Models
 {
     public class CarwashDbContext : DbContext
     {

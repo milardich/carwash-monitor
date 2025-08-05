@@ -1,7 +1,8 @@
-﻿using CarwashMonitor.Model;
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CarwashMonitor.Service
+namespace CarwashMonitor.Service.Statistics
 {
     public class StatisticsService : IStatisticsService
     {
@@ -12,7 +13,7 @@ namespace CarwashMonitor.Service
             _context = context;
         }
 
-        public async Task<StatisticsHighlightsDto> GetStatisticsHighlightsAsync(DateTime? dateFrom, DateTime? dateTo)
+        public async Task<StatisticsHighlightsDto?> GetStatisticsHighlightsAsync(DateTime? dateFrom, DateTime? dateTo)
         {
             var filteredWashCycles = _context.WashCycles
                 .Include(wc => wc.Box)
@@ -58,7 +59,7 @@ namespace CarwashMonitor.Service
             };
         }
 
-        public async Task<StatisticsSummaryDto> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo)
+        public async Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo)
         {
             // TODO: move
             const float waterPrice = 0.1f;

@@ -1,5 +1,8 @@
-using CarwashMonitor.Model;
-using CarwashMonitor.Service;
+using CarwashMonitor.Models;
+using CarwashMonitor.Service.Boxes;
+using CarwashMonitor.Service.Stations;
+using CarwashMonitor.Service.Statistics;
+using CarwashMonitor.Service.WashCycles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 

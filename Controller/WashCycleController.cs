@@ -1,5 +1,6 @@
-﻿using CarwashMonitor.Model;
-using CarwashMonitor.Service;
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Models;
+using CarwashMonitor.Service.WashCycles;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarwashMonitor.Controller
@@ -17,10 +18,9 @@ namespace CarwashMonitor.Controller
 
         [HttpPost]
         [Route("/box/{boxId}/washcycle")]
-        public async Task<ActionResult<int>> CreateWashCycleAsync(Guid boxId, WashCycle washCycle)
+        public async Task<ActionResult<int>> CreateWashCycleAsync(Guid boxId, WashCycleCreateDto washCycleDto)
         {
-            washCycle.Id = Guid.NewGuid();
-            var result = await WashCycleService.CreateWashCycleAsync(boxId, washCycle);
+            var result = await WashCycleService.CreateWashCycleAsync(boxId, washCycleDto);
             return Ok(result);
         }
 

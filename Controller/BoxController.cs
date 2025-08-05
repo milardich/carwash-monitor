@@ -1,10 +1,9 @@
-﻿using CarwashMonitor.Model;
+﻿using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
-using CarwashMonitor.Service;
-using Microsoft.AspNetCore.Http;
+using CarwashMonitor.Service.Boxes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CarwashMonitor.Controllers
+namespace CarwashMonitor.Controller
 {
     [ApiController]
     public class BoxController : ControllerBase

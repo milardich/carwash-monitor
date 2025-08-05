@@ -1,5 +1,5 @@
-﻿using CarwashMonitor.Model;
-using CarwashMonitor.Service;
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Service.Statistics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarwashMonitor.Controller
