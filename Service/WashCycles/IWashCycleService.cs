@@ -1,12 +1,11 @@
 ﻿using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
 
-namespace CarwashMonitor.Service.WashCycles
+namespace CarwashMonitor.Service.WashCycles;
+
+public interface IWashCycleService
 {
-    public interface IWashCycleService
-    {
-        Task<int> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycle);
-        Task<WashCycle?> GetWashCycleAsync(Guid washCycleId);
-        Task<List<WashCycle>> GetAllWashCyclesAsync(Guid boxId, DateTime? dateFrom, DateTime? dateTo);
-    }
+    Task<int> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycle);
+    Task<WashCycle?> GetWashCycleAsync(Guid washCycleId);
+    Task<List<WashCycle>> GetAllWashCyclesAsync(Guid boxId, DateTime? dateFrom, DateTime? dateTo);
 }

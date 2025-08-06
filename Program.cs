@@ -25,8 +25,8 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -56,6 +56,7 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = "";
     });
 }
+
 app.UseCors();
 app.UseHttpsRedirection();
 app.MapControllers();

@@ -1,10 +1,9 @@
 ﻿using CarwashMonitor.Dtos;
 
-namespace CarwashMonitor.Service.Statistics
+namespace CarwashMonitor.Service.Statistics;
+
+public interface IStatisticsService
 {
-    public interface IStatisticsService
-    {
-        Task<StatisticsHighlightsDto?> GetStatisticsHighlightsAsync(DateTime? dateFrom, DateTime? dateTo);
-        Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo);
-    }
+    Task<StatisticsHighlightsDto?> GetStatisticsHighlightsAsync(DateTime? dateFrom, DateTime? dateTo);
+    Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo);
 }

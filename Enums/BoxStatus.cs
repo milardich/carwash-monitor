@@ -1,9 +1,8 @@
-﻿namespace CarwashMonitor.Enums
+﻿namespace CarwashMonitor.Enums;
+
+public enum BoxStatus
 {
-    public enum BoxStatus
-    {
-        IN_USE,
-        INACTIVE,
-        AVAILABLE
-    }
+    IN_USE,
+    INACTIVE,
+    AVAILABLE
 }

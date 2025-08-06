@@ -1,11 +1,10 @@
-﻿namespace CarwashMonitor.Dtos
+﻿namespace CarwashMonitor.Dtos;
+
+public class StatisticsSummaryDto
 {
-    public class StatisticsSummaryDto
-    {
-        public List<StationStatisticsDto>? allStationStatistics = [];
-        public float TotalWaterCost;
-        public float TotalDetergentCost;
-        public float TotalWaxCost;
-        public float TotalRevenue;
-    }
+    public List<StationStatisticsDto>? allStationStatistics = [];
+    public float TotalDetergentCost;
+    public float TotalRevenue;
+    public float TotalWaterCost;
+    public float TotalWaxCost;
 }
