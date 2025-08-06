@@ -1,5 +1,6 @@
 using CarwashMonitor.Models;
 using CarwashMonitor.Service.Boxes;
+using CarwashMonitor.Service.Resources;
 using CarwashMonitor.Service.Stations;
 using CarwashMonitor.Service.Statistics;
 using CarwashMonitor.Service.WashCycles;
@@ -18,6 +19,7 @@ builder.Services.AddScoped<IStationService, StationService>();
 builder.Services.AddScoped<IBoxService, BoxService>();
 builder.Services.AddScoped<IWashCycleService, WashCycleService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IResourceService, ResourceService>();
 
 // Add CORS support
 builder.Services.AddCors(options =>
