@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import StationDropdown from '@/components/StationDropdown.vue';
-import UnitCard from '@/components/UnitCard.vue';
+import BoxCard from '@/components/BoxCard.vue';
 import ResourceChartCard from '@/components/ResourceChartCard.vue'
 import { useStationStore } from '@/stores/stationStore'
 import { useResourceStore } from '@/stores/resourceStore';
-import UnitPopup from '@/components/UnitPopup.vue'
+import BoxPopup from '@/components/BoxPopup.vue'
 import { getChartData } from '@/api/resources.api';
 import { computed, onMounted, onBeforeUnmount, onUnmounted, onBeforeMount } from 'vue';
 import { type Station, getAllStations } from '@/api/station.api'
@@ -12,35 +12,39 @@ import { ref } from 'vue';
 import { type ResourceConsumption } from '@/api/resources.api';
 import { useBoxStore } from '@/stores/boxStore';
 
-
-
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
-const unitStore = useBoxStore();
+const boxStore = useBoxStore();
 const resourceConsumptions = ref<ResourceConsumption[]>([]);
 var intervalId: number;
 
 onMounted(async () => {
-    var stationId: string = "";
+
     stationStore.stations = await getAllStations();
-    if (stationStore.selectedStation == undefined) {
+    if (stationStore.selectedStation === null && stationStore.stations.length > 0) {
         stationStore.selectedStation = stationStore.stations[0];
     }
-    stationId = stationStore.selectedStation.id;
+    let stationId = stationStore?.selectedStation!.id;
+    let selectedStation = stationStore?.selectedStation;
+
     resourceStore.pgTimeInterval = "7 days";
     resourceStore.resourceConsumptions = await getChartData(
         stationId, resourceStore.pgTimeInterval.toString()
     );
     resourceConsumptions.value = resourceStore.resourceConsumptions;
-    unitStore.setSelectedBox(stationStore.selectedStation.units[0]);
+
+    if (selectedStation === null)
+        throw new Error('No station selected');
+    else
+        boxStore.setSelectedBox(selectedStation.boxInfos[0]);
 
 
-    // Update chart data every 5 seconds
-    intervalId = window.setInterval(() => {
-        if (stationStore.selectedStation != null) {
-            resourceStore.setChartDataByStationId(stationStore.selectedStation.id);
-        }
-    }, 5000);
+    // // Update chart data every 5 seconds
+    // intervalId = window.setInterval(() => {
+    //     if (stationStore.selectedStation != null) {
+    //         resourceStore.setChartDataByStationId(selectedStation.id);
+    //     }
+    // }, 30000);
 });
 
 onBeforeUnmount(() => {
@@ -99,10 +103,10 @@ const labels = computed(() => {
                 <div class="text-3xl">Boxes</div>
 
                 <div class="grid grid-cols-3 gap-4 mt-6">
-                    <span v-if="stationStore.selectedStation?.units"
-                        v-for="unit in stationStore.selectedStation?.units">
+                    <span v-if="stationStore?.selectedStation?.boxInfos"
+                        v-for="box in stationStore?.selectedStation?.boxInfos">
                         <Suspense>
-                            <UnitCard :unit="unit" />
+                            <BoxCard :box="box" />
                         </Suspense>
                     </span>
                     <span v-else>
@@ -111,7 +115,7 @@ const labels = computed(() => {
 
                     <!-- testing this -->
                     <Suspense>
-                        <UnitPopup />
+                        <BoxPopup />
                     </Suspense>
                 </div>
             </div>

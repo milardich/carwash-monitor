@@ -5,9 +5,7 @@ export const useBoxStore = defineStore('box', {
     state: () => ({
         boxPopupOpen: false,
         selectedBox: undefined as Box | undefined,
-        selectedBoxInfo: null as BoxInfo | null,
-        dateFrom: "" as string,
-        dateTo: "" as string
+        selectedBoxInfo: null as BoxInfo | null
     }),
     actions: {
         setSelectedBox(box: Box) {
@@ -15,8 +13,6 @@ export const useBoxStore = defineStore('box', {
         },
         async updateBoxInfo(box: Box){
             this.selectedBoxInfo = await getBoxInfo(
-                this.dateFrom,
-                this.dateTo,
                 box.id
             );
         },

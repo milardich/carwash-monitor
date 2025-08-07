@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { type Box } from '@/api/box.api'
+import { type Box as Box } from '@/api/box.api'
 
 export interface Station {
     id: string;
     name: string;
-    units: Box[];
+    boxInfos: Box[];
 }
 
 export interface CreateStationRequest {

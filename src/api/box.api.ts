@@ -35,24 +35,19 @@ export async function getBox(boxId?: number): Promise<Box> {
     }
 }
 
-export async function getBoxInfo(dateFrom: string, dateTo: string, boxId?: string): Promise<BoxInfo>{
+export async function getBoxInfo(boxId?: string): Promise<BoxInfo>{
     try {
-        const { data } = await axiosClient.get(`/box/${boxId}/info`, {
-            params: {
-                dateFrom: dateFrom,
-                dateTo: dateTo,
-            }
-        });
+        const { data } = await axiosClient.get(`/box/${boxId}/info`);
         return data;
     } catch (error) {
         throw(error);
     }
 }
 
-export async function changeBoxStatus(boxId: number, unitStatus: string): Promise<Box> {
+export async function changeBoxStatus(boxId: string, boxStatus: string): Promise<Box> {
     try {
         const { data } = await axiosClient.patch(`/box/${boxId}/status`, {
-            status: unitStatus
+            status: boxStatus
         });
         return data;
     } catch (error) {

@@ -8,7 +8,7 @@ export const useResourceStore = defineStore('resources', {
         pgTimeInterval: "" as String,
     }),
     actions: {
-        async setChartDataByStationId(stationId: number) {
+        async setChartDataByStationId(stationId: string) {
             var newData: ResourceConsumption[] = await getChartData(stationId, this.pgTimeInterval);
             this.resourceConsumptions = newData;
         }
