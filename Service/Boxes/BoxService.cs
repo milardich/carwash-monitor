@@ -58,7 +58,17 @@ public class BoxService : IBoxService
 
     public async Task<BoxInfoDto?> GetBoxInfoAsync(Guid boxId)
     {
-        var washCycles = await _context.WashCycles.Where(wc => wc.BoxId == boxId).ToListAsync();
+        var now = DateTime.UtcNow;
+        var start = now.Date; // today at 00:00
+        var end = start.AddDays(1); // tomorrow at 00:00
+
+        var washCycles = await _context.WashCycles
+            .Where(wc => 
+                wc.BoxId == boxId &&
+                wc.DateCreated >= start && 
+                wc.DateCreated < end)
+            .ToListAsync();
+
         var dto = new BoxInfoDto
         {
             WashCycleCount = washCycles.Count,
