@@ -5,13 +5,15 @@ import ResourceChartCard from '@/components/ResourceChartCard.vue'
 import { useStationStore } from '@/stores/stationStore'
 import { useResourceStore } from '@/stores/resourceStore';
 import BoxPopup from '@/components/BoxPopup.vue'
-import { computed, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted } from 'vue';
 import { useBoxStore } from '@/stores/boxStore';
 import { watch } from 'vue';
 
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
 const boxStore = useBoxStore();
+
+let refreshIntervalId: number | null = null;
 
 async function init() {
     await stationStore.loadStations();
@@ -25,6 +27,23 @@ async function init() {
     }
 }
 
+function startAutoRefresh() {
+    stopAutoRefresh();
+    refreshIntervalId = window.setInterval(async () => {
+        const station = stationStore.selectedStation;
+        if (station) {
+            await resourceStore.loadResourceConsumptions(station.id);
+        }
+    }, 60_000);
+}
+
+function stopAutoRefresh() {
+    if (refreshIntervalId !== null) {
+        clearInterval(refreshIntervalId);
+        refreshIntervalId = null;
+    }
+}
+
 watch(() => stationStore.selectedStation, async (newStation) => {
     if (!newStation) return;
     await resourceStore.loadResourceConsumptions(newStation.id);
@@ -35,6 +54,11 @@ watch(() => stationStore.selectedStation, async (newStation) => {
 
 onMounted(() => {
     init();
+    startAutoRefresh();
+});
+
+onBeforeUnmount(() => {
+    stopAutoRefresh();
 });
 
 // TODO: implement auto fetching

@@ -16,9 +16,7 @@ export const useResourceStore = defineStore('resources', {
             this.isLoading = true;
             try {
                 const data: ChartResponse = await getChartData(stationId);
-
-                // Assuming your API matches the format you posted:
-                this.labels = data.water.labels; // All labels should be the same for all resources
+                this.labels = data.water.labels;
                 this.waterData = data.water.data;
                 this.waxData = data.wax.data;
                 this.detergentData = data.detergent.data;
