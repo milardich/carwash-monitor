@@ -1,4 +1,5 @@
-﻿using CarwashMonitor.Dtos;
+﻿using AutoMapper;
+using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,11 +8,13 @@ namespace CarwashMonitor.Service.WashCycles;
 public class WashCycleService : IWashCycleService
 {
     private readonly CarwashDbContext _context;
+    private readonly IMapper _mapper;
 
     public WashCycleService(
-        CarwashDbContext context)
+        CarwashDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycleDto)
@@ -32,40 +35,24 @@ public class WashCycleService : IWashCycleService
 
     public async Task<WashCycleDto?> GetWashCycleAsync(Guid washCycleId)
     {
-        var result = await _context.WashCycles.FirstOrDefaultAsync(wc => wc.Id == washCycleId);
-        return new WashCycleDto
-        {
-            Id = result.Id,
-            WaterConsumption = result.WaterConsumption ?? 0,
-            DetergentConsumption = result.DetergentConsumption ?? 0,
-            WaxConsumption = result.WaxConsumption ?? 0,
-            CoinAmount = result.CoinAmount ?? 0,
-            DateCreated = result.DateCreated
-        };
+        var washCycleEntity = await _context.WashCycles.FirstOrDefaultAsync(wc => wc.Id == washCycleId);
+        return _mapper.Map<WashCycleDto>(washCycleEntity);
     }
 
     public async Task<List<WashCycleDto>> GetAllWashCyclesAsync(Guid boxId, DateTime? dateFrom, DateTime? dateTo)
     {
         var query = _context.WashCycles.AsQueryable();
 
-        query = query.Where(wc => wc.Id == boxId);
+        query = query.Where(wc => wc.BoxId == boxId);
 
         if (dateFrom.HasValue)
-            query = query.Where(wc => wc.DateCreated > dateFrom.Value);
+            query = query.Where(wc => wc.DateCreated >= dateFrom.Value.ToUniversalTime());
 
         if (dateTo.HasValue)
-            query = query.Where(wc => wc.DateCreated < dateTo.Value);
+            query = query.Where(wc => wc.DateCreated <= dateTo.Value.ToUniversalTime());
 
-        var result = await query.ToListAsync();
+        var washCycleEntities = await query.ToListAsync();
 
-        return result.Select(wc => new WashCycleDto
-        {
-            Id = wc.Id,
-            WaterConsumption = wc.WaterConsumption ?? 0,
-            DetergentConsumption = wc.DetergentConsumption ?? 0,
-            WaxConsumption = wc.WaxConsumption ?? 0,
-            CoinAmount = wc.CoinAmount ?? 0,
-            DateCreated = wc.DateCreated
-        }).ToList();
+        return _mapper.Map<List<WashCycleDto>>(washCycleEntities);
     }
 }

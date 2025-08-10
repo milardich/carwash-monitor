@@ -1,5 +1,4 @@
 ﻿using CarwashMonitor.Dtos;
-using CarwashMonitor.Models;
 using CarwashMonitor.Service.WashCycles;
 using Microsoft.AspNetCore.Mvc;
 

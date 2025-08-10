@@ -24,7 +24,7 @@ public class StatisticsController : ControllerBase
 
     [HttpGet]
     [Route("/statistics/summary")]
-    public async Task<ActionResult<StatisticsHighlightsDto>> GetStatisticsSummaryAsync([FromQuery] DateTime? dateFrom,
+    public async Task<ActionResult<StatisticsSummaryDto>> GetStatisticsSummaryAsync([FromQuery] DateTime? dateFrom,
         [FromQuery] DateTime? dateTo)
     {
         var result = await StatisticsService.GetStatisticsSummaryAsync(dateFrom, dateTo);

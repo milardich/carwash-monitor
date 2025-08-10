@@ -95,7 +95,7 @@ public class StatisticsService : IStatisticsService
 
         var summary = new StatisticsSummaryDto
         {
-            allStationStatistics = stationStats,
+            AllStationStatistics = stationStats,
             TotalRevenue = stationStats.Sum(s => s.Revenue),
             TotalWaterCost = stationStats.Sum(s => s.WaterCost),
             TotalWaxCost = stationStats.Sum(s => s.WaxCost),

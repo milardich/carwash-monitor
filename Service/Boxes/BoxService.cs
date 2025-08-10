@@ -1,4 +1,5 @@
-﻿using CarwashMonitor.Dtos;
+﻿using AutoMapper;
+using CarwashMonitor.Dtos;
 using CarwashMonitor.Enums;
 using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +9,12 @@ namespace CarwashMonitor.Service.Boxes;
 public class BoxService : IBoxService
 {
     private readonly CarwashDbContext _context;
+    private readonly IMapper _mapper;
 
-    public BoxService(CarwashDbContext context)
+    public BoxService(CarwashDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<int> CreateBoxAsync(Guid stationId)
@@ -43,54 +46,32 @@ public class BoxService : IBoxService
         var start = now.Date; // today at 00:00
         var end = start.AddDays(1); // tomorrow at 00:00
 
-        var box = await _context.Boxes
+        var boxEntity = await _context.Boxes
             .Include(b => b.WashCycles)
             .Where(box => box.Id == boxId).FirstOrDefaultAsync();
 
-        var washCycles = box?.WashCycles
+        boxEntity.WashCycles = boxEntity.WashCycles
             .Where(wc =>
                 wc.DateCreated >= start &&
-                wc.DateCreated < end).ToList();
+                wc.DateCreated < end)
+            .ToList();
 
-        var dto = new BoxDto
-        {
-            WashCycleCount = washCycles?.Count() ?? 0,
-            TotalCoinAmount = washCycles?.Sum(wc => wc.CoinAmount ?? 0),
-            TotalWaterConsumption = washCycles?.Sum(wc => wc.WaterConsumption ?? 0),
-            TotalWaxConsumption = washCycles.Sum(wc => wc.WaxConsumption ?? 0),
-            TotalDetergentConsumption = washCycles?.Sum(wc => wc.DetergentConsumption ?? 0),
-            Status = box.Status.ToString(),
-            WashCycles = washCycles.Select(wc => new WashCycleDto
-            {
-                Id = wc.Id,
-                WaterConsumption = wc.WaterConsumption ?? 0,
-                DetergentConsumption = wc.DetergentConsumption ?? 0,
-                WaxConsumption = wc.WaxConsumption ?? 0,
-                CoinAmount = wc.CoinAmount ?? 0,
-                DateCreated = wc.DateCreated
-            }).ToList()
-        };
-        return dto;
+        return _mapper.Map<BoxDto>(boxEntity);
     }
 
     public async Task<BoxDto?> UpdateBoxStatusAsync(Guid boxId, BoxStatusDto status)
     {
-        var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
+        var boxEntity = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
 
-        if (box == null)
+        if (boxEntity == null)
             return null;
 
         if (!Enum.TryParse<BoxStatus>(status.Status, out var newStatus))
             throw new ArgumentException("Invalid status value.");
 
-        box.Status = newStatus;
+        boxEntity.Status = newStatus;
         await _context.SaveChangesAsync();
 
-        return new BoxDto
-        {
-            Id = box.Id,
-            Number = box.Number,
-            Status = box.Status.ToString()
-        };
+        return _mapper.Map<BoxDto>(boxEntity);
     }
 }
