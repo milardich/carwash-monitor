@@ -1,6 +1,6 @@
 ﻿namespace CarwashMonitor.Dtos;
 
-public class BoxInfoDto
+public class BoxDto
 {
     public Guid Id { get; set; }
     public int? Number { get; set; }

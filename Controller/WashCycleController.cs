@@ -26,7 +26,7 @@ public class WashCycleController : ControllerBase
 
     [HttpGet]
     [Route("/washcycle/{washCycleId}")]
-    public async Task<ActionResult<WashCycle>> GetWashCycleAsync(Guid washCycleId)
+    public async Task<ActionResult<WashCycleDto>> GetWashCycleAsync(Guid washCycleId)
     {
         var result = await WashCycleService.GetWashCycleAsync(washCycleId);
         return Ok(result);
@@ -34,7 +34,7 @@ public class WashCycleController : ControllerBase
 
     [HttpGet]
     [Route("/box/{boxId}/washcycles")]
-    public async Task<ActionResult<List<WashCycle>>> GetAllWashCycles(Guid boxId, [FromQuery] DateTime? dateFrom,
+    public async Task<ActionResult<List<WashCycleDto>>> GetAllWashCycles(Guid boxId, [FromQuery] DateTime? dateFrom,
         [FromQuery] DateTime? dateTo)
     {
         var result = await WashCycleService.GetAllWashCyclesAsync(boxId, dateFrom, dateTo);

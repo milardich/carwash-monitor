@@ -30,12 +30,21 @@ public class WashCycleService : IWashCycleService
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<WashCycle?> GetWashCycleAsync(Guid washCycleId)
+    public async Task<WashCycleDto?> GetWashCycleAsync(Guid washCycleId)
     {
-        return await _context.WashCycles.FirstOrDefaultAsync(wc => wc.Id == washCycleId);
+        var result = await _context.WashCycles.FirstOrDefaultAsync(wc => wc.Id == washCycleId);
+        return new WashCycleDto
+        {
+            Id = result.Id,
+            WaterConsumption = result.WaterConsumption ?? 0,
+            DetergentConsumption = result.DetergentConsumption ?? 0,
+            WaxConsumption = result.WaxConsumption ?? 0,
+            CoinAmount = result.CoinAmount ?? 0,
+            DateCreated = result.DateCreated
+        };
     }
 
-    public async Task<List<WashCycle>> GetAllWashCyclesAsync(Guid boxId, DateTime? dateFrom, DateTime? dateTo)
+    public async Task<List<WashCycleDto>> GetAllWashCyclesAsync(Guid boxId, DateTime? dateFrom, DateTime? dateTo)
     {
         var query = _context.WashCycles.AsQueryable();
 
@@ -47,6 +56,16 @@ public class WashCycleService : IWashCycleService
         if (dateTo.HasValue)
             query = query.Where(wc => wc.DateCreated < dateTo.Value);
 
-        return await query.ToListAsync();
+        var result = await query.ToListAsync();
+
+        return result.Select(wc => new WashCycleDto
+        {
+            Id = wc.Id,
+            WaterConsumption = wc.WaterConsumption ?? 0,
+            DetergentConsumption = wc.DetergentConsumption ?? 0,
+            WaxConsumption = wc.WaxConsumption ?? 0,
+            CoinAmount = wc.CoinAmount ?? 0,
+            DateCreated = wc.DateCreated
+        }).ToList();
     }
 }

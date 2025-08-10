@@ -1,5 +1,4 @@
 ﻿using CarwashMonitor.Dtos;
-using CarwashMonitor.Models;
 using CarwashMonitor.Service.Boxes;
 using CarwashMonitor.Service.Stations;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +41,7 @@ public class StationController : ControllerBase
 
     [HttpGet]
     [Route("/station")]
-    public async Task<ActionResult<List<StationGetDto>>> GetStationsAsync()
+    public async Task<ActionResult<List<StationDto>>> GetStationsAsync()
     {
         var response = await StationService.GetStationsAsync();
         return Ok(response);
@@ -50,17 +49,9 @@ public class StationController : ControllerBase
 
     [HttpGet]
     [Route("/station/{stationId}")]
-    public async Task<ActionResult<StationGetDto>> GetStationAsync(Guid stationId)
+    public async Task<ActionResult<StationDto>> GetStationAsync(Guid stationId)
     {
         var response = await StationService.GetStationAsync(stationId);
-        return Ok(response);
-    }
-
-    [HttpGet]
-    [Route("/station/{stationId}/boxes")]
-    public async Task<ActionResult<List<Box>>> GetStationsBoxesAsync(Guid stationId)
-    {
-        var response = await BoxService.GetBoxesAsync(stationId);
         return Ok(response);
     }
 

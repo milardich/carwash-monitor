@@ -1,3 +1,5 @@
+using AutoMapper;
+using CarwashMonitor.Dtos;
 using CarwashMonitor.Models;
 using CarwashMonitor.Service.Boxes;
 using CarwashMonitor.Service.Resources;
@@ -20,6 +22,23 @@ builder.Services.AddScoped<IBoxService, BoxService>();
 builder.Services.AddScoped<IWashCycleService, WashCycleService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
+
+// automapper
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.CreateMap<Station, StationDto>();
+    cfg.CreateMap<Box, BoxDto>()
+        .ForMember(dest => dest.WashCycleCount, opt => opt.MapFrom(src => src.WashCycles.Count))
+        .ForMember(dest => dest.TotalCoinAmount, opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.CoinAmount ?? 0)))
+        .ForMember(dest => dest.TotalWaterConsumption, opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.WaterConsumption ?? 0)))
+        .ForMember(dest => dest.TotalWaxConsumption, opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.WaxConsumption ?? 0)))
+        .ForMember(dest => dest.TotalDetergentConsumption, opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.DetergentConsumption ?? 0)));
+    cfg.CreateMap<WashCycle, WashCycleDto>()
+        .ForMember(dest => dest.WaterConsumption, opt => opt.MapFrom(src => src.WaterConsumption ?? 0))
+        .ForMember(dest => dest.DetergentConsumption, opt => opt.MapFrom(src => src.DetergentConsumption ?? 0))
+        .ForMember(dest => dest.WaxConsumption, opt => opt.MapFrom(src => src.WaxConsumption ?? 0))
+        .ForMember(dest => dest.CoinAmount, opt => opt.MapFrom(src => src.CoinAmount ?? 0));
+});
 
 // Add CORS support
 builder.Services.AddCors(options =>

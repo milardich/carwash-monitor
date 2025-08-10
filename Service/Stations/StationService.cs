@@ -24,44 +24,74 @@ public class StationService : IStationService
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<StationGetDto> GetStationAsync(Guid stationId)
+    public async Task<StationDto> GetStationAsync(Guid stationId)
     {
         var station = await _context.Stations
             .Include(s => s.Boxes)
+            .ThenInclude(b => b.WashCycles)
             .FirstOrDefaultAsync(station => station.Id == stationId);
 
         if (station == null) throw new Exception("Station not found.");
 
-        var stationDto = new StationGetDto
+        var stationDto = new StationDto
         {
             Id = station.Id,
             Name = station.Name,
-            BoxInfos = station.Boxes.Select(box => new BoxInfoDto
+            Boxes = station.Boxes.Select(b => new BoxDto
             {
-                Id = box.Id,
-                Number = box.Number,
-                Status = box.Status.ToString()
+                Id = b.Id,
+                Number = b.Number,
+                WashCycleCount = b.WashCycles.Count,
+                TotalCoinAmount = b.WashCycles.Sum(wc => wc.CoinAmount ?? 0),
+                TotalWaterConsumption = b.WashCycles.Sum(wc => wc.WaterConsumption ?? 0),
+                TotalWaxConsumption = b.WashCycles.Sum(wc => wc.WaxConsumption ?? 0),
+                TotalDetergentConsumption = b.WashCycles.Sum(wc => wc.DetergentConsumption ?? 0),
+                Status = b.Status.ToString(),
+                WashCycles = b.WashCycles.Select(wc => new WashCycleDto
+                {
+                    Id = wc.Id,
+                    WaterConsumption = wc.WaterConsumption ?? 0,
+                    DetergentConsumption = wc.DetergentConsumption ?? 0,
+                    WaxConsumption = wc.WaxConsumption ?? 0,
+                    CoinAmount = wc.CoinAmount ?? 0,
+                    DateCreated = wc.DateCreated
+                }).ToList()
             }).ToList()
         };
 
         return stationDto;
     }
 
-    public async Task<List<StationGetDto>> GetStationsAsync()
+    public async Task<List<StationDto>> GetStationsAsync()
     {
         var result = await _context.Stations
             .Include(s => s.Boxes)
+            .ThenInclude(b => b.WashCycles)
             .ToListAsync();
 
-        var stationDtos = result.Select(station => new StationGetDto
+        var stationDtos = result.Select(station => new StationDto
         {
             Id = station.Id,
             Name = station.Name,
-            BoxInfos = station.Boxes.Select(box => new BoxInfoDto
+            Boxes = station.Boxes.Select(b => new BoxDto
             {
-                Id = box.Id,
-                Number = box.Number,
-                Status = box.Status.ToString()
+                Id = b.Id,
+                Number = b.Number,
+                WashCycleCount = b.WashCycles.Count,
+                TotalCoinAmount = b.WashCycles.Sum(wc => wc.CoinAmount ?? 0),
+                TotalWaterConsumption = b.WashCycles.Sum(wc => wc.WaterConsumption ?? 0),
+                TotalWaxConsumption = b.WashCycles.Sum(wc => wc.WaxConsumption ?? 0),
+                TotalDetergentConsumption = b.WashCycles.Sum(wc => wc.DetergentConsumption ?? 0),
+                Status = b.Status.ToString(),
+                WashCycles = b.WashCycles.Select(wc => new WashCycleDto
+                {
+                    Id = wc.Id,
+                    WaterConsumption = wc.WaterConsumption ?? 0,
+                    DetergentConsumption = wc.DetergentConsumption ?? 0,
+                    WaxConsumption = wc.WaxConsumption ?? 0,
+                    CoinAmount = wc.CoinAmount ?? 0,
+                    DateCreated = wc.DateCreated
+                }).ToList()
             }).ToList()
         }).ToList();
 

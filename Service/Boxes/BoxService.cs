@@ -37,54 +37,43 @@ public class BoxService : IBoxService
         return await _context.SaveChangesAsync();
     }
 
-    public async Task<Box?> GetBoxAsync(Guid boxId)
-    {
-        return await _context.Boxes
-            .Include(b => b.WashCycles)
-            .FirstOrDefaultAsync(box => box.Id == boxId);
-    }
-
-    public async Task<List<Box>?> GetBoxesAsync(Guid stationId)
-    {
-        var station = await _context.Stations
-            .Include(s => s.Boxes)
-            .FirstOrDefaultAsync(station => station.Id == stationId);
-
-        if (station == null)
-            throw new Exception("Station not found.");
-
-        return station.Boxes;
-    }
-
-    public async Task<BoxInfoDto?> GetBoxInfoAsync(Guid boxId)
+    public async Task<BoxDto?> GetBoxAsync(Guid boxId)
     {
         var now = DateTime.UtcNow;
         var start = now.Date; // today at 00:00
         var end = start.AddDays(1); // tomorrow at 00:00
 
-        var washCycles = await _context.WashCycles
-            .Where(wc => 
-                wc.BoxId == boxId &&
-                wc.DateCreated >= start && 
-                wc.DateCreated < end)
-            .ToListAsync();
+        var box = await _context.Boxes
+            .Include(b => b.WashCycles)
+            .Where(box => box.Id == boxId).FirstOrDefaultAsync();
 
-        var dto = new BoxInfoDto
+        var washCycles = box?.WashCycles
+            .Where(wc =>
+                wc.DateCreated >= start &&
+                wc.DateCreated < end).ToList();
+
+        var dto = new BoxDto
         {
-            WashCycleCount = washCycles.Count,
-            TotalCoinAmount = washCycles.Sum(wc => wc.CoinAmount ?? 0),
-            TotalWaterConsumption = washCycles.Sum(wc => wc.WaterConsumption ?? 0),
+            WashCycleCount = washCycles?.Count() ?? 0,
+            TotalCoinAmount = washCycles?.Sum(wc => wc.CoinAmount ?? 0),
+            TotalWaterConsumption = washCycles?.Sum(wc => wc.WaterConsumption ?? 0),
             TotalWaxConsumption = washCycles.Sum(wc => wc.WaxConsumption ?? 0),
-            TotalDetergentConsumption = washCycles.Sum(wc => wc.DetergentConsumption ?? 0),
-            Status = await _context.Boxes
-                .Where(b => b.Id == boxId)
-                .Select(b => b.Status.ToString())
-                .FirstOrDefaultAsync()
+            TotalDetergentConsumption = washCycles?.Sum(wc => wc.DetergentConsumption ?? 0),
+            Status = box.Status.ToString(),
+            WashCycles = washCycles.Select(wc => new WashCycleDto
+            {
+                Id = wc.Id,
+                WaterConsumption = wc.WaterConsumption ?? 0,
+                DetergentConsumption = wc.DetergentConsumption ?? 0,
+                WaxConsumption = wc.WaxConsumption ?? 0,
+                CoinAmount = wc.CoinAmount ?? 0,
+                DateCreated = wc.DateCreated
+            }).ToList()
         };
         return dto;
     }
 
-    public async Task<Box?> UpdateBoxStatusAsync(Guid boxId, BoxStatusDto status)
+    public async Task<BoxDto?> UpdateBoxStatusAsync(Guid boxId, BoxStatusDto status)
     {
         var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
 
@@ -97,6 +86,11 @@ public class BoxService : IBoxService
         box.Status = newStatus;
         await _context.SaveChangesAsync();
 
-        return box;
+        return new BoxDto
+        {
+            Id = box.Id,
+            Number = box.Number,
+            Status = box.Status.ToString()
+        };
     }
 }
