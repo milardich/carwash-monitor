@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useBoxStore } from '@/stores/boxStore';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { changeBoxStatus, getBoxInfo, type BoxInfo } from '@/api/box.api';
+import { changeBoxStatus, getBox, type BoxInfo } from '@/api/box.api';
 import { useStationStore } from '@/stores/stationStore';
 import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
@@ -16,17 +16,6 @@ onMounted(async () => {
     if (boxStore?.selectedBoxInfo) {
         boxInfo.value = boxStore?.selectedBoxInfo;
     }
-
-    // intervalId = window.setInterval(async () => {
-    //     try {
-    //         boxInfo.value = await getBoxInfo(
-    //             boxStore?.selectedBox?.id
-    //         );
-    //     } catch (error) {
-    //         throw (error);
-    //     }
-    //     // TODO: fetch wash cycles, put them in a list, and display in table down below
-    // }, 30000);
 });
 
 onBeforeUnmount(() => {

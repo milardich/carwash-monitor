@@ -14,7 +14,7 @@ const toggleStationDropdown = () => {
 }
 
 async function changeSelectedStation(stationId: number) {
-    stationStore.selectedStation = undefined; // fixes incorrect unit rendering for some reason
+    stationStore.selectedStation = undefined;
     stationStore.selectedStation = await getStation(stationId);
     if (stationStore.selectedStation) {
         resourceStore.setChartDataByStationId(stationStore.selectedStation.id);

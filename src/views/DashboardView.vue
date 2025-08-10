@@ -22,8 +22,8 @@ async function init() {
 
     await resourceStore.loadResourceConsumptions(station.id);
 
-    if (station.boxInfos?.length && !boxStore.selectedBox) {
-        boxStore.setSelectedBox(station.boxInfos[0]);
+    if (station.boxes?.length && !boxStore.selectedBox) {
+        boxStore.setSelectedBox(station.boxes[0]);
     }
 }
 
@@ -47,8 +47,8 @@ function stopAutoRefresh() {
 watch(() => stationStore.selectedStation, async (newStation) => {
     if (!newStation) return;
     await resourceStore.loadResourceConsumptions(newStation.id);
-    if (newStation.boxInfos?.length) {
-        boxStore.setSelectedBox(newStation.boxInfos[0]);
+    if (newStation.boxes?.length) {
+        boxStore.setSelectedBox(newStation.boxes[0]);
     }
 });
 
@@ -60,8 +60,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     stopAutoRefresh();
 });
-
-// TODO: implement auto fetching
 </script>
 
 
@@ -94,14 +92,14 @@ onBeforeUnmount(() => {
                 <div class="text-3xl">Boxes</div>
 
                 <div class="grid grid-cols-3 gap-4 mt-6">
-                    <span v-if="stationStore?.selectedStation?.boxInfos"
-                        v-for="box in stationStore?.selectedStation?.boxInfos">
+                    <span v-if="stationStore?.selectedStation?.boxes"
+                        v-for="box in stationStore?.selectedStation?.boxes">
                         <Suspense>
                             <BoxCard :box="box" />
                         </Suspense>
                     </span>
                     <span v-else>
-                        Loading units...
+                        Loading boxes...
                     </span>
 
                     <!-- testing this -->

@@ -16,7 +16,7 @@ const backgroundColorCssClass = computed(() => {
 });
 
 onMounted(async () => {
-    await boxStore.loadBoxInfo(props.box.id);
+    await boxStore.getBox(props.box.id);
     boxStore.startAutoRefresh(props.box.id);
 });
 
@@ -35,7 +35,7 @@ onBeforeUnmount(() => {
             <div class="ml-auto justify-end">
                 <button @click="
                     boxStore.setSelectedBox(box);
-                boxStore.updateBoxInfo(box);
+                boxStore.getBox(box.id);
                 boxStore.toggleBoxPopup();
                 ">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="Settings" class="card-button-icon-small" />
@@ -46,14 +46,14 @@ onBeforeUnmount(() => {
         <!-- Box info -->
         <div class="mt-2">
             <div class="grid grid-cols-1 text-sm">
-                <div v-if="boxStore.selectedBoxInfo">
+                <div v-if="box">
                     <div>
                         Washes today:
-                        <span class="font-bold">{{ boxStore.selectedBoxInfo.washCycleCount }}</span>
+                        <span class="font-bold">{{ box.washCycleCount }}</span>
                     </div>
                     <div>
                         Coin tray:
-                        <span class="font-bold">{{ boxStore.selectedBoxInfo.totalCoinAmount }}</span>
+                        <span class="font-bold">{{ box.totalCoinAmount }}</span>
                     </div>
                 </div>
                 <div v-else>
