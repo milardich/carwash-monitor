@@ -36,7 +36,9 @@ builder.Services.AddAutoMapper(cfg =>
             opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.WaxConsumption ?? 0)))
         .ForMember(dest => dest.TotalDetergentConsumption,
             opt => opt.MapFrom(src => src.WashCycles.Sum(wc => wc.DetergentConsumption ?? 0)))
-        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+        .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+        .ForMember(dest => dest.CoinTrayLimit, opt => opt.MapFrom(src => src.CoinTrayLimit))
+        .ForMember(dest => dest.CoinTrayAmount, opt => opt.MapFrom(src => src.CoinTrayAmount));
     cfg.CreateMap<WashCycle, WashCycleDto>()
         .ForMember(dest => dest.WaterConsumption, opt => opt.MapFrom(src => src.WaterConsumption ?? 0))
         .ForMember(dest => dest.DetergentConsumption, opt => opt.MapFrom(src => src.DetergentConsumption ?? 0))

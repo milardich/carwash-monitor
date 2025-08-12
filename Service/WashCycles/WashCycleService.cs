@@ -19,6 +19,11 @@ public class WashCycleService : IWashCycleService
 
     public async Task<int> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycleDto)
     {
+        var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
+
+        if (box == null || box.IsCoinTrayFull() || washCycleDto.CoinAmount >= box.CoinTrayLimit - box.CoinTrayAmount)
+            return 0;
+
         var washCycle = new WashCycle
         {
             Id = Guid.NewGuid(),
@@ -30,6 +35,9 @@ public class WashCycleService : IWashCycleService
             DateCreated = DateTime.UtcNow
         };
         await _context.AddAsync(washCycle);
+
+        box.CoinTrayAmount += washCycleDto.CoinAmount ?? 0;
+
         return await _context.SaveChangesAsync();
     }
 

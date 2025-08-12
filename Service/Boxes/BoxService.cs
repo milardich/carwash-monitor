@@ -33,7 +33,9 @@ public class BoxService : IBoxService
             Id = Guid.NewGuid(),
             Number = boxNumber,
             StationId = stationId,
-            Status = BoxStatus.INACTIVE
+            Status = BoxStatus.INACTIVE,
+            CoinTrayLimit = 1000, 
+            CoinTrayAmount = 0,
         };
 
         _context.Boxes.Add(newBox);

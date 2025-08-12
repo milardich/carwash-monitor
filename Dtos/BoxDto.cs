@@ -10,5 +10,7 @@ public class BoxDto
     public float? TotalWaxConsumption { get; set; }
     public float? TotalDetergentConsumption { get; set; }
     public string? Status { get; set; }
+    public int CoinTrayAmount { get; set; }
+    public int CoinTrayLimit { get; set; }
     public List<WashCycleDto> WashCycles { get; set; } = [];
 }

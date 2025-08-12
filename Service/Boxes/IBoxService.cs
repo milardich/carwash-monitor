@@ -1,4 +1,5 @@
 ﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Models;
 
 namespace CarwashMonitor.Service.Boxes;
 
