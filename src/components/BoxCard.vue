@@ -8,9 +8,10 @@ const boxStore = useBoxStore();
 const boxStateLabel = computed(() => props.box.status);
 const backgroundColorCssClass = computed(() => {
     switch (props.box.status) {
-        case 'AVAILABLE': return 'available-bg-color';
+        case 'ACTIVE': return 'available-bg-color';
         case 'IN_USE': return 'in-use-bg-color';
         case 'INACTIVE': return 'inactive-bg-color';
+        case 'COIN_TRAY_FULL': return 'inactive-bg-color';
         default: return 'bg-yellow-warning';
     }
 });

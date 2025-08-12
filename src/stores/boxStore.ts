@@ -1,4 +1,4 @@
-import { getBox, type Box } from '@/api/box.api'
+import { type Box } from '@/api/box.api'
 import { defineStore } from 'pinia'
 
 export const useBoxStore = defineStore('box', {
@@ -13,32 +13,14 @@ export const useBoxStore = defineStore('box', {
             this.selectedBox = box
         },
 
-        // async getBox(boxId: string) {
-        //     this.selectedBox = await getBox(boxId)
-        // },
-
         toggleBoxPopup() {
             this.boxPopupOpen = !this.boxPopupOpen
         },
 
-        setBoxStatus(boxState: string) {
+        setBoxStatus(boxStatus: string) {
             if (this.selectedBox) {
-                this.selectedBox.status = boxState
+                this.selectedBox.status = boxStatus
             }
         }
-
-        // startAutoRefresh(boxId: string) {
-        //     this.stopAutoRefresh()
-        //     this.refreshIntervalId = window.setInterval(() => {
-        //         this.getBox(boxId)
-        //     }, 5_000)
-        // },
-
-        // stopAutoRefresh() {
-        //     if (this.refreshIntervalId !== null) {
-        //         clearInterval(this.refreshIntervalId)
-        //         this.refreshIntervalId = null
-        //     }
-        // }
     }
 })

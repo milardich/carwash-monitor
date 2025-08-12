@@ -1,48 +1,21 @@
 <script setup lang="ts">
 import { useBoxStore } from '@/stores/boxStore';
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { changeBoxStatus, getBox, type BoxInfo } from '@/api/box.api';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { changeBoxStatus } from '@/api/box.api';
 import { useStationStore } from '@/stores/stationStore';
-import { strDateTime, strDateTimeMidnight } from '@/util/dateTimeUtils';
 
 const boxStore = useBoxStore();
 const stationStore = useStationStore();
-const picked = ref(boxStore.selectedBox?.status);
-const boxInfo = ref<BoxInfo | null>();
+const boxStatus = ref(boxStore.selectedBox?.status);
 
-var intervalId: number;
 
-onMounted(async () => {
-    if (boxStore?.selectedBoxInfo) {
-        boxInfo.value = boxStore?.selectedBoxInfo;
-    }
+onMounted(() => {
+
 });
 
 onBeforeUnmount(() => {
-    clearInterval(intervalId);
+
 });
-
-watch(
-    () => boxStore.selectedBox,
-    (box) => {
-        picked.value = box?.status;
-    }
-);
-
-watch(
-    () => boxStore.selectedBox?.status,
-    (newStatus) => {
-        picked.value = newStatus
-    }
-);
-
-watch(
-    () => boxStore.selectedBoxInfo,
-    (newBoxInfo) => {
-        boxInfo.value = newBoxInfo;
-    }
-);
-
 
 </script>
 
@@ -73,7 +46,7 @@ watch(
 
 
                 <!-- Modal body -->
-                <div v-if="boxInfo">
+                <!-- <div v-if="boxInfo">
                     <div class="mt-6">
                         <div>
                             <div class="font-semibold table-footer font-black flex m-4 rounded-lg">
@@ -267,27 +240,27 @@ watch(
                 </div>
                 <div v-else>
                     Loading unit info...
-                </div>
+                </div> -->
 
 
 
                 <!-- Modal footer -->
                 <div class="mt-6 grid grid-cols-3" v-if="stationStore?.selectedStation && boxStore?.selectedBox">
                     <div class="available-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="AVAILABLE" value="AVAILABLE" v-model="picked" @click="
-                            changeBoxStatus(boxStore?.selectedBox?.id, 'AVAILABLE');
-                        boxStore.setBoxStatus('AVAILABLE')" />
-                        <label for="AVAILABLE">AVAILABLE</label>
+                        <input type="radio" id="ACTIVE" value="ACTIVE" v-model="boxStatus" @click="
+                            changeBoxStatus(boxStore?.selectedBox?.id, 'ACTIVE');
+                        boxStore.setBoxStatus('ACTIVE')" />
+                        <label for="ACTIVE">ACTIVE</label>
                     </div>
 
                     <div class="inactive-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="picked" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'INACTIVE');
+                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="boxStatus" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'INACTIVE');
                         boxStore.setBoxStatus('INACTIVE')" />
                         <label for="INACTIVE">INACTIVE</label>
                     </div>
 
                     <div class="in-use-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="IN_USE" value="IN_USE" v-model="picked" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'IN_USE');
+                        <input type="radio" id="IN_USE" value="IN_USE" v-model="boxStatus" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'IN_USE');
                         boxStore.setBoxStatus('IN_USE')" />
                         <label for="IN_USE">IN_USE</label>
                     </div>
