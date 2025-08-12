@@ -11,6 +11,8 @@ export interface Box {
     totalWaterConsumption: number
     totalDetergentConsumption: number
     totalWaxConsumption: number
+    coinTrayAmount: number
+    coinTrayLimit: number
     washCycles: WashCycle[]
 }
 

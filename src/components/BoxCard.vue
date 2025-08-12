@@ -26,7 +26,6 @@ const backgroundColorCssClass = computed(() => {
             <div class="ml-auto justify-end">
                 <button @click="
                     boxStore.setSelectedBox(box);
-                // boxStore.getBox(box.id);
                 boxStore.toggleBoxPopup();
                 ">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="Settings" class="card-button-icon-small" />
@@ -44,7 +43,7 @@ const backgroundColorCssClass = computed(() => {
                     </div>
                     <div>
                         Coin tray:
-                        <span class="font-bold">{{ box.totalCoinAmount }}</span>
+                        <span class="font-bold">{{ box.coinTrayAmount }}/{{ box.coinTrayLimit }}</span>
                     </div>
                 </div>
                 <div v-else>
