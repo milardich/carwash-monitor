@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
 import type { Station } from '@/api/station.api'
-import { getAllStations, getStation } from '@/api/station.api'
+import { getAllStations } from '@/api/station.api'
 import { useResourceStore } from './resourceStore'
-import { useBoxStore } from './boxStore'
 
-// stationStore.ts
 export const useStationStore = defineStore('station', {
   state: () => ({
     selectedStation: null as Station | null,
@@ -18,26 +16,19 @@ export const useStationStore = defineStore('station', {
       try {
         this.stations = await getAllStations()
         if (!this.selectedStation && this.stations.length) {
-          await this.switchStation(this.stations[0].id)
+          this.selectedStation = this.stations[0]
         }
       } finally {
         this.isLoading = false
       }
     },
 
-    async switchStation(stationId: string) {
-      const station = await getStation(stationId)
+    async switchStation(station: Station) {
       if (station) {
+        console.log('Switched to station: ', station)
         this.selectedStation = station
-
-        // Load all related data when station changes
         const resourceStore = useResourceStore()
-        const boxStore = useBoxStore()
-
-        await Promise.all([
-          resourceStore.loadResourceConsumptions(station.id),
-          boxStore.loadBoxes(station.id) // you'd need to implement this
-        ])
+        await resourceStore.loadResourceConsumptions(station.id)
       }
     }
   },

@@ -16,15 +16,17 @@ const axiosClient = axios.create({
 })
 
 export async function getAllStations(): Promise<Station[]> {
-  return await axiosClient.get('/station')
+  const response = await axiosClient.get('/station')
+  return response.data
 }
 
 export async function getStation(stationId: string): Promise<Station> {
-  return await axiosClient.get(`/station/${stationId}`)
+  const response = await axiosClient.get(`/station/${stationId}`)
+  return response.data
 }
 
 export async function createStation(request: CreateStationRequest): Promise<Station> {
-  return await axiosClient.post(
+  const response = await axiosClient.post(
     `/station`,
     {
       name: request.name
@@ -35,4 +37,5 @@ export async function createStation(request: CreateStationRequest): Promise<Stat
       }
     }
   )
+  return response.data
 }

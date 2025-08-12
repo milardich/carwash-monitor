@@ -52,8 +52,8 @@ watch(() => stationStore.selectedStation, async (newStation) => {
     }
 });
 
-onMounted(() => {
-    init();
+onMounted(async () => {
+    await init();
     startAutoRefresh();
 });
 
@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
 <template>
     <div class="h-full">
         <div>
-            <span v-if="stationStore.stations.length > 0">
+            <span v-if="stationStore.hasStations">
                 <StationDropdown />
             </span>
             <span v-else>
@@ -91,21 +91,22 @@ onBeforeUnmount(() => {
             <div class="rounded-lg overflow-y-auto p-6 h-full content-background-container-color shadow-md">
                 <div class="text-3xl">Boxes</div>
 
-                <div class="grid grid-cols-3 gap-4 mt-6">
-                    <span v-if="stationStore?.selectedStation?.boxes"
-                        v-for="box in stationStore?.selectedStation?.boxes">
-                        <Suspense>
-                            <BoxCard :box="box" />
-                        </Suspense>
-                    </span>
-                    <span v-else>
-                        Loading boxes...
-                    </span>
+                <div v-if="stationStore?.selectedStation?.boxes">
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                        <span v-for="box in stationStore?.selectedStation?.boxes" :key="box.id">
+                            <Suspense>
+                                <BoxCard :box="box" />
+                            </Suspense>
+                        </span>
 
-                    <!-- testing this -->
-                    <Suspense>
-                        <BoxPopup />
-                    </Suspense>
+                        <!-- POPUP -->
+                        <Suspense>
+                            <BoxPopup />
+                        </Suspense>
+                    </div>
+                </div>
+                <div v-else>
+                    Loading boxes...
                 </div>
             </div>
 

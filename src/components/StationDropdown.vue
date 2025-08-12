@@ -1,26 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { getStation } from '@/api/station.api';
+import { ref } from 'vue';
 import { useStationStore } from '@/stores/stationStore';
-import { useResourceStore } from '@/stores/resourceStore';
 
 const stationDropdownOpen = ref(false);
-
 const stationStore = useStationStore();
-const resourceStore = useResourceStore();
-
 const toggleStationDropdown = () => {
     stationDropdownOpen.value = !stationDropdownOpen.value;
 }
-
-async function changeSelectedStation(stationId: number) {
-    stationStore.selectedStation = undefined;
-    stationStore.selectedStation = await getStation(stationId);
-    if (stationStore.selectedStation) {
-        resourceStore.setChartDataByStationId(stationStore.selectedStation.id);
-    }
-}
-
 
 </script>
 
@@ -43,8 +29,9 @@ async function changeSelectedStation(stationId: number) {
         class="z-10 divide-y divide-gray-100 rounded-lg shadow w-40 absolute select-station-dropdown shadow-xl">
         <ul class="text-sm rounded-lg" aria-labelledby="dropdownDefaultButton">
             <a href="#" class="list-link">
-                <li v-for="station in stationStore.stations" class="block px-4 py-2 dropdown-item rounded-lg"
-                    @click="changeSelectedStation(station.id); toggleStationDropdown()">
+                <li v-for="station in stationStore.stations" :key="station.id"
+                    class="block px-4 py-2 dropdown-item rounded-lg"
+                    @click="stationStore.switchStation(station); toggleStationDropdown();">
                     {{ station.name }}
                 </li>
             </a>

@@ -24,7 +24,7 @@ export async function createWashCycle(
   request: WashCycleRequest,
   boxId?: number
 ): Promise<WashCycle> {
-  return await axiosClient.post(
+  const response = await axiosClient.post(
     `/box/${boxId}/washcycle`,
     {
       waterConsumption: request.waterConsumption,
@@ -38,4 +38,5 @@ export async function createWashCycle(
       }
     }
   )
+  return response.data
 }

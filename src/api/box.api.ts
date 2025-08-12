@@ -19,15 +19,18 @@ const axiosClient = axios.create({
 })
 
 export async function getBox(boxId?: string): Promise<Box> {
-  return await axiosClient.get(`/box/${boxId}`)
+  const response = await axiosClient.get(`/box/${boxId}`)
+  return response.data
 }
 
 export async function changeBoxStatus(boxId: string, boxStatus: string): Promise<Box> {
-  return await axiosClient.patch(`/box/${boxId}/status`, {
+  const response = await axiosClient.patch(`/box/${boxId}/status`, {
     status: boxStatus
   })
+  return response.data
 }
 
 export async function createBox(stationId?: number): Promise<Station> {
-  return await axiosClient.post(`/station/${stationId}/box`)
+  const response = await axiosClient.post(`/station/${stationId}/box`)
+  return response.data
 }
