@@ -1,6 +1,6 @@
-import type { ChartResponse } from '@/api/resources.api';
-import { getChartData } from '@/api/resources.api';
-import { defineStore } from 'pinia';
+import type { ChartResponse } from '@/api/resources.api'
+import { getChartData } from '@/api/resources.api'
+import { defineStore } from 'pinia'
 
 export const useResourceStore = defineStore('resources', {
     state: () => ({
@@ -13,18 +13,18 @@ export const useResourceStore = defineStore('resources', {
 
     actions: {
         async loadResourceConsumptions(stationId: string) {
-            this.isLoading = true;
+            this.isLoading = true
             try {
-                const data: ChartResponse = await getChartData(stationId);
-                this.labels = data.water.labels;
-                this.waterData = data.water.data;
-                this.waxData = data.wax.data;
-                this.detergentData = data.detergent.data;
+                const data: ChartResponse = await getChartData(stationId)
+                this.labels = data.water.labels
+                this.waterData = data.water.data
+                this.waxData = data.wax.data
+                this.detergentData = data.detergent.data
             } finally {
-                this.isLoading = false;
+                this.isLoading = false
             }
         }
     },
 
-    getters: {},
-});
+    getters: {}
+})
