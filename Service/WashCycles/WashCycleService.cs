@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarwashMonitor.Dtos;
+using CarwashMonitor.Enums;
 using CarwashMonitor.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,10 @@ public class WashCycleService : IWashCycleService
     {
         var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
 
-        if (box == null || box.IsCoinTrayFull() || washCycleDto.CoinAmount >= box.CoinTrayLimit - box.CoinTrayAmount)
+        if (box == null
+            || box.IsCoinTrayFull()
+            || washCycleDto.CoinAmount > box.CoinTrayLimit - box.CoinTrayAmount
+            || box.Status != BoxStatus.ACTIVE)
             return 0;
 
         var washCycle = new WashCycle
@@ -37,6 +41,8 @@ public class WashCycleService : IWashCycleService
         await _context.AddAsync(washCycle);
 
         box.CoinTrayAmount += washCycleDto.CoinAmount ?? 0;
+
+        box.Status = box.IsCoinTrayFull() ? BoxStatus.INACTIVE : BoxStatus.ACTIVE;
 
         return await _context.SaveChangesAsync();
     }

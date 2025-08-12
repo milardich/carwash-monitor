@@ -4,5 +4,5 @@ public enum BoxStatus
 {
     IN_USE,
     INACTIVE,
-    AVAILABLE
+    ACTIVE
 }
