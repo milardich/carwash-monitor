@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, onBeforeUnmount } from 'vue';
+import { computed } from 'vue';
 import type { Box } from '@/api/box.api';
 import { useBoxStore } from '@/stores/boxStore';
 
@@ -15,15 +15,6 @@ const backgroundColorCssClass = computed(() => {
     }
 });
 
-onMounted(async () => {
-    await boxStore.getBox(props.box.id);
-    boxStore.startAutoRefresh(props.box.id);
-});
-
-onBeforeUnmount(() => {
-    boxStore.stopAutoRefresh();
-});
-
 </script>
 
 <template>
@@ -35,7 +26,7 @@ onBeforeUnmount(() => {
             <div class="ml-auto justify-end">
                 <button @click="
                     boxStore.setSelectedBox(box);
-                boxStore.getBox(box.id);
+                // boxStore.getBox(box.id);
                 boxStore.toggleBoxPopup();
                 ">
                     <img src="@/assets/settings-svgrepo-com.svg" alt="Settings" class="card-button-icon-small" />

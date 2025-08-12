@@ -13,9 +13,9 @@ export const useBoxStore = defineStore('box', {
             this.selectedBox = box
         },
 
-        async getBox(boxId: string) {
-            this.selectedBox = await getBox(boxId)
-        },
+        // async getBox(boxId: string) {
+        //     this.selectedBox = await getBox(boxId)
+        // },
 
         toggleBoxPopup() {
             this.boxPopupOpen = !this.boxPopupOpen
@@ -25,20 +25,20 @@ export const useBoxStore = defineStore('box', {
             if (this.selectedBox) {
                 this.selectedBox.status = boxState
             }
-        },
-
-        startAutoRefresh(boxId: string) {
-            this.stopAutoRefresh()
-            this.refreshIntervalId = window.setInterval(() => {
-                this.getBox(boxId)
-            }, 60_000)
-        },
-
-        stopAutoRefresh() {
-            if (this.refreshIntervalId !== null) {
-                clearInterval(this.refreshIntervalId)
-                this.refreshIntervalId = null
-            }
         }
+
+        // startAutoRefresh(boxId: string) {
+        //     this.stopAutoRefresh()
+        //     this.refreshIntervalId = window.setInterval(() => {
+        //         this.getBox(boxId)
+        //     }, 5_000)
+        // },
+
+        // stopAutoRefresh() {
+        //     if (this.refreshIntervalId !== null) {
+        //         clearInterval(this.refreshIntervalId)
+        //         this.refreshIntervalId = null
+        //     }
+        // }
     }
 })

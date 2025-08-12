@@ -23,6 +23,21 @@ export const useStationStore = defineStore('station', {
             }
         },
 
+        async updateSelectedStation() {
+            this.isLoading = true
+            try {
+                this.stations = await getAllStations()
+                const updatedStation = this.stations.find((s) => s.id === this.selectedStation?.id)
+                if (updatedStation) {
+                    this.selectedStation = updatedStation
+                } else {
+                    this.selectedStation = this.stations[0] ?? null
+                }
+            } finally {
+                this.isLoading = false
+            }
+        },
+
         async switchStation(station: Station) {
             if (station) {
                 console.log('Switched to station: ', station)
