@@ -15,19 +15,17 @@ public class StatisticsController : ControllerBase
 
     [HttpGet]
     [Route("/statistics/highlights")]
-    public async Task<ActionResult<StatisticsHighlightsDto>> GetStatisticsHighlightsAsync(
-        [FromQuery] DateTime? dateFrom, [FromQuery] DateTime? dateTo)
+    public async Task<ActionResult<StatisticsHighlightsDto>> GetStatisticsHighlightsAsync()
     {
-        var result = await StatisticsService.GetStatisticsHighlightsAsync(dateFrom, dateTo);
+        var result = await StatisticsService.GetStatisticsHighlightsAsync();
         return Ok(result);
     }
 
     [HttpGet]
     [Route("/statistics/summary")]
-    public async Task<ActionResult<StatisticsSummaryDto>> GetStatisticsSummaryAsync([FromQuery] DateTime? dateFrom,
-        [FromQuery] DateTime? dateTo)
+    public async Task<ActionResult<StatisticsSummaryDto>> GetStatisticsSummaryAsync()
     {
-        var result = await StatisticsService.GetStatisticsSummaryAsync(dateFrom, dateTo);
+        var result = await StatisticsService.GetStatisticsSummaryAsync();
         return Ok(result);
     }
 }

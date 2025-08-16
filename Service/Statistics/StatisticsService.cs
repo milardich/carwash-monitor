@@ -14,12 +14,16 @@ public class StatisticsService : IStatisticsService
         _context = context;
     }
 
-    public async Task<StatisticsHighlightsDto?> GetStatisticsHighlightsAsync(DateTime? dateFrom, DateTime? dateTo)
+    public async Task<StatisticsHighlightsDto?> GetStatisticsHighlightsAsync()
     {
+        var now = DateTime.UtcNow;
+        var startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var startOfNextMonth = startOfMonth.AddMonths(1);
+
         var filteredWashCycles = _context.WashCycles
             .Include(wc => wc.Box)
             .ThenInclude(b => b!.Station)
-            .Where(wc => wc.DateCreated >= dateFrom && wc.DateCreated <= dateTo);
+            .Where(wc => wc.DateCreated >= startOfMonth && wc.DateCreated < startOfNextMonth);
 
         var revenueByStation = await filteredWashCycles
             .GroupBy(wc => wc.Box!.Station)
@@ -60,8 +64,12 @@ public class StatisticsService : IStatisticsService
         };
     }
 
-    public async Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync(DateTime? dateFrom, DateTime? dateTo)
+    public async Task<StatisticsSummaryDto?> GetStatisticsSummaryAsync()
     {
+        var now = DateTime.UtcNow;
+        var startOfMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var startOfNextMonth = startOfMonth.AddMonths(1);
+
         var waterPrice = WashingResources.WaterPrice;
         var waxPrice = WashingResources.WaxPrice;
         var detergentPrice = WashingResources.DetergentPrice;
@@ -72,22 +80,22 @@ public class StatisticsService : IStatisticsService
                 StationName = station.Name,
                 Revenue = station.Boxes
                     .SelectMany(b => b!.WashCycles)
-                    .Where(wc => wc!.DateCreated >= dateFrom && wc.DateCreated <= dateTo)
+                    .Where(wc => wc!.DateCreated >= startOfMonth && wc.DateCreated < startOfNextMonth)
                     .Sum(wc => wc!.CoinAmount ?? 0),
 
                 WaterCost = station.Boxes
                     .SelectMany(b => b!.WashCycles)
-                    .Where(wc => wc!.DateCreated >= dateFrom && wc.DateCreated <= dateTo)
+                    .Where(wc => wc!.DateCreated >= startOfMonth && wc.DateCreated < startOfNextMonth)
                     .Sum(wc => (wc!.WaterConsumption ?? 0) * waterPrice),
 
                 WaxCost = station.Boxes
                     .SelectMany(b => b!.WashCycles)
-                    .Where(wc => wc!.DateCreated >= dateFrom && wc.DateCreated <= dateTo)
+                    .Where(wc => wc!.DateCreated >= startOfMonth && wc.DateCreated < startOfNextMonth)
                     .Sum(wc => (wc!.WaxConsumption ?? 0) * waxPrice),
 
                 DetergentCost = station.Boxes
                     .SelectMany(b => b!.WashCycles)
-                    .Where(wc => wc!.DateCreated >= dateFrom && wc.DateCreated <= dateTo)
+                    .Where(wc => wc!.DateCreated >= startOfMonth && wc.DateCreated < startOfNextMonth)
                     .Sum(wc => (wc!.DetergentConsumption ?? 0) * detergentPrice)
             });
 
