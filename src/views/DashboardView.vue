@@ -6,12 +6,10 @@ import { useStationStore } from '@/stores/stationStore'
 import { useResourceStore } from '@/stores/resourceStore';
 import BoxPopup from '@/components/BoxPopup.vue'
 import { onBeforeUnmount, onMounted } from 'vue';
-import { useBoxStore } from '@/stores/boxStore';
 import { watch } from 'vue';
 
 const stationStore = useStationStore();
 const resourceStore = useResourceStore();
-const boxStore = useBoxStore();
 
 let refreshIntervalId: number | null = null;
 
@@ -112,10 +110,6 @@ onBeforeUnmount(() => {
                     Loading boxes...
                 </template>
             </div>
-
-
         </div>
     </div>
-
-
 </template>

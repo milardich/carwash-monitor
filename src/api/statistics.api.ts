@@ -33,31 +33,12 @@ const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL
 })
 
-// TODO: rename function to getStatisticsHighlights
-export async function getStatistics(
-    dateTimeFrom: string,
-    dateTimeTo: string
-): Promise<StatisticsHighlights> {
-    const response = await axiosClient.get(`/statistics/highlights`, {
-        params: {
-            dateTimeFrom: dateTimeFrom,
-            dateTimeTo: dateTimeTo
-        }
-    })
+export async function getStatisticsHighlights(): Promise<StatisticsHighlights> {
+    const response = await axiosClient.get(`/statistics/highlights`)
     return response.data
 }
 
-export async function getStatisticsSummary(
-    dateTimeFrom: string,
-    dateTimeTo: string,
-    timezone: string
-): Promise<StatisticsSummary> {
-    const response = await axiosClient.get(`/statistics/summary`, {
-        params: {
-            dateTimeFrom: dateTimeFrom,
-            dateTimeTo: dateTimeTo,
-            timezone: timezone
-        }
-    })
+export async function getStatisticsSummary(): Promise<StatisticsSummary> {
+    const response = await axiosClient.get(`/statistics/summary`)
     return response.data
 }
