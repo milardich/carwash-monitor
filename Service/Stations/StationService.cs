@@ -29,9 +29,13 @@ public class StationService : IStationService
 
     public async Task<StationDto> GetStationAsync(Guid stationId)
     {
+        var now = DateTime.UtcNow;
+        var start = now.Date; // today at 00:00
+        var end = start.AddDays(1); // tomorrow at 00:00
+
         var stationEntity = await _context.Stations
             .Include(s => s.Boxes)
-            .ThenInclude(b => b.WashCycles)
+            .ThenInclude(b => b.WashCycles.Where(wc => wc.DateCreated >= start && wc.DateCreated < end))
             .FirstOrDefaultAsync(station => station.Id == stationId);
 
         if (stationEntity == null) throw new Exception("Station not found.");
@@ -41,9 +45,13 @@ public class StationService : IStationService
 
     public async Task<List<StationDto>> GetStationsAsync()
     {
+        var now = DateTime.UtcNow;
+        var start = now.Date; // today at 00:00
+        var end = start.AddDays(1); // tomorrow at 00:00
+
         var stationEntities = await _context.Stations
             .Include(s => s.Boxes)
-            .ThenInclude(b => b.WashCycles)
+            .ThenInclude(b => b.WashCycles.Where(wc => wc.DateCreated >= start && wc.DateCreated < end))
             .ToListAsync();
 
         return _mapper.Map<List<StationDto>>(stationEntities);
