@@ -21,10 +21,6 @@ async function init() {
     if (!station) return;
 
     await resourceStore.loadResourceConsumptions(station.id);
-
-    if (station.boxes?.length && !boxStore.selectedBox) {
-        boxStore.setSelectedBox(station.boxes[0]);
-    }
 }
 
 function startAutoRefresh() {
@@ -48,9 +44,6 @@ function stopAutoRefresh() {
 watch(() => stationStore.selectedStation, async (newStation) => {
     if (!newStation) return;
     await resourceStore.loadResourceConsumptions(newStation.id);
-    if (newStation.boxes?.length) {
-        boxStore.setSelectedBox(newStation.boxes[0]);
-    }
 });
 
 onMounted(async () => {

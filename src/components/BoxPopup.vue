@@ -46,27 +46,28 @@ onBeforeUnmount(() => {
 
 
                 <!-- Modal body -->
-                <!-- <div v-if="boxInfo">
+                <div v-if="boxStore.selectedBox">
                     <div class="mt-6">
                         <div>
                             <div class="font-semibold table-footer font-black flex m-4 rounded-lg">
                                 <div scope="row" class="px-6 py-3 text-base">Wash cycle count:
-                                    {{ boxInfo.washCycleCount }}</div>
-                                <div class="px-6 py-3"> Coin amount: {{ boxInfo.totalCoinAmount }}
+                                    {{ boxStore.selectedBox.washCycleCount }}</div>
+                                <div class="px-6 py-3"> Coin amount: {{ boxStore.selectedBox.totalCoinAmount }}
                                 </div>
-                                <div class="px-6 py-3"> Water: {{ boxInfo.totalWaterConsumption }} L
+                                <div class="px-6 py-3"> Water: {{ boxStore.selectedBox.totalWaterConsumption }} L
                                 </div>
                                 <div class="px-6 py-3"> Detergent: {{
-                                    boxInfo.totalDetergentConsumption }} L
+                                    boxStore.selectedBox.totalDetergentConsumption }} L
                                 </div>
-                                <div class="px-6 py-3"> Wax: {{ boxInfo.totalWaxConsumption }} L
+                                <div class="px-6 py-3"> Wax: {{ boxStore.selectedBox.totalWaxConsumption }} L
                                 </div>
                             </div>
                         </div>
 
 
 
-                        <div class="m-4 shadow-2xl max-h-96 overflow-y-scroll ">
+                        <div class="m-4 shadow-2xl h-96 max-h-96 overflow-y-scroll "
+                            v-if="boxStore.selectedBox.washCycles.length > 0">
                             <div class="overflow-x-auto  h-max shadow-xl sm:rounded-lg">
                                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
@@ -92,155 +93,39 @@ onBeforeUnmount(() => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
-                                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                                            <td class="px-6 py-4">
-                                                543
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                40 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                4 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2 L
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                2024-08-15
-                                            </td>
-                                        </tr>
+                                        <template v-for="washCycle in boxStore.selectedBox.washCycles"
+                                            :key="washCycle.id">
+                                            <tr class="odd:bg-white even:bg-gray-50 border-b">
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.id }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.coinAmount }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.waterConsumption }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.detergentConsumption }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.waxConsumption }}
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    {{ washCycle.dateCreated }}
+                                                </td>
+                                            </tr>
+                                        </template>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <div v-else> This box does not have any wash cycles. </div>
                     </div>
                 </div>
                 <div v-else>
                     Loading unit info...
-                </div> -->
+                </div>
 
 
 

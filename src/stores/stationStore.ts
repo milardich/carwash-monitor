@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Station } from '@/api/station.api'
-import { getAllStations } from '@/api/station.api'
+import { getAllStations, getStation } from '@/api/station.api'
 import { useResourceStore } from './resourceStore'
 
 export const useStationStore = defineStore('station', {
@@ -26,13 +26,8 @@ export const useStationStore = defineStore('station', {
         async updateSelectedStation() {
             this.isLoading = true
             try {
-                this.stations = await getAllStations()
-                const updatedStation = this.stations.find((s) => s.id === this.selectedStation?.id)
-                if (updatedStation) {
-                    this.selectedStation = updatedStation
-                } else {
-                    this.selectedStation = this.stations[0] ?? null
-                }
+                if (this.selectedStation != null)
+                    this.selectedStation = await getStation(this.selectedStation.id)
             } finally {
                 this.isLoading = false
             }

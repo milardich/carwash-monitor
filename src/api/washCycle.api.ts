@@ -13,7 +13,7 @@ export interface WashCycleRequest {
 
 export interface WashCycle {
     id: string
-    washCycleDate: string
+    dateCreated: string
     coinAmount: number
     waterConsumption: number
     detergentConsumption: number
