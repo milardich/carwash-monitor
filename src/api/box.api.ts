@@ -36,3 +36,8 @@ export async function createBox(stationId?: string): Promise<Station> {
     const response = await axiosClient.post(`/station/${stationId}/box`)
     return response.data
 }
+
+export async function emptyTray(boxId?: string): Promise<Box> {
+    const response = await axiosClient.patch(`/box/${boxId}/empty-tray`)
+    return response.data
+}

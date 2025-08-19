@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { useBoxStore } from '@/stores/boxStore';
-import { onBeforeUnmount, onMounted } from 'vue';
+import { computed, onBeforeUnmount, onMounted } from 'vue';
 import { useStationStore } from '@/stores/stationStore';
 
 const boxStore = useBoxStore();
 const stationStore = useStationStore();
+const emptyTrayButtonVisible = computed(() => {
+    const amount = boxStore.selectedBox?.coinTrayAmount ?? 0
+    const limit = boxStore.selectedBox?.coinTrayLimit ?? 0
+    return amount >= (limit - 50) && limit > 0
+})
 
 onMounted(() => {
 
@@ -43,6 +48,14 @@ onBeforeUnmount(() => {
                         </template>
                     </button>
 
+                    <template v-if="emptyTrayButtonVisible">
+                        <button type="button"
+                            class="flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition-all duration-200 mr-2 ml-6"
+                            @click="boxStore.emptyTray(boxStore?.selectedBox?.id)">
+                            Empty Tray
+                        </button>
+                    </template>
+
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                         data-modal-hide="default-modal" @click="boxStore.toggleBoxPopup()">
@@ -64,7 +77,11 @@ onBeforeUnmount(() => {
                                     <div class="font-semibold table-footer font-black flex m-4 rounded-lg">
                                         <div scope="row" class="px-6 py-3 text-base">Wash cycle count:
                                             {{ boxStore.selectedBox.washCycleCount }}</div>
-                                        <div class="px-6 py-3"> Coin amount: {{ boxStore.selectedBox.totalCoinAmount }}
+                                        <div class="px-6 py-3">
+                                            Coin tray:
+                                            {{ boxStore.selectedBox.coinTrayAmount ?? 0 }}
+                                            /
+                                            {{ boxStore?.selectedBox.coinTrayLimit ?? 0 }}
                                         </div>
                                         <div class="px-6 py-3"> Water: {{ boxStore.selectedBox.totalWaterConsumption }}
                                             L
