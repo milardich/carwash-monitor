@@ -19,11 +19,17 @@ export const useBoxStore = defineStore('box', {
             this.boxPopupOpen = !this.boxPopupOpen
         },
 
-        async setBoxStatus(boxStatus: string) {
+        async setSelectedBoxStatus(boxStatus: string) {
             if (!this.selectedBox) return
 
             this.selectedBox.status = boxStatus
             await changeBoxStatus(this.selectedBox.id, boxStatus)
+            const stationStore = useStationStore()
+            await stationStore.updateSelectedStation()
+        },
+
+        async setBoxStatus(boxId: string, boxStatus: string) {
+            await changeBoxStatus(boxId, boxStatus)
             const stationStore = useStationStore()
             await stationStore.updateSelectedStation()
         },

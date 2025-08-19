@@ -7,7 +7,7 @@ const props = defineProps<{ box: Box }>();
 const boxStore = useBoxStore();
 const backgroundColorCssClass = computed(() => {
     switch (props.box.status) {
-        case 'ACTIVE': return 'available-bg-color';
+        case 'AVAILABLE': return 'available-bg-color';
         case 'IN_USE': return 'in-use-bg-color';
         case 'INACTIVE': return 'inactive-bg-color';
         case 'MAINTENANCE': return 'maintenance-bg-color';

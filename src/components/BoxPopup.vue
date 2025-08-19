@@ -34,7 +34,7 @@ onBeforeUnmount(() => {
                     <!-- Alert Maintenance Worker button -->
                     <button type="button"
                         class="flex items-center gap-2 px-3 py-2 rounded-lg bg-yellow-500 text-white hover:bg-yellow-600 transition-all duration-200 mr-2 ml-6"
-                        @click="boxStore.selectedBox?.status !== 'MAINTENANCE' ? boxStore.setBoxStatus('MAINTENANCE') : boxStore.setBoxStatus('INACTIVE')">
+                        @click="boxStore.selectedBox?.status !== 'MAINTENANCE' ? boxStore.setSelectedBoxStatus('MAINTENANCE') : boxStore.setSelectedBoxStatus('INACTIVE')">
                         <template v-if="boxStore.selectedBox?.status !== 'MAINTENANCE'">
                             Alert maintenance worker
                         </template>
@@ -147,15 +147,16 @@ onBeforeUnmount(() => {
                         <!-- Modal footer -->
                         <div class="grid grid-cols-3 gap-4 mt-6"
                             v-if="stationStore?.selectedStation && boxStore?.selectedBox">
-                            <!-- ACTIVE -->
+                            <!-- AVAILABLE -->
 
-                            <label for="ACTIVE" class="cursor-pointer rounded-xl px-4 py-2 text-center font-semibold shadow-md transition-all duration-200
+                            <label for="AVAILABLE" class="cursor-pointer rounded-xl px-4 py-2 text-center font-semibold shadow-md transition-all duration-200
                         available-bg-color text-white hover:brightness-110" :class="{
-                            'ring-2 ring-offset-2 ring-green-500 scale-105': boxStore.selectedBox?.status === 'ACTIVE'
+                            'ring-2 ring-offset-2 ring-green-500 scale-105': boxStore.selectedBox?.status === 'AVAILABLE'
                         }">
-                                <input type="radio" id="ACTIVE" value="ACTIVE" v-model="boxStore.selectedBox.status"
-                                    class="hidden" @click="boxStore.setBoxStatus('ACTIVE')" />
-                                ACTIVE
+                                <input type="radio" id="AVAILABLE" value="AVAILABLE"
+                                    v-model="boxStore.selectedBox.status" class="hidden"
+                                    @click="boxStore.setSelectedBoxStatus('AVAILABLE')" />
+                                AVAILABLE
                             </label>
 
                             <!-- INACTIVE -->
@@ -164,7 +165,7 @@ onBeforeUnmount(() => {
                             'ring-2 ring-offset-2 ring-gray-500 scale-105': boxStore.selectedBox?.status === 'INACTIVE'
                         }">
                                 <input type="radio" id="INACTIVE" value="INACTIVE" v-model="boxStore.selectedBox.status"
-                                    class="hidden" @click="boxStore.setBoxStatus('INACTIVE')" />
+                                    class="hidden" @click="boxStore.setSelectedBoxStatus('INACTIVE')" />
                                 INACTIVE
                             </label>
 
@@ -174,7 +175,7 @@ onBeforeUnmount(() => {
                             'ring-2 ring-offset-2 ring-blue-500 scale-105': boxStore.selectedBox?.status === 'IN_USE'
                         }">
                                 <input type="radio" id="IN_USE" value="IN_USE" v-model="boxStore.selectedBox.status"
-                                    class="hidden" @click="boxStore.setBoxStatus('IN_USE')" />
+                                    class="hidden" @click="boxStore.setSelectedBoxStatus('IN_USE')" />
                                 IN USE
                             </label>
                         </div>
