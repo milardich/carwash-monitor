@@ -164,6 +164,11 @@ body {
     background-color: var(--custom-figma-yellow);
 }
 
+.maintenance-bg-color {
+    background-color: var(--custom-grey);
+    color: white;
+}
+
 .modal-bg-color {
     background-color: var(--custom-figma-white);
 }

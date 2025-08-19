@@ -10,6 +10,7 @@ const backgroundColorCssClass = computed(() => {
         case 'ACTIVE': return 'available-bg-color';
         case 'IN_USE': return 'in-use-bg-color';
         case 'INACTIVE': return 'inactive-bg-color';
+        case 'MAINTENANCE': return 'maintenance-bg-color';
         default: return 'bg-yellow-warning';
     }
 });
