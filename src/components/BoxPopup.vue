@@ -92,16 +92,16 @@ onBeforeUnmount(() => {
                                                         Coin amount
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Water
+                                                        Water [L]
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Detergent
+                                                        Detergent [L]
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Wax
+                                                        Wax [L]
                                                     </th>
                                                     <th scope="col" class="px-6 py-3">
-                                                        Date
+                                                        Time
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -125,7 +125,8 @@ onBeforeUnmount(() => {
                                                             {{ washCycle.waxConsumption }}
                                                         </td>
                                                         <td class="px-6 py-4">
-                                                            {{ washCycle.dateCreated }}
+                                                            {{ new
+                                                                Date(washCycle.dateCreated).toLocaleTimeString("hr-HR") }}
                                                         </td>
                                                     </tr>
                                                 </template>

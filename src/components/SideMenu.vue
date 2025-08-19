@@ -49,9 +49,9 @@ function menuItemColor(menuItem: string): string {
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/settings">
+                    <RouterLink to="/control-panel">
                         <a href="#" class="side-menu-item flex items-center p-2 rounded-lg group"
-                            :class="menuItemColor('settings')">
+                            :class="menuItemColor('control-panel')">
                             <svg class="flex-shrink-0 w-5 h-5 " xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 932.179 932.179"
                                 xml:space="preserve" fill="currentColor">
@@ -71,7 +71,7 @@ function menuItemColor(menuItem: string): string {
                                     </g>
                                 </g>
                             </svg>
-                            <span class="ms-3">Settings</span>
+                            <span class="ms-3">Control Panel</span>
                         </a>
                     </RouterLink>
                 </li>
