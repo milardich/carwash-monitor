@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { Line } from 'vue-chartjs';
-import { ref, watch } from 'vue';
-import { useResourceStore } from '@/stores/resourceStore';
+import { Line as LineChart } from 'vue-chartjs';
+import { ref } from 'vue';
 import { computed } from 'vue';
-
-const resourceStore = useResourceStore();
 
 const props = defineProps<{
     labels: String[],
@@ -55,14 +52,14 @@ ChartJS.register(
 export default {
     name: 'ResourceChartCard',
     components: {
-        Line
+        LineChart
     }
 }
 </script>
 
 <template>
-    <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-lg content-small-container-color">
-        <Line :data="chartData" :options="chartOptions" />
+    <div class="rounded-2xl border-1 border-black h-64 mt-10 shadow-md content-small-container-color">
+        <LineChart :data="chartData" :options="chartOptions" />
         <!-- <div v-else>
             Loading charts...
         </div> -->

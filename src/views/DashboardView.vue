@@ -57,13 +57,16 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="h-full">
-        <div>
-            <span v-if="stationStore.hasStations">
-                <StationDropdown />
-            </span>
-            <span v-else>
-                Loading stations...
-            </span>
+        <div class="p-4">
+            <h1 class="text-3xl font-bold">Dashboard
+
+                <span class="ml-6" v-if="stationStore.hasStations">
+                    <StationDropdown />
+                </span>
+                <span v-else>
+                    Loading stations...
+                </span>
+            </h1>
         </div>
 
         <div class="grid grid-cols-2 gap-4 h-percent-90 mt-5">

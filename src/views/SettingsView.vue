@@ -50,7 +50,8 @@ const waxConsumption = ref(0)
 
 const updateBoxesOnDropdownChange = () => {
     const station = stationStore.stations.find(s => s.id === washCycleSelectedStationId.value)
-    stationBoxes.value = station ? station.boxes : []
+    const filteredBoxes = station?.boxes.filter(b => b.status === 'AVAILABLE') || []
+    stationBoxes.value = filteredBoxes
     selectedBoxId.value = stationBoxes.value.length ? stationBoxes.value[0].id : ''
 }
 

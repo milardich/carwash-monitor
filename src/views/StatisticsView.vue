@@ -5,6 +5,9 @@ import { onMounted } from 'vue';
 const statisticsStore = useStatisticsStore();
 const currencySign = '€'
 let currentDate: Date = new Date()
+const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
 
 onMounted(async () => {
     statisticsStore.loadStatistics();
@@ -15,14 +18,16 @@ onMounted(async () => {
 <template>
     <div class="h-full">
         <div class="p-4">
-            <h1 class="text-3xl">Stats ({{ currentDate.getMonth() + 1 }}, {{ currentDate.getFullYear() }})</h1>
+            <h1 class="text-3xl font-bold">Statistics ({{ monthNames[currentDate.getMonth() + 1] }}, {{
+                currentDate.getFullYear()
+            }})</h1>
         </div>
 
 
         <!-- General data -->
 
         <div class="grid gap-4 lg:gap-8 md:grid-cols-3 p-4 pt-8">
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex text-sm font-medium text-gray">
                         <div>Total revenue</div>
@@ -36,7 +41,7 @@ onMounted(async () => {
 
 
 
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
                         <span>Best performing station</span>
@@ -50,14 +55,14 @@ onMounted(async () => {
 
                         <span>Total revenue: {{ currencySign }} {{
                             statisticsStore.statisticsHighlights?.bestStationRevenue.toFixed(2)
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>
 
 
 
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
                         <span>Number of washes</span>
@@ -75,7 +80,7 @@ onMounted(async () => {
 
         <!-- Consumptions -->
         <div class="grid gap-4 lg:gap-8 md:grid-cols-3 p-4">
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
                         <span>Water consumption</span>
@@ -97,7 +102,7 @@ onMounted(async () => {
 
 
 
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
                         <span>Detergent consumption</span>
@@ -118,7 +123,7 @@ onMounted(async () => {
 
 
 
-            <div class="relative p-6 rounded-2xl bg-white shadow-xl">
+            <div class="relative p-6 rounded-2xl bg-white shadow-md">
                 <div class="space-y-2">
                     <div class="flex items-center space-x-2 rtl:space-x-reverse text-sm font-medium text-gray">
                         <span>Wax consumption</span>
@@ -141,8 +146,8 @@ onMounted(async () => {
         <!-- Statistics summary table -->
 
         <div v-if="statisticsStore.statisticsSummary">
-            <div class="m-4 shadow-2xl pb-6">
-                <div class="overflow-x-auto shadow-xl sm:rounded-lg">
+            <div class="m-4 shadow-md pb-6">
+                <div class="overflow-x-auto shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
                             <tr>
