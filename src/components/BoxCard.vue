@@ -5,13 +5,11 @@ import { useBoxStore } from '@/stores/boxStore';
 
 const props = defineProps<{ box: Box }>();
 const boxStore = useBoxStore();
-const boxStateLabel = computed(() => props.box.status);
 const backgroundColorCssClass = computed(() => {
     switch (props.box.status) {
         case 'ACTIVE': return 'available-bg-color';
         case 'IN_USE': return 'in-use-bg-color';
         case 'INACTIVE': return 'inactive-bg-color';
-        case 'COIN_TRAY_FULL': return 'inactive-bg-color';
         default: return 'bg-yellow-warning';
     }
 });
@@ -55,7 +53,7 @@ const backgroundColorCssClass = computed(() => {
 
         <!-- Status -->
         <div class="border-1 border-black rounded-xl text-center p-1" :class="backgroundColorCssClass">
-            {{ boxStateLabel }}
+            {{ box.status }}
         </div>
     </div>
 </template>

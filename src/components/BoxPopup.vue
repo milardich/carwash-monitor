@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { useBoxStore } from '@/stores/boxStore';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { changeBoxStatus } from '@/api/box.api';
+import { onBeforeUnmount, onMounted } from 'vue';
 import { useStationStore } from '@/stores/stationStore';
 
 const boxStore = useBoxStore();
 const stationStore = useStationStore();
-const boxStatus = ref(boxStore.selectedBox?.status);
-
 
 onMounted(() => {
 
@@ -130,26 +127,39 @@ onBeforeUnmount(() => {
 
 
                 <!-- Modal footer -->
-                <div class="mt-6 grid grid-cols-3" v-if="stationStore?.selectedStation && boxStore?.selectedBox">
-                    <div class="available-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="ACTIVE" value="ACTIVE" v-model="boxStatus" @click="
-                            changeBoxStatus(boxStore?.selectedBox?.id, 'ACTIVE');
-                        boxStore.setBoxStatus('ACTIVE')" />
-                        <label for="ACTIVE">ACTIVE</label>
-                    </div>
+                <div class="mt-6 grid grid-cols-3 gap-4" v-if="stationStore?.selectedStation && boxStore?.selectedBox">
+                    <!-- ACTIVE -->
+                    <label for="ACTIVE" class="cursor-pointer rounded-xl px-4 py-2 text-center font-semibold shadow-md transition-all duration-200
+                        available-bg-color text-white hover:brightness-110" :class="{
+                            'ring-2 ring-offset-2 ring-green-500 scale-105': boxStore.selectedBox?.status === 'ACTIVE'
+                        }">
+                        <input type="radio" id="ACTIVE" value="ACTIVE" v-model="boxStore.selectedBox.status"
+                            class="hidden" @click="boxStore.setBoxStatus('ACTIVE')" />
+                        ACTIVE
+                    </label>
 
-                    <div class="inactive-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="boxStatus" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'INACTIVE');
-                        boxStore.setBoxStatus('INACTIVE')" />
-                        <label for="INACTIVE">INACTIVE</label>
-                    </div>
+                    <!-- INACTIVE -->
+                    <label for="INACTIVE" class="cursor-pointer rounded-xl px-4 py-2 text-center font-semibold shadow-md transition-all duration-200
+                        inactive-bg-color text-white hover:brightness-110" :class="{
+                            'ring-2 ring-offset-2 ring-gray-500 scale-105': boxStore.selectedBox?.status === 'INACTIVE'
+                        }">
+                        <input type="radio" id="INACTIVE" value="INACTIVE" v-model="boxStore.selectedBox.status"
+                            class="hidden" @click="boxStore.setBoxStatus('INACTIVE')" />
+                        INACTIVE
+                    </label>
 
-                    <div class="in-use-bg-color rounded-xl p-1 m-2 text-center">
-                        <input type="radio" id="IN_USE" value="IN_USE" v-model="boxStatus" @click="changeBoxStatus(boxStore?.selectedBox?.id, 'IN_USE');
-                        boxStore.setBoxStatus('IN_USE')" />
-                        <label for="IN_USE">IN_USE</label>
-                    </div>
+                    <!-- IN USE -->
+                    <label for="IN_USE" class="cursor-pointer rounded-xl px-4 py-2 text-center font-semibold shadow-md transition-all duration-200
+                        in-use-bg-color text-white hover:brightness-110" :class="{
+                            'ring-2 ring-offset-2 ring-blue-500 scale-105': boxStore.selectedBox?.status === 'IN_USE'
+                        }">
+                        <input type="radio" id="IN_USE" value="IN_USE" v-model="boxStore.selectedBox.status"
+                            class="hidden" @click="boxStore.setBoxStatus('IN_USE')" />
+                        IN USE
+                    </label>
                 </div>
+
+
             </div>
         </div>
     </div>

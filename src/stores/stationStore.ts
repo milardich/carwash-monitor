@@ -37,6 +37,7 @@ export const useStationStore = defineStore('station', {
             if (station) {
                 console.log('Switched to station: ', station)
                 this.selectedStation = station
+                await this.updateSelectedStation()
                 const resourceStore = useResourceStore()
                 await resourceStore.loadResourceConsumptions(station.id)
             }
