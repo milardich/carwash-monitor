@@ -34,7 +34,7 @@ public class StationService : IStationService
         var end = start.AddDays(1); // tomorrow at 00:00
 
         var stationEntity = await _context.Stations
-            .Include(s => s.Boxes)
+            .Include(s => s.Boxes.OrderBy(b => b.Number))
             .ThenInclude(b => b.WashCycles.Where(wc => wc.DateCreated >= start && wc.DateCreated < end))
             .FirstOrDefaultAsync(station => station.Id == stationId);
 
@@ -50,7 +50,7 @@ public class StationService : IStationService
         var end = start.AddDays(1); // tomorrow at 00:00
 
         var stationEntities = await _context.Stations
-            .Include(s => s.Boxes)
+            .Include(s => s.Boxes.OrderBy(b => b.Number))
             .ThenInclude(b => b.WashCycles.Where(wc => wc.DateCreated >= start && wc.DateCreated < end))
             .ToListAsync();
 
