@@ -22,7 +22,7 @@ export interface WashCycle {
 
 export async function createWashCycle(
     request: WashCycleRequest,
-    boxId?: number
+    boxId?: string
 ): Promise<WashCycle> {
     const response = await axiosClient.post(
         `/box/${boxId}/washcycle`,

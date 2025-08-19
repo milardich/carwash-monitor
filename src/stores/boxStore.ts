@@ -1,6 +1,6 @@
 import { type Box } from '@/api/box.api'
 import { defineStore } from 'pinia'
-import { changeBoxStatus } from '@/api/box.api'
+import { changeBoxStatus, createBox } from '@/api/box.api'
 import { useStationStore } from './stationStore'
 
 export const useBoxStore = defineStore('box', {
@@ -24,6 +24,14 @@ export const useBoxStore = defineStore('box', {
 
             this.selectedBox.status = boxStatus
             await changeBoxStatus(this.selectedBox.id, boxStatus)
+            const stationStore = useStationStore()
+            await stationStore.updateSelectedStation()
+        },
+
+        async createBox(stationId: string) {
+            if (!stationId) return
+            this.boxPopupOpen = false
+            await createBox(stationId)
             const stationStore = useStationStore()
             await stationStore.updateSelectedStation()
         }

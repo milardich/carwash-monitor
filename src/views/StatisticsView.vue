@@ -15,7 +15,7 @@ onMounted(async () => {
 <template>
     <div class="h-full">
         <div class="p-4">
-            <h1 class="text-3xl">Stats ({{ currentDate.getMonth() }}, {{ currentDate.getFullYear() }})</h1>
+            <h1 class="text-3xl">Stats ({{ currentDate.getMonth() + 1 }}, {{ currentDate.getFullYear() }})</h1>
         </div>
 
 
@@ -141,7 +141,7 @@ onMounted(async () => {
         <!-- Statistics summary table -->
 
         <div v-if="statisticsStore.statisticsSummary">
-            <div class="m-4 shadow-2xl">
+            <div class="m-4 shadow-2xl pb-6">
                 <div class="overflow-x-auto shadow-xl sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">

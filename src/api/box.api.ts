@@ -32,7 +32,7 @@ export async function changeBoxStatus(boxId: string, boxStatus: string): Promise
     return response.data
 }
 
-export async function createBox(stationId?: number): Promise<Station> {
+export async function createBox(stationId?: string): Promise<Station> {
     const response = await axiosClient.post(`/station/${stationId}/box`)
     return response.data
 }

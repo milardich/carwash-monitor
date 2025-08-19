@@ -1,30 +1,90 @@
 <script setup lang="ts">
-import { type CreateStationRequest, createStation } from '@/api/station.api';
-import { createBox } from '@/api/box.api';
-import { createWashCycle, type WashCycleRequest } from '@/api/washCycle.api';
-import { reactive, ref } from 'vue';
+import { useBoxStore } from '@/stores/boxStore';
+import { useStationStore } from '@/stores/stationStore';
+import { useWashCycleStore } from '@/stores/washCycleStore';
+import { ref, onMounted } from 'vue';
+import { type Box } from '@/api/box.api';
+import type { WashCycleRequest } from '@/api/washCycle.api';
 
-// station
-const stationRequest = reactive<CreateStationRequest>({
-    name: '',
-    city: '',
-    streetName: '',
-    streetNumber: '',
-    country: ''
-});
+const stationStore = useStationStore()
+const boxStore = useBoxStore()
+const washCycleStore = useWashCycleStore()
 
-// for createUnit request
-const unitRequestStationId = ref<number>();
 
-// washcycle
-const washCycleRequest = reactive<WashCycleRequest>({
-    waterConsumption: 0.0,
-    waxConsumption: 0.0,
-    detergentConsumption: 0.0,
-    coinAmount: 0
-});
-const washCycleRequestStationId = ref<number>();
-const washCycleRequestUnitId = ref<number>();
+// STATION
+const newStationName = ref('')
+const handleCreateStation = async () => {
+    if (!newStationName.value.trim()) {
+        alert('Please enter a station name!')
+        return
+    }
+
+    await stationStore.createStation(newStationName.value.trim())
+    alert('Station created successfully!')
+    await stationStore.loadStations()
+    newStationName.value = ''
+}
+
+
+// BOX
+const selectedStationId = ref('')
+const handleCreateBox = async () => {
+    if (!selectedStationId.value) {
+        alert('Please select a station!')
+        return
+    }
+
+    await boxStore.createBox(selectedStationId.value)
+    alert('Box created successfully!')
+}
+
+
+// WASHCYCLE
+const washCycleSelectedStationId = ref('')
+const selectedBoxId = ref('')
+const stationBoxes = ref<Box[]>([])
+const coinAmount = ref(0)
+const waterConsumption = ref(0)
+const detergentConsumption = ref(0)
+const waxConsumption = ref(0)
+
+const updateBoxesOnDropdownChange = () => {
+    const station = stationStore.stations.find(s => s.id === washCycleSelectedStationId.value)
+    stationBoxes.value = station ? station.boxes : []
+    selectedBoxId.value = stationBoxes.value.length ? stationBoxes.value[0].id : ''
+}
+
+const handleCreateWashCycle = async () => {
+    if (!selectedBoxId.value) {
+        alert('Please select a box!')
+        return
+    }
+
+    const request: WashCycleRequest = {
+        coinAmount: coinAmount.value,
+        waterConsumption: waterConsumption.value,
+        detergentConsumption: detergentConsumption.value,
+        waxConsumption: waxConsumption.value
+    }
+
+    await washCycleStore.createWashCycle(request, selectedBoxId.value)
+    alert('Wash Cycle created successfully!')
+
+    coinAmount.value = 0
+    waterConsumption.value = 0
+    detergentConsumption.value = 0
+    waxConsumption.value = 0
+}
+
+onMounted(async () => {
+    await stationStore.loadStations()
+    if (stationStore.stations.length) {
+        selectedStationId.value = stationStore.stations[0].id
+        washCycleSelectedStationId.value = stationStore.stations[0].id
+        updateBoxesOnDropdownChange()
+    }
+})
+
 
 
 </script>
@@ -32,143 +92,76 @@ const washCycleRequestUnitId = ref<number>();
 <template>
     <div>
         <div class="p-4">
-            <h1 class="text-3xl">Settings</h1>
+            <h1 class="text-3xl">Control Panel</h1>
+        </div>
+
+        <br>
+
+        <div class="flex space-x-4">
+
+            <!-- CREATE STATION -->
+            <div class="p-4 border rounded shadow-md">
+                <h2 class="text-xl font-semibold mb-2">Create Station</h2>
+                <input v-model="newStationName" type="text" placeholder="Station Name"
+                    class="border rounded p-2 mr-2" />
+                <button @click="handleCreateStation"
+                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Create Station
+                </button>
+            </div>
+
+
+            <!-- CREATE BOX -->
+            <div class="p-4 border rounded shadow-md">
+                <h2 class="text-xl font-semibold mb-2">Create Box</h2>
+
+                <!-- Dropdown for selecting station -->
+                <select v-model="selectedStationId" class="border rounded p-2 mr-2">
+                    <option v-for="station in stationStore.stations" :key="station.id" :value="station.id">
+                        {{ station.name }}
+                    </option>
+                </select>
+
+                <button @click="handleCreateBox" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Create Box
+                </button>
+            </div>
+
+
+            <!-- CREATE WASHCYCLE -->
+            <div class="p-4 border rounded shadow-md">
+                <h2 class="text-xl font-semibold mb-2">Create Wash Cycle</h2>
+
+                <!-- Station dropdown -->
+                <select v-model="washCycleSelectedStationId" @change="updateBoxesOnDropdownChange"
+                    class="border rounded p-2 mr-2 mb-2">
+                    <option v-for="station in stationStore.stations" :key="station.id" :value="station.id">
+                        {{ station.name }}
+                    </option>
+                </select>
+
+                <!-- Box dropdown -->
+                <select v-model="selectedBoxId" class="border rounded p-2 mr-2 mb-2">
+                    <option v-for="box in stationBoxes" :key="box.id" :value="box.id">
+                        Box #{{ box.number }}
+                    </option>
+                </select>
+
+                <!-- Input fields -->
+                <input v-model.number="coinAmount" type="number" placeholder="Coin Amount"
+                    class="border rounded p-2 mr-2 mb-2" />
+                <input v-model.number="waterConsumption" type="number" placeholder="Water Consumption"
+                    class="border rounded p-2 mr-2 mb-2" />
+                <input v-model.number="detergentConsumption" type="number" placeholder="Detergent Consumption"
+                    class="border rounded p-2 mr-2 mb-2" />
+                <input v-model.number="waxConsumption" type="number" placeholder="Wax Consumption"
+                    class="border rounded p-2 mr-2 mb-2" />
+
+                <button @click="handleCreateWashCycle"
+                    class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
+                    Create Wash Cycle
+                </button>
+            </div>
         </div>
     </div>
-    <br>
-
-    <!-- CREATE STATION REQUEST -->
-    <div class="flex space-x-4">
-        <div class="h-full border rounded-lg p-4 content-small-container-color">
-            <div class="text-xl">Create new station</div>
-            <div class="mt-2">
-                <div class="mt-2">
-                    <input v-model="stationRequest.name" type="text" id="small-input" placeholder="Station name"
-                        class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="stationRequest.city" type="text" id="small-input" placeholder="City"
-                        class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="stationRequest.streetName" type="text" id="small-input" placeholder="Street"
-                        class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="stationRequest.streetNumber" type="text" id="small-input"
-                        placeholder="Street number" class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="stationRequest.country" type="text" id="small-input" placeholder="Country"
-                        class="rounded-lg border p-1">
-                </div>
-            </div>
-            <div class="mt-2">
-                <button type="button" @click="createStation(stationRequest)"
-                    class="w-full shadow-lg text-center p-2 rounded-lg border send-request-button">Send
-                    request</button>
-            </div>
-        </div>
-
-
-        <!-- CREATE UNIT REQUEST -->
-        <div class="h-full border rounded-lg p-4 content-small-container-color">
-            <div class="text-xl">Add new unit</div>
-            <div class="mt-2">
-                <div class="mt-2">
-                    <input v-model="unitRequestStationId" type="text" id="small-input" placeholder="Station ID"
-                        class="rounded-lg border p-1">
-                </div>
-            </div>
-            <div class="mt-2 inset-x-0 bottom-0">
-                <button type="button" @click="createBox(unitRequestStationId)"
-                    class="w-full shadow-lg text-center p-2 rounded-lg border send-request-button">Send
-                    request</button>
-            </div>
-        </div>
-
-
-        <!-- CREATE WASHCYCLE REQUEST -->
-        <div class="h-full border rounded-lg p-4 content-small-container-color">
-            <div class="text-xl">Create wash cycle</div>
-            <div class="mt-2">
-                <div class="mt-2">
-                    <input v-model="washCycleRequestStationId" type="text" id="small-input" placeholder="Station ID"
-                        class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="washCycleRequestUnitId" type="text" id="small-input" placeholder="Unit ID"
-                        class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="washCycleRequest.waterConsumption" type="text" id="small-input"
-                        placeholder="Water consumption" class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="washCycleRequest.waxConsumption" type="text" id="small-input"
-                        placeholder="Wax consumption" class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="washCycleRequest.detergentConsumption" type="text" id="small-input"
-                        placeholder="Detergent consumption" class="rounded-lg border p-1">
-                </div>
-                <div class="mt-2">
-                    <input v-model="washCycleRequest.coinAmount" type="text" id="small-input" placeholder="Coin amount"
-                        class="rounded-lg border p-1">
-                </div>
-            </div>
-            <div class="mt-2 inset-x-0 bottom-0">
-                <button type="button"
-                    @click="createWashCycle(washCycleRequest, washCycleRequestStationId, washCycleRequestUnitId)"
-                    class="w-full shadow-lg text-center p-2 rounded-lg border send-request-button">Send
-                    request</button>
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-
-
-
-    <!-- <div>
-        <h2>Wash cycle -> POST: /api/station/{unitRequestStationId}/unit/{unitId}/wash-cycle</h2>
-        <table>
-            <tr>
-                <td>
-                    Water consumption:
-                </td>
-                <td>
-                    <input v-model="message" placeholder="0.00" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Detergent consumption:
-                </td>
-                <td>
-                    <input v-model="message" placeholder="0.00" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Wax consumption:
-                </td>
-                <td>
-                    <input v-model="message" placeholder="0.00" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Coin amount:
-                </td>
-                <td>
-                    <input v-model="message" placeholder="5" />
-                </td>
-            </tr>
-        </table>
-        <button type="button" class="side-menu-item-selected">Add new wash cycle</button>
-    </div> -->
 </template>
