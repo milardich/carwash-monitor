@@ -50,5 +50,13 @@ public class BoxController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPatch]
+    [Route("/box/{boxId}/empty-tray")]
+    public async Task<ActionResult<BoxDto>> EmptyTray(Guid boxId)
+    {
+        var response = await BoxService.EmptyTray(boxId);
+        return Ok(response);
+    }
+
     #endregion
 }

@@ -23,7 +23,7 @@ public class WashCycleService : IWashCycleService
         var box = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
 
         if (box == null
-            || box.IsCoinTrayFull()
+            || box.IsCoinTrayAlmostFull()
             || washCycleDto.CoinAmount > box.CoinTrayLimit - box.CoinTrayAmount
             || box.Status != BoxStatus.AVAILABLE)
             return 0;
@@ -42,7 +42,7 @@ public class WashCycleService : IWashCycleService
 
         box.CoinTrayAmount += washCycleDto.CoinAmount ?? 0;
 
-        box.Status = box.IsCoinTrayFull() ? BoxStatus.INACTIVE : BoxStatus.AVAILABLE;
+        box.Status = box.IsCoinTrayAlmostFull() ? BoxStatus.INACTIVE : BoxStatus.AVAILABLE;
 
         return await _context.SaveChangesAsync();
     }

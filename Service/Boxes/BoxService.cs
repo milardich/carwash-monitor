@@ -76,4 +76,18 @@ public class BoxService : IBoxService
 
         return _mapper.Map<BoxDto>(boxEntity);
     }
+
+    public async Task<BoxDto?> EmptyTray(Guid boxId)
+    {
+        var boxEntity = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
+
+        if (boxEntity == null) 
+            return null;
+
+        boxEntity.CoinTrayAmount = 0;
+        await _context.SaveChangesAsync();
+
+        return _mapper.Map<BoxDto?>(boxEntity);
+    }
+
 }

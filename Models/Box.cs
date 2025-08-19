@@ -13,8 +13,8 @@ public class Box
     public int CoinTrayLimit { get; set; }
     public List<WashCycle> WashCycles { get; set; } = [];
 
-    public bool IsCoinTrayFull()
+    public bool IsCoinTrayAlmostFull()
     {
-        return CoinTrayAmount >= CoinTrayLimit;
+        return CoinTrayAmount >= CoinTrayLimit - 50;
     }
 }
