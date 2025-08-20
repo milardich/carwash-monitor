@@ -18,7 +18,7 @@ onMounted(async () => {
 <template>
     <div class="h-full">
         <div class="p-4">
-            <h1 class="text-3xl font-bold">Statistics ({{ monthNames[currentDate.getMonth() + 1] }}, {{
+            <h1 class="text-3xl font-bold">Statistics ({{ monthNames[currentDate.getMonth()] }}, {{
                 currentDate.getFullYear()
             }})</h1>
         </div>
