@@ -40,7 +40,7 @@ namespace CarwashMonitor.Util
                                 WaterConsumption = Random.Shared.Next(50, 200) / 1f,
                                 DetergentConsumption = Random.Shared.Next(10, 50) / 1f,
                                 WaxConsumption = Random.Shared.Next(5, 25) / 1f,
-                                DateCreated = DateTime.Now.AddDays(-w),
+                                DateCreated = DateTime.UtcNow,
                                 CoinAmount = Random.Shared.Next(0, 50)
                             };
                             box.WashCycles.Add(washCycle);
