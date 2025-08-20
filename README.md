@@ -23,7 +23,9 @@ Carwash Monitor is a full-stack application developed as a final thesis for a Ba
 ```bash
 git clone https://github.com/milardich/carwash-monitor.git
 ```
-3. run `run.bat` from the carwash-monitor root directory
+3. run `run.bat` from the carwash-monitor root directory and let it finish (~15 seconds)
+
+4. Open `http://localhost:4173/` in your browser
 
 ### Screenshots
 ![](_images/1-dashboard.png)
