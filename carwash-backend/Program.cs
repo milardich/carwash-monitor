@@ -1,10 +1,12 @@
 using CarwashMonitor.Dtos;
+using CarwashMonitor.Enums;
 using CarwashMonitor.Models;
 using CarwashMonitor.Service.Boxes;
 using CarwashMonitor.Service.Resources;
 using CarwashMonitor.Service.Stations;
 using CarwashMonitor.Service.Statistics;
 using CarwashMonitor.Service.WashCycles;
+using CarwashMonitor.Util;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -82,6 +84,14 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Carwash Monitor API V1");
         options.RoutePrefix = "";
     });
+}
+
+// setup db and seed initial dataa
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<CarwashDbContext>();
+    db.Database.Migrate();
+    DbUtils.SeedInitialData(db);
 }
 
 app.UseCors();
