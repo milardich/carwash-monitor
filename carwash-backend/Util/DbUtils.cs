@@ -1,4 +1,5 @@
-﻿using CarwashMonitor.Enums;
+﻿using System;
+using CarwashMonitor.Enums;
 using CarwashMonitor.Models;
 
 namespace CarwashMonitor.Util
@@ -7,11 +8,14 @@ namespace CarwashMonitor.Util
     {
         public static void SeedInitialData(CarwashDbContext? db)
         {
+            var random = new Random();
+
             if (db != null && !db.Stations.Any())
             {
                 var stations = new List<Station>();
 
-                for (int s = 1; s <= 3; s++)
+                var numberOfStations = random.Next(3, 6);
+                for (int s = 1; s <= numberOfStations; s++)
                 {
                     var station = new Station
                     {
@@ -20,7 +24,8 @@ namespace CarwashMonitor.Util
                         Boxes = new List<Box>()
                     };
 
-                    for (int b = 1; b <= 3; b++)
+                    var numberOfBoxes = random.Next(3, 15);
+                    for (int b = 1; b <= numberOfBoxes; b++)
                     {
                         var box = new Box
                         {
@@ -32,15 +37,27 @@ namespace CarwashMonitor.Util
                             WashCycles = new List<WashCycle>()
                         };
 
-                        for (int w = 1; w <= 5; w++)
+                        var numberOfWashCycles = random.Next(1, 100);
+                        for (int w = 1; w <= numberOfWashCycles; w++)
                         {
+                            var daysAgo = random.Next(0, 10);
+                            var hoursAgo = random.Next(0, 24);
+                            var minutesAgo = random.Next(0, 60);
+                            var secondsAgo = random.Next(0, 60);
+
+                            var randomDateTime = DateTime.UtcNow
+                                             .AddDays(-daysAgo)
+                                             .AddHours(-hoursAgo)
+                                             .AddMinutes(-minutesAgo)
+                                             .AddSeconds(-secondsAgo);
+
                             var washCycle = new WashCycle
                             {
                                 Id = Guid.NewGuid(),
                                 WaterConsumption = Random.Shared.Next(50, 200) / 1f,
                                 DetergentConsumption = Random.Shared.Next(10, 50) / 1f,
                                 WaxConsumption = Random.Shared.Next(5, 25) / 1f,
-                                DateCreated = DateTime.UtcNow,
+                                DateCreated = randomDateTime,
                                 CoinAmount = Random.Shared.Next(0, 50)
                             };
                             box.WashCycles.Add(washCycle);
