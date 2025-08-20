@@ -1,0 +1,44 @@
+import axios from 'axios'
+
+export interface StatisticsHighlights {
+    totalRevenue: number
+    bestStationName: string
+    bestStationRevenue: number
+    totalWashCount: number
+    totalWaterConsumption: number
+    totalWaxConsumption: number
+    totalDetergentConsumption: number
+    totalWaterCost: number
+    totalWaxCost: number
+    totalDetergentCost: number
+}
+
+export interface StationStatistics {
+    stationName: string
+    waterCost: number
+    detergentCost: number
+    waxCost: number
+    revenue: number
+}
+
+export interface StatisticsSummary {
+    allStationStatistics: StationStatistics[]
+    totalWaterCost: number
+    totalWaxCost: number
+    totalDetergentCost: number
+    totalRevenue: number
+}
+
+const axiosClient = axios.create({
+    baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL
+})
+
+export async function getStatisticsHighlights(): Promise<StatisticsHighlights> {
+    const response = await axiosClient.get(`/statistics/highlights`)
+    return response.data
+}
+
+export async function getStatisticsSummary(): Promise<StatisticsSummary> {
+    const response = await axiosClient.get(`/statistics/summary`)
+    return response.data
+}

@@ -1,0 +1,235 @@
+/* @import './base.css';
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  #app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
+  }
+} */
+
+/* body {
+  background-color: #F9E3E8;
+} */
+
+.h-percent-90 {
+    height: 90%;
+}
+
+:root {
+    --violet-dark: #34113f;
+    --violet-light: #bdbccf;
+    --violet-light2: #beb7df;
+    --violet-ultralight: #b49db8;
+    --white-medium: #868784;
+    --blue-light: #6584ff;
+    --red-light: #f3797e;
+    --white-dark: #b3b3b3af;
+    --white-light: #d4f2d2;
+    --gray-light: #757c8b;
+    --gray-dark: #232323;
+    --green-light: #74a67e;
+    --yellow-warning: #f7cc7f;
+
+    --custom-grey-dark: #0f0f0f;
+    --custom-grey: #565554;
+    --custom-blue: #2e86ab;
+    --custom-beige: #f6f5ae;
+    --custom-beige-dark: #b9b982;
+    --custom-yellow: #f5f749;
+    --custom-red: #f24236;
+    --custom-red-light: #ff9b94;
+
+    --custom-figma-blue: #434eaa;
+    --custom-figma-lightblue: #546ed5;
+    --custom-figma-ultralightblue: #d1e4fb;
+    --custom-figma-beige: #f9e3e8;
+    --custom-figma-beige-darker: #e6d4df;
+    --custom-figma-red: #e27b7b;
+    --custom-figma-green: #7be28b;
+    --custom-figma-green-darker: #129e27;
+    --custom-figma-yellow: #e2d27b;
+    --custom-figma-white: #ffffff;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px var(--custom-figma-blue);
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--custom-figma-blue);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--custom-figma-lightblue);
+}
+
+body {
+    background-color: var(--custom-figma-white);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        'Fira Sans',
+        'Droid Sans',
+        'Helvetica Neue',
+        sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.side-menu {
+    background-color: var(--custom-figma-blue);
+}
+
+.side-menu-item {
+    background-color: var(--custom-figma-lightblue);
+    color: var(--custom-figma-beige);
+}
+
+.side-menu-item:hover {
+    background-color: var(--custom-figma-ultralightblue);
+    color: var(--custom-grey);
+}
+
+.side-menu-item:active {
+    background-color: var(--custom-figma-ultralightblue);
+    color: var(--custom-grey-dark);
+}
+
+.side-menu-item-selected {
+    background-color: var(--custom-figma-ultralightblue);
+    color: var(--custom-grey-dark);
+}
+
+.content-background-container-color {
+    background-color: var(--custom-figma-white);
+}
+
+.content-small-container-color {
+    background-color: var(--custom-figma-white);
+}
+
+.in-use-bg-color {
+    background-color: var(--custom-figma-red);
+}
+
+.available-bg-color {
+    background-color: var(--custom-figma-green);
+}
+
+.inactive-bg-color {
+    background-color: var(--custom-figma-yellow);
+}
+
+.maintenance-bg-color {
+    background-color: var(--custom-grey);
+    color: white;
+}
+
+.modal-bg-color {
+    background-color: var(--custom-figma-white);
+}
+
+.select-station-big-button {
+    background-color: var(--custom-figma-blue);
+    color: var(--custom-figma-beige);
+}
+
+.card-button-icon-small {
+    width: 15px;
+    height: 15px;
+}
+
+.select-station-dropdown {
+    background-color: var(--custom-figma-lightblue);
+    color: var(--custom-figma-beige);
+}
+
+.dropdown-item {
+    background-color: var(--custom-figma-lightblue);
+    color: var(--custom-figma-beige);
+    border-bottom: 1px solid var(--custom-figma-ultralightblue);
+}
+
+.dropdown-item:hover {
+    background-color: var(--custom-figma-ultralightblue);
+    color: var(--custom-grey-dark);
+}
+
+.text-green {
+    color: var(--custom-figma-green-darker);
+}
+
+.text-red {
+    color: var(--custom-figma-red);
+}
+
+.text-yellow {
+    color: var(--custom-figma-yellow);
+}
+
+.table-footer {
+    background-color: var(--custom-figma-lightblue);
+    color: var(--custom-figma-ultralightblue);
+}
+
+.border-custom-blue {
+    border: 2px solid var(--custom-figma-blue);
+}
+
+.border-red {
+    border: 2px solid red;
+}
+
+.send-request-button {
+    color: white;
+    background-color: var(--custom-figma-blue);
+}
+
+.send-request-button:hover {
+    color: white;
+    background-color: var(--custom-figma-lightblue);
+}
