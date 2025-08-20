@@ -17,6 +17,7 @@ Carwash todo:
 	- Generira washcycle (random voda vosak etc, coin (u constraintima))
 	- Na backendu inserta, i stavi wash cycle u Active/inactive, ovisno o 
 	broju coina
-[ ] Azurirat dokument, poslat soji
+[X] Azurirat dokument
+[ ] Poslat soji
 	
 	
