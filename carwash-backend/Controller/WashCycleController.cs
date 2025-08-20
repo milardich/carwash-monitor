@@ -1,0 +1,42 @@
+﻿using CarwashMonitor.Dtos;
+using CarwashMonitor.Service.WashCycles;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarwashMonitor.Controller;
+
+[ApiController]
+public class WashCycleController : ControllerBase
+{
+    public WashCycleController(
+        IWashCycleService washCycleService)
+    {
+        WashCycleService = washCycleService;
+    }
+
+    public IWashCycleService WashCycleService { get; set; }
+
+    [HttpPost]
+    [Route("/box/{boxId}/washcycle")]
+    public async Task<ActionResult<int>> CreateWashCycleAsync(Guid boxId, WashCycleDto washCycleDto)
+    {
+        var result = await WashCycleService.CreateWashCycleAsync(boxId, washCycleDto);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("/washcycle/{washCycleId}")]
+    public async Task<ActionResult<WashCycleDto>> GetWashCycleAsync(Guid washCycleId)
+    {
+        var result = await WashCycleService.GetWashCycleAsync(washCycleId);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("/box/{boxId}/washcycles")]
+    public async Task<ActionResult<List<WashCycleDto>>> GetAllWashCycles(Guid boxId, [FromQuery] DateTime? dateFrom,
+        [FromQuery] DateTime? dateTo)
+    {
+        var result = await WashCycleService.GetAllWashCyclesAsync(boxId, dateFrom, dateTo);
+        return Ok(result);
+    }
+}

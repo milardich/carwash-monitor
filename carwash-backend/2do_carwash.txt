@@ -1,0 +1,22 @@
+Carwash todo:
+[X] Potrosnja vode, voska detrdzenta
+[X] Zapunjenost kovanicama
+	[X] 12.8. Limitirat broj kovanica po stanici 
+	[X] 13.8. Prikazat na UI zapunjenost
+[X] Koristenje pojedinog boxa
+	[X] 14.8. Limit kreiranje ciklusa na slobodan box koji nije u kvaru
+[X] Alarmiranje nadlezne osobe
+	[X] 16.8. Dodat button "Notify maintenance workers" na box ako je u kvaru 
+		- Na boxu pise "Maintenance Worker is on the way."
+[X] Statistika kroz 24h
+	[X] 17.8. fixat frontend i tjt
+[X] Analiza broja korisnika po stanici (broj washcycle/station)
+[X] Na UI dodat kreiranje Washcycle sa cekanjem 
+	- Click na new washCycle
+	- Ceka par sekundi (u medjuvremenu stavi box status na in use)
+	- Generira washcycle (random voda vosak etc, coin (u constraintima))
+	- Na backendu inserta, i stavi wash cycle u Active/inactive, ovisno o 
+	broju coina
+[ ] Azurirat dokument, poslat soji
+	
+	
