@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Db context
 builder.Services.AddDbContext<CarwashDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("carwash"))
+    options.UseSqlite(builder.Configuration.GetConnectionString("carwash"))
 );
 
 // services
@@ -86,11 +86,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// setup db and seed initial dataa
+// setup db and seed initial data
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CarwashDbContext>();
-    db.Database.Migrate();
+    db.Database.EnsureCreated();
     DbUtils.SeedInitialData(db);
 }
 

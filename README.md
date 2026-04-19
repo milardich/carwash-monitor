@@ -14,9 +14,10 @@ Carwash Monitor is a full-stack application developed as a final thesis for a Ba
 
 1. Install dependencies
 
-    - PostgreSQL 17
-    - .NET 9.0 Runtime
+    - .NET 10.0 SDK
     - npm
+
+    The database is SQLite — no server to install. A `carwash.db` file is created on first run inside `carwash-backend/`.
 
 2. Clone the repository
 
