@@ -14,46 +14,35 @@ const backgroundColorCssClass = computed(() => {
         default: return 'bg-yellow-warning';
     }
 });
-
 </script>
 
 <template>
     <div
-        class="box-border h-48 w-56 grid grid-cols-1 rounded-2xl border-1 border-black shadow-xl p-4 content-between content-small-container-color">
+        class="box-border w-full h-48 flex flex-col justify-between rounded-2xl border border-black shadow-xl p-4 content-small-container-color">
         <!-- Header row: box number + settings button -->
-        <div class="flex">
-            <div class="text-3xl">#{{ box.number }}</div>
-            <div class="ml-auto justify-end">
-                <button @click="
-                    boxStore.setSelectedBox(box);
-                boxStore.toggleBoxPopup();
-                ">
-                    <img src="@/assets/settings-svgrepo-com.svg" alt="Settings" class="card-button-icon-small" />
-                </button>
-            </div>
+        <div class="flex items-center">
+            <div class="text-2xl sm:text-3xl">#{{ box.number }}</div>
+            <button @click="boxStore.setSelectedBox(box); boxStore.toggleBoxPopup();"
+                class="ml-auto p-1 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                aria-label="Open box details">
+                <img src="@/assets/settings-svgrepo-com.svg" alt="Settings" class="card-button-icon-small" />
+            </button>
         </div>
 
         <!-- Box info -->
-        <div class="mt-2">
-            <div class="grid grid-cols-1 text-sm">
-                <div v-if="box">
-                    <div>
-                        Washes today:
-                        <span class="font-bold">{{ box.washCycleCount }}</span>
-                    </div>
-                    <div>
-                        Coin tray:
-                        <span class="font-bold">{{ box.coinTrayAmount }}/{{ box.coinTrayLimit }}</span>
-                    </div>
-                </div>
-                <div v-else>
-                    <div>Loading info...</div>
-                </div>
+        <div class="text-sm">
+            <div>
+                Washes today:
+                <span class="font-bold">{{ box.washCycleCount }}</span>
+            </div>
+            <div>
+                Coin tray:
+                <span class="font-bold">{{ box.coinTrayAmount }}/{{ box.coinTrayLimit }}</span>
             </div>
         </div>
 
         <!-- Status -->
-        <div class="border-1 border-black rounded-xl text-center p-1" :class="backgroundColorCssClass">
+        <div class="border border-black rounded-xl text-center p-1 truncate" :class="backgroundColorCssClass">
             {{ box.status }}
         </div>
     </div>

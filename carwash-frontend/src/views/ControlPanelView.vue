@@ -126,96 +126,91 @@ onMounted(async () => {
         updateBoxesOnDropdownChange()
     }
 })
-
-
-
 </script>
 
 <template>
-    <div class="p-4">
-        <h1 class="text-3xl font-bold mb-6">Control Panel</h1>
+    <div class="p-2 sm:p-4">
+        <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Control Panel</h1>
 
-        <div class="flex space-x-4">
+        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
 
             <!-- CREATE STATION -->
-            <div class="p-6 border rounded-lg shadow-md w-80">
+            <div class="p-5 sm:p-6 border rounded-lg shadow-md bg-white">
                 <h2 class="text-xl font-semibold mb-4">Create Station</h2>
                 <div class="flex flex-col space-y-3">
                     <input v-model="newStationName" type="text" placeholder="Station Name"
-                        class="border rounded p-2 w-full" />
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <button @click="handleCreateStation"
-                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full">
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full transition-colors">
                         Create Station
                     </button>
                 </div>
             </div>
 
             <!-- CREATE BOX -->
-            <div class="p-6 border rounded-lg shadow-md w-80">
+            <div class="p-5 sm:p-6 border rounded-lg shadow-md bg-white">
                 <h2 class="text-xl font-semibold mb-4">Create Box</h2>
                 <div class="flex flex-col space-y-3">
-                    <select v-model="selectedStationId" class="border rounded p-2 w-full">
+                    <select v-model="selectedStationId"
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option v-for="station in stationStore.stations" :key="station.id" :value="station.id">
                             {{ station.name }}
                         </option>
                     </select>
                     <button @click="handleCreateBox"
-                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
+                        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full transition-colors">
                         Create Box
                     </button>
                 </div>
             </div>
 
             <!-- CREATE WASHCYCLE -->
-            <div class="p-6 border rounded-lg shadow-md w-80">
+            <div class="p-5 sm:p-6 border rounded-lg shadow-md bg-white">
                 <h2 class="text-xl font-semibold mb-4">Create Wash Cycle</h2>
                 <div class="flex flex-col space-y-3">
-                    <!-- Station dropdown -->
                     <select v-model="washCycleSelectedStationId" @change="updateBoxesOnDropdownChange"
-                        class="border rounded p-2 w-full">
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option v-for="station in stationStore.stations" :key="station.id" :value="station.id">
                             {{ station.name }}
                         </option>
                     </select>
 
-                    <!-- Box dropdown -->
-                    <select v-model="selectedBoxId" class="border rounded p-2 w-full">
+                    <select v-model="selectedBoxId"
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option v-for="box in stationBoxes" :key="box.id" :value="box.id">
                             Box #{{ box.number }}
                         </option>
                     </select>
 
-                    <!-- Input fields -->
                     <input v-model.number="coinAmount" type="number" placeholder="Coin Amount"
-                        class="border rounded p-2 w-full" />
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <input v-model.number="waterConsumption" type="number" placeholder="Water Consumption"
-                        class="border rounded p-2 w-full" />
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <input v-model.number="detergentConsumption" type="number" placeholder="Detergent Consumption"
-                        class="border rounded p-2 w-full" />
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                     <input v-model.number="waxConsumption" type="number" placeholder="Wax Consumption"
-                        class="border rounded p-2 w-full" />
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500" />
 
                     <button @click="handleCreateWashCycle"
-                        class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full">
+                        class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 w-full transition-colors">
                         Create Wash Cycle
                     </button>
                 </div>
             </div>
 
-
             <!-- SIMULATED WASHCYCLE -->
-            <div class="p-6 border rounded-lg shadow-md w-80">
+            <div class="p-5 sm:p-6 border rounded-lg shadow-md bg-white">
                 <h2 class="text-xl font-semibold mb-4">Simulated Wash Cycle</h2>
                 <div class="flex flex-col space-y-3">
-                    <!-- Station dropdown -->
-                    <select v-model="simulatedStationId" class="border rounded p-2 w-full">
+                    <select v-model="simulatedStationId"
+                        class="border rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option v-for="station in stationStore.stations" :key="station.id" :value="station.id">
                             {{ station.name }}
                         </option>
                     </select>
 
                     <button @click="handleSimulatedWashCycle"
-                        class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 w-full"
+                        class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 w-full transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                         :disabled="isSimulating">
                         {{ isSimulating ? 'Simulating...' : 'Start Simulation' }}
                     </button>
