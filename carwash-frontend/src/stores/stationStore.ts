@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Station } from '@/api/station.api'
-import { getAllStations, getStation, createStation } from '@/api/station.api'
+import { getAllStations, getStation, createStation, updateStation, deleteStation } from '@/api/station.api'
 import { useResourceStore } from './resourceStore'
 
 export const useStationStore = defineStore('station', {
@@ -48,6 +48,31 @@ export const useStationStore = defineStore('station', {
             this.isLoading = true
             try {
                 await createStation({ name })
+                await this.loadStations()
+            } finally {
+                this.isLoading = false
+            }
+        },
+
+        async updateStation(stationId: string, name: string) {
+            if (!stationId || !name) return
+            this.isLoading = true
+            try {
+                await updateStation(stationId, { name })
+                await this.loadStations()
+            } finally {
+                this.isLoading = false
+            }
+        },
+
+        async deleteStation(stationId: string) {
+            if (!stationId) return
+            this.isLoading = true
+            try {
+                await deleteStation(stationId)
+                if (this.selectedStation?.id === stationId) {
+                    this.selectedStation = null
+                }
                 await this.loadStations()
             } finally {
                 this.isLoading = false

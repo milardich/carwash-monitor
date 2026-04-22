@@ -56,4 +56,33 @@ public class StationService : IStationService
 
         return _mapper.Map<List<StationDto>>(stationEntities);
     }
+
+    public async Task<int> UpdateStationAsync(Guid stationId, StationUpdateDto stationDto)
+    {
+        var station = await _context.Stations.FirstOrDefaultAsync(s => s.Id == stationId);
+
+        if (station == null)
+            throw new Exception("Station not found.");
+
+        station.Name = stationDto.Name;
+        return await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> DeleteStationAsync(Guid stationId)
+    {
+        var station = await _context.Stations
+            .Include(s => s.Boxes)
+            .ThenInclude(b => b.WashCycles)
+            .FirstOrDefaultAsync(s => s.Id == stationId);
+
+        if (station == null)
+            throw new Exception("Station not found.");
+
+        foreach (var box in station.Boxes)
+            _context.WashCycles.RemoveRange(box.WashCycles);
+
+        _context.Boxes.RemoveRange(station.Boxes);
+        _context.Stations.Remove(station);
+        return await _context.SaveChangesAsync();
+    }
 }

@@ -11,6 +11,10 @@ export interface CreateStationRequest {
     name: string
 }
 
+export interface UpdateStationRequest {
+    name: string
+}
+
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_CARWASH_API_BASE_URL
 })
@@ -37,5 +41,25 @@ export async function createStation(request: CreateStationRequest): Promise<Stat
             }
         }
     )
+    return response.data
+}
+
+export async function updateStation(stationId: string, request: UpdateStationRequest): Promise<Station> {
+    const response = await axiosClient.patch(
+        `/station/${stationId}`,
+        {
+            name: request.name
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    return response.data
+}
+
+export async function deleteStation(stationId: string): Promise<number> {
+    const response = await axiosClient.delete(`/station/${stationId}`)
     return response.data
 }

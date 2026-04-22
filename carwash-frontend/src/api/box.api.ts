@@ -41,3 +41,8 @@ export async function emptyTray(boxId?: string): Promise<Box> {
     const response = await axiosClient.patch(`/box/${boxId}/empty-tray`)
     return response.data
 }
+
+export async function deleteBox(boxId: string): Promise<number> {
+    const response = await axiosClient.delete(`/box/${boxId}`)
+    return response.data
+}

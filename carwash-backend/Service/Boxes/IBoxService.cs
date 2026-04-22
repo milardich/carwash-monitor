@@ -9,4 +9,5 @@ public interface IBoxService
     Task<BoxDto?> GetBoxAsync(Guid boxId);
     Task<BoxDto?> UpdateBoxStatusAsync(Guid boxId, BoxStatusDto status);
     Task<BoxDto?> EmptyTray(Guid boxId);
+    Task<int> DeleteBoxAsync(Guid boxId);
 }

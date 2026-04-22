@@ -81,13 +81,30 @@ public class BoxService : IBoxService
     {
         var boxEntity = await _context.Boxes.FirstOrDefaultAsync(b => b.Id == boxId);
 
-        if (boxEntity == null) 
+        if (boxEntity == null)
             return null;
 
         boxEntity.CoinTrayAmount = 0;
         await _context.SaveChangesAsync();
 
         return _mapper.Map<BoxDto?>(boxEntity);
+    }
+
+    public async Task<int> DeleteBoxAsync(Guid boxId)
+    {
+        var boxEntity = await _context.Boxes
+            .Include(b => b.WashCycles)
+            .FirstOrDefaultAsync(b => b.Id == boxId);
+
+        if (boxEntity == null)
+            throw new Exception("Box not found.");
+
+        if (boxEntity.Status != BoxStatus.INACTIVE && boxEntity.Status != BoxStatus.MAINTENANCE)
+            throw new InvalidOperationException("Only boxes in INACTIVE or MAINTENANCE status can be deleted.");
+
+        _context.WashCycles.RemoveRange(boxEntity.WashCycles);
+        _context.Boxes.Remove(boxEntity);
+        return await _context.SaveChangesAsync();
     }
 
 }

@@ -58,5 +58,13 @@ public class BoxController : ControllerBase
         return Ok(response);
     }
 
+    [HttpDelete]
+    [Route("/box/{boxId}")]
+    public async Task<ActionResult<int>> DeleteBoxAsync(Guid boxId)
+    {
+        var response = await BoxService.DeleteBoxAsync(boxId);
+        return Ok(response);
+    }
+
     #endregion
 }

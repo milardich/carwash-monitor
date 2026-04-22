@@ -1,6 +1,6 @@
 import { emptyTray, type Box } from '@/api/box.api'
 import { defineStore } from 'pinia'
-import { changeBoxStatus, createBox } from '@/api/box.api'
+import { changeBoxStatus, createBox, deleteBox } from '@/api/box.api'
 import { useStationStore } from './stationStore'
 
 export const useBoxStore = defineStore('box', {
@@ -50,6 +50,13 @@ export const useBoxStore = defineStore('box', {
             }
             const stationStore = useStationStore()
             await stationStore.updateSelectedStation()
+        },
+
+        async deleteBox(boxId: string) {
+            if (!boxId) return
+            await deleteBox(boxId)
+            const stationStore = useStationStore()
+            await stationStore.loadStations()
         }
     }
 })

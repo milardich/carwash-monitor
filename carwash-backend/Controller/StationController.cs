@@ -55,5 +55,21 @@ public class StationController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPatch]
+    [Route("/station/{stationId}")]
+    public async Task<ActionResult<int>> UpdateStationAsync(Guid stationId, StationUpdateDto stationDto)
+    {
+        var response = await StationService.UpdateStationAsync(stationId, stationDto);
+        return Ok(response);
+    }
+
+    [HttpDelete]
+    [Route("/station/{stationId}")]
+    public async Task<ActionResult<int>> DeleteStationAsync(Guid stationId)
+    {
+        var response = await StationService.DeleteStationAsync(stationId);
+        return Ok(response);
+    }
+
     #endregion
 }
