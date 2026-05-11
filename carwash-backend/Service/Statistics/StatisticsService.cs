@@ -44,11 +44,6 @@ public class StatisticsService : IStatisticsService
         var totalWaxConsumption = await filteredWashCycles.SumAsync(wc => wc.WaxConsumption ?? 0);
         var totalDetergentConsumption = await filteredWashCycles.SumAsync(wc => wc.DetergentConsumption ?? 0);
 
-        // TODO: 
-        const float waterCostPerUnit = 0.02f;
-        const float waxCostPerUnit = 0.05f;
-        const float detergentCostPerUnit = 0.03f;
-
         return new StatisticsHighlightsDto
         {
             TotalRevenue = totalRevenue,
@@ -58,9 +53,9 @@ public class StatisticsService : IStatisticsService
             TotalWaterConsumption = totalWaterConsumption,
             TotalWaxConsumption = totalWaxConsumption,
             TotalDetergentConsumption = totalDetergentConsumption,
-            TotalWaterCost = totalWaterConsumption * waterCostPerUnit,
-            TotalWaxCost = totalWaxConsumption * waxCostPerUnit,
-            TotalDetergentCost = totalDetergentConsumption * detergentCostPerUnit
+            TotalWaterCost = totalWaterConsumption * WashingResources.WaterPrice,
+            TotalWaxCost = totalWaxConsumption * WashingResources.WaxPrice,
+            TotalDetergentCost = totalDetergentConsumption * WashingResources.DetergentPrice
         };
     }
 
